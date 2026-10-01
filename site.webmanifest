@@ -1,0 +1,12 @@
+{
+  "name": "Zenventora",
+  "short_name": "Zenventora",
+  "description": "Product sales and partnership growth agency for SaaS startups and software companies.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f3b68",
+  "icons": [
+    {"src": "assets/favicon.svg", "sizes": "any", "type": "image/svg+xml"}
+  ]
+}
