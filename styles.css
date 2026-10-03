@@ -1016,3 +1016,45 @@ textarea {
         grid-template-columns: 1fr
     }
 }
+
+/* Keep primary navigation from wrapping at browser zoom and medium desktop widths. */
+@media (max-width: 1120px) {
+    .site-header .nav {
+        gap: 14px;
+    }
+
+    .site-header .nav-toggle {
+        display: inline-flex;
+        flex: 0 0 auto;
+    }
+
+    .site-header .nav-menu {
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        top: 76px;
+        z-index: 45;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: var(--shadow);
+    }
+
+    .site-header .nav-menu.open {
+        display: flex;
+    }
+
+    .site-header .nav-menu > a,
+    .site-header .nav-menu > span {
+        padding: 11px 12px;
+    }
+
+    .site-header .nav-menu .btn {
+        width: 100%;
+    }
+}

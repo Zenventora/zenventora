@@ -40,8 +40,8 @@ For search and AI-powered discovery, Zenventora can improve clarity, site struct
 ## Contact
 - [Email support@zenventora.in](mailto:support@zenventora.in)
 - [Email sales@zenventora.in](mailto:sales@zenventora.in)
-- [WhatsApp Zenventora](https://wa.me/918072009245)
-- Phone: +91 80720 09245
+- [WhatsApp Zenventora](https://wa.me/919360782707)
+- Phone: +91 93607 82707
 
 ## Social Links
 - [Instagram](https://www.instagram.com/zenventora/)
@@ -55,3 +55,7 @@ For search and AI-powered discovery, Zenventora can improve clarity, site struct
 - [Zhat](https://zhat.in/): AI-agentic help desk software for support automation.
 - [VDCian](https://www.vdcian.com/): A Zenventora-connected creative digital delivery partner for branding, websites, UX, SEO, and SaaS development support.
 - [Cool Vibrant](https://coolvibrant.in/): Digital brand presence for farm, lifestyle, and sustainable living content.
+
+## E-menu
+
+E-menu by Zenventora is a QR-based live menu product for cafes, restaurants, hotels, and food businesses. It supports item-based menu creation, templates and styles, Today’s Menu availability, a permanent QR code, customer preview, and an existing-menu file upload path where businesses can upload, remove, replace, or add menu files. Visit https://emenu.zenventora.in/ for features and FAQs.

@@ -20,7 +20,7 @@ Single-page responsive website template for **Zenventora**, a product-focused pa
 
 1. Logo / brand assets in `assets/zenventora-logo.svg`, `assets/favicon.svg`, and `assets/og-image.svg`
 2. Partner company logos, names, categories, and descriptions in the `#partners` section
-3. Phone / WhatsApp number `8072009245`
+3. Phone / WhatsApp number `9360782707`
 4. Email addresses `support@zenventora.in` and `sales@zenventora.in`
 5. Zoho Forms iframe URL in `contact.html` if the form changes
 6. Privacy Policy and Terms & Conditions content/details if your legal team provides final wording
