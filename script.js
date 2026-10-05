@@ -32,7 +32,7 @@ navMenu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{
   };
 
   const showInternationalPrice = (usdRate) => {
-    const usdPrice = Math.max(1, Math.round(INR_PRICE * usdRate));
+    const usdPrice = Math.max(1, Math.ceil(INR_PRICE * usdRate));
     const displayPrice = '$' + usdPrice.toLocaleString('en-US');
     replacePriceText(document.body, displayPrice);
     updateMeta(displayPrice);
