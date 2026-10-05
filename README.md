@@ -5,7 +5,7 @@ Single-page responsive website template for **Zenventora**, a product-focused pa
 ## What is included
 
 - Responsive one-page main website (`index.html`)
-- Dedicated website solutions landing page (`website/index.html`) with its own responsive styles (`website/website.css`)
+- Dedicated online business solutions landing page (`online-solutions/index.html`) with its own responsive styles (`website/website.css`)
 - Mobile-first styling (`styles.css`)
 - Mobile menu behavior (`script.js`)
 - SEO metadata, canonical URL, Open Graph, Twitter Card, Organization schema, ContactPoint schema, and FAQ schema
@@ -13,7 +13,7 @@ Single-page responsive website template for **Zenventora**, a product-focused pa
 - Zoho Forms contact page (`contact.html`) embedded through a responsive iframe
 - Contact page: `contact.html`
 - Legal pages: `privacy-policy.html` and `terms-and-conditions.html`
-- Relative interlinking for same-folder hosting, including the dedicated Website and E-menu product pages
+- Relative interlinking for same-folder hosting, including the dedicated Online Solutions and E-menu product pages
 - `robots.txt`, `sitemap.xml`, `llms.txt`, `site.webmanifest`
 - Zenventora logo, SVG favicon, Apple touch icon, partner logo assets, social links, and social sharing OG image
 
@@ -29,9 +29,9 @@ Single-page responsive website template for **Zenventora**, a product-focused pa
 8. `assets/og-image.svg` if a branded social image is available
 9. The Website page uses the same shared `styles.css` and `script.js` foundation so navigation, responsive handling, logo usage, footer patterns, and IP-based campaign currency display stay unified.
 
-## Dedicated Website Page
+## Dedicated Online Business Solutions Page
 
-`website/` is the dedicated website-development campaign hub linked from the main navigation and footer. It intentionally keeps the **₹3,999 starting point** prominent while explaining that the final scope is requirement-based.
+`online-solutions/` is the dedicated online-business-solutions campaign hub linked from the main navigation and footer. It intentionally keeps the **₹3,999 starting point** prominent while explaining that the final scope is requirement-based.
 
 The page is structured around:
 - Startup solutions as a major focus for founders with an idea but no clear digital execution path
@@ -42,7 +42,7 @@ The page is structured around:
 - No testimonials yet; testimonial content can be added after confirmed customer deliveries and permission
 - India visitors see the ₹3,999 starting amount; international visitors see the rounded USD equivalent through the shared IP-based pricing logic in `script.js`.
 
-The page is designed to extend the current Zenventora theme rather than introduce a separate visual system.
+The page is designed to extend the current Zenventora theme rather than introduce a separate visual system. The website remains the major foundation, but the offer is presented as a complete online business solution.
 
 ## Local preview
 
