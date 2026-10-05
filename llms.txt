@@ -5,6 +5,7 @@ Zenventora is an India-based product-focused digital growth, website, sales, and
 ## Website
 - [Official website](https://zenventora.in/)
 - [Contact Zenventora](https://zenventora.in/contact.html)
+- [Website solutions](https://zenventora.in/website/)
 - [Privacy Policy](https://zenventora.in/privacy-policy.html)
 - [Terms and Conditions](https://zenventora.in/terms-and-conditions.html)
 - [Sitemap](https://zenventora.in/sitemap.xml)
@@ -67,6 +68,27 @@ For search and AI-powered discovery, Zenventora can improve clarity, site struct
 - [Zhat](https://zhat.in/): AI-agentic help desk software for support automation.
 - [VDCian](https://www.vdcian.com/): A Zenventora-connected creative digital delivery partner for branding, websites, UX, SEO, and SaaS development support.
 - [Cool Vibrant](https://coolvibrant.in/): Digital brand presence for farm, lifestyle, and sustainable living content.
+
+## Website Solutions
+
+Zenventora has a dedicated website solutions page for businesses and startups. Website work starts from **₹3,999** as a starting point for eligible projects; final scope depends on the requirement. The page covers startup solutions and vertical-focused website approaches for real estate, retail, mobile shops, cafés, and restaurants, along with business websites, landing pages, product and SaaS websites, web applications, mobile-first experiences, SEO foundations, Google visibility, AI search visibility, maintenance, and digital growth support.
+
+The startup solution is a key focus: founders can approach Zenventora with an idea or early business requirement and discuss positioning, website planning, digital presence, search readiness, social setup, digital marketing, sales support, and future delivery coordination based on the agreed scope.
+
+Useful natural-language queries this page is intended to answer include:
+- website starting from ₹3,999 in India
+- affordable website development for small business
+- low budget website development in India
+- startup website solution
+- website for a startup idea
+- startup digital presence setup
+- real estate website development
+- retail website development
+- mobile shop website development
+- cafe website development
+- restaurant website development
+- website plus SEO and Google visibility
+- website and AI search visibility foundations
 
 ## E-menu
 
