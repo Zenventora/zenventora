@@ -46,38 +46,47 @@ navMenu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{
   };
 
   const detectPricing = async () => {
+    // IMPORTANT: INR is allowed only after a successful country check returns exactly "IN".
+    // Any other country code, invalid response, timeout, or detection error is treated as international.
+    let country = '';
+
     try {
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 2500);
       const countryResponse = await fetch('https://ipapi.co/country/', {
+        method: 'GET',
+        cache: 'no-store',
+        signal: controller.signal
+      });
+      window.clearTimeout(timeout);
+
+      if (countryResponse.ok) {
+        country = (await countryResponse.text()).trim().toUpperCase();
+      }
+    } catch (_) {
+      // Unknown country must never fall back to INR.
+    }
+
+    if (country === 'IN') {
+      showIndiaPrice();
+      return;
+    }
+
+    let usdRate = USD_FALLBACK / INR_PRICE;
+    try {
+      const rateResponse = await fetch('https://open.er-api.com/v6/latest/INR', {
         method: 'GET',
         cache: 'no-store'
       });
-      const country = (await countryResponse.text()).trim().toUpperCase();
-
-      if (country === 'IN') {
-        showIndiaPrice();
-        return;
+      const rateData = await rateResponse.json();
+      if (rateData && Number.isFinite(rateData?.rates?.USD) && rateData.rates.USD > 0) {
+        usdRate = rateData.rates.USD;
       }
-
-      let usdRate = 0.0105;
-      try {
-        const rateResponse = await fetch('https://open.er-api.com/v6/latest/INR', {
-          method: 'GET',
-          cache: 'no-store'
-        });
-        const rateData = await rateResponse.json();
-        if (rateData && Number.isFinite(rateData?.rates?.USD) && rateData.rates.USD > 0) {
-          usdRate = rateData.rates.USD;
-        }
-      } catch (_) {
-        // Keep the safe approximate USD fallback when the exchange-rate service is unavailable.
-        usdRate = USD_FALLBACK / INR_PRICE;
-      }
-
-      showInternationalPrice(usdRate);
     } catch (_) {
-      // Preserve the indexed/default INR campaign copy if IP detection is unavailable.
-      showIndiaPrice();
+      // Keep the safe approximate USD fallback when the exchange-rate service is unavailable.
     }
+
+    showInternationalPrice(usdRate);
   };
 
   if (window.location.hostname === 'zenventora.in' || window.location.hostname.endsWith('.zenventora.in')) {
