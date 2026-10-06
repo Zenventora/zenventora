@@ -7,6 +7,7 @@
 .platform-grid article>span{display:inline-flex;color:var(--orange);font-weight:900;letter-spacing:.1em;margin-bottom:20px}
 .platform-grid p{color:var(--muted);margin:0}
 .website-brand strong{color:var(--blue);font-size:1rem}.website-brand span{color:var(--muted);font-weight:400}
+.online-solutions-page .footer-brand strong{color:#fff}
 .online-solutions-page .nav-menu a{white-space:nowrap}
 .online-solutions-page .footer-grid{grid-template-columns:1.5fr 1fr 1fr 1fr}
 .website-hero{padding:112px 0 84px;background:radial-gradient(circle at 88% 12%,rgba(14,165,164,.22),transparent 30%),radial-gradient(circle at 10% 35%,rgba(249,115,22,.08),transparent 25%),linear-gradient(180deg,#f8fbff,#fff)}
