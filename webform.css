@@ -249,3 +249,20 @@
     font-size: .88rem;
   }
 }
+
+
+/* Keep the required asterisk on the same line as its field label, regardless of global label rules. */
+.webform-page .webform-field > label:not(.webform-consent) {
+  display: flex !important;
+  align-items: baseline;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 3px;
+  width: 100%;
+}
+.webform-page .webform-field > label:not(.webform-consent) .webform-required {
+  display: inline !important;
+  margin: 0;
+  line-height: inherit;
+  flex: 0 0 auto;
+}
