@@ -89,7 +89,9 @@ navMenu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{
     showInternationalPrice(usdRate);
   };
 
-  if (window.location.hostname === 'zenventora.in' || window.location.hostname.endsWith('.zenventora.in')) {
+  // Only run the campaign price/currency detection on pages that actually display the INR campaign price.
+  // This avoids unnecessary third-party country lookups on enquiry pages and other unrelated routes.
+  if ((window.location.hostname === 'zenventora.in' || window.location.hostname.endsWith('.zenventora.in')) && document.body.innerText.includes('₹3,999')) {
     detectPricing();
   }
 })();
