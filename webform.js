@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const FORM_ENDPOINT = "https://zcqncbdfurhlnspzziyd.supabase.co/functions/v1/submit-website-enquiry";
+  const FORM_ENDPOINT = "https://zhnbwyjuyjonexqbauuz.supabase.co/functions/v1/submit-website-enquiry";
   const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ymLV5njVvbll5eL9J_HP8g_7AfElGhz";
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
