@@ -33,7 +33,7 @@
     let message = "";
     if (field.required && !value) message = field.dataset.errorRequired || "This field is required.";
     else if (value && field.type === "email" && !emailPattern.test(value)) message = "Please enter a valid email address.";
-    else if (value && field.name === "phone" && !phonePattern.test(value)) message = "Please enter a valid phone number.";
+    else if (value && field.name === "phone" && (!phonePattern.test(value) || value.replace(/\\D/g, "").length < 7 || value.replace(/\\D/g, "").length > 15)) message = "Please enter a valid phone number with 7–15 digits.";
     else if (value && field.type === "url" && !/^https?:\/\/[^\s.]+(?:\.[^\s.]+)+/i.test(value)) message = "Please enter a valid website URL starting with http:// or https://.";
     else if (value && ["employee_count", "outlet_count"].includes(field.name) && (!digitsOnly.test(value) || Number(value) < 1)) message = "Please enter a valid number.";
     else if (field.tagName === "SELECT" && field.required && !value) message = "Please select an option.";
