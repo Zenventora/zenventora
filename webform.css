@@ -1,0 +1,44 @@
+/* Shared ZenVentora website form UI. Presentation and validation only; no vendor-specific region logic. */
+.webform-page{background:#f8fbff}
+.webform-hero{padding:82px 0 34px;background:radial-gradient(circle at 88% 10%,rgba(14,165,164,.12),transparent 28%),linear-gradient(180deg,#f7fbff,#fff)}
+.webform-hero h1{max-width:850px}
+.webform-hero .hero-text{max-width:760px}
+.webform-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.72fr);gap:42px;align-items:start;padding-bottom:88px}
+.webform-card{background:#fff;border:1px solid #dedede;border-radius:22px;padding:32px;box-shadow:0 0 24px rgba(15,59,104,.10)}
+.webform-card-head{margin-bottom:26px}
+.webform-card-head h2{margin:0 0 8px;font-size:1.5rem}
+.webform-card-head p{margin:0;color:var(--muted)}
+.webform-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 16px}
+.webform-field{min-width:0;display:flex;flex-direction:column;gap:7px}
+.webform-field--full{grid-column:1/-1}
+.webform-field label,.webform-label{font-size:1rem;color:#161b24;font-weight:600}
+.webform-required{color:#ed4a44;margin-left:2px}
+.webform-field input,.webform-field select,.webform-field textarea{font:inherit;color:#161b24;background:#fff;width:100%;min-width:0;box-sizing:border-box;border:1px solid #dedede;border-radius:8px;padding:13px 14px;min-height:52px;outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
+.webform-field textarea{min-height:125px;resize:vertical}
+.webform-field input:focus,.webform-field select:focus,.webform-field textarea:focus{border-color:#0f7e9c;box-shadow:0 0 0 3px rgba(15,126,156,.12)}
+.webform-field [aria-invalid="true"]{border-color:#b83530;background:#f2e9e9}
+.webform-error{display:none;color:#b83530;font-size:.91rem;line-height:1.35}
+.webform-field.is-invalid .webform-error{display:block}
+.webform-field.is-invalid input,.webform-field.is-invalid select,.webform-field.is-invalid textarea{border-color:#b83530;background:#f2e9e9}
+.webform-phone{display:grid;grid-template-columns:minmax(110px,.36fr) minmax(0,1fr);gap:8px}
+.webform-consent{display:flex;gap:10px;align-items:flex-start;color:var(--muted);font-size:.91rem;line-height:1.55}
+.webform-consent input{margin-top:5px;accent-color:#0f7e9c}
+.webform-consent a{color:var(--blue);font-weight:700;text-decoration:underline}
+.webform-submit{width:100%;justify-content:center;margin-top:5px}
+.webform-status{display:none;padding:14px 16px;border-radius:10px;margin:0 0 20px;line-height:1.5}
+.webform-status.is-visible{display:block}
+.webform-status.is-success{color:#14532d;background:#ecfdf3;border:1px solid #bbf7d0}
+.webform-status.is-error{color:#991b1b;background:#fef2f2;border:1px solid #fecaca}
+.webform-status[aria-live]{scroll-margin-top:110px}
+.webform-aside{position:sticky;top:105px;padding:30px;border:1px solid #dce7f0;border-radius:22px;background:linear-gradient(150deg,#0b2137,#0f3b68);color:#fff;box-shadow:var(--shadow)}
+.webform-aside .eyebrow{color:#bde7ea}
+.webform-aside h2{font-size:1.55rem;margin-bottom:14px;color:#fff}
+.webform-aside p{color:#d6e5f2}
+.webform-aside-list{display:grid;gap:13px;margin-top:24px}
+.webform-aside-list span{display:flex;gap:10px;align-items:flex-start;color:#f4f8fb}
+.webform-aside-list span:before{content:"✓";color:#7ee0cf;font-weight:900}
+.webform-contact-links{display:grid;gap:10px;margin-top:24px}
+.webform-contact-links a{color:#fff;font-weight:700;overflow-wrap:anywhere}
+.webform-honeypot{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+@media(max-width:900px){.webform-layout{grid-template-columns:1fr;gap:22px}.webform-aside{position:static;order:2}.webform-card{padding:26px}}
+@media(max-width:620px){.webform-hero{padding:64px 0 26px}.webform-layout{padding-bottom:56px}.webform-card{padding:20px;border-radius:18px}.webform-grid{grid-template-columns:1fr;gap:17px}.webform-field--full{grid-column:auto}.webform-phone{grid-template-columns:112px minmax(0,1fr)}.webform-field input,.webform-field select,.webform-field textarea{min-height:50px}.webform-aside{padding:24px;border-radius:18px}}
