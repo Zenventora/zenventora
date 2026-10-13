@@ -96,3 +96,13 @@ Useful natural-language queries this page is intended to answer include:
 ## E-menu
 
 E-menu by Zenventora is a QR-based live menu product for cafes, restaurants, hotels, and food businesses. It supports item-based menu creation, templates and styles, Today’s Menu availability, a permanent QR code, customer preview, and an existing-menu file upload path where businesses can upload, remove, replace, or add menu files. Visit https://emenu.zenventora.in/ for features and FAQs.
+
+## Dedicated Enquiry Pages
+
+Use the page that matches the visitor's intent so enquiries are routed with the correct category and email subject:
+- Partner With Us: https://zenventora.in/partner-with-us.html — product, SaaS, sales, referral, integration, and delivery partnerships.
+- Contact ZenVentora: https://zenventora.in/contact.html — general questions, sales/product enquiries, customer-support routing, and other business enquiries.
+- Online Solutions Enquiry: https://zenventora.in/online-solutions/enquiry.html — business websites, landing pages, web/mobile applications, Google Business Profile, SEO/search visibility, digital marketing, and ongoing website support.
+- eMenu Demo Request: https://zenventora.in/emenu/request-demo.html — request an eMenu product walkthrough for a restaurant, café, or food business.
+
+Each form validates its own required fields and privacy consent, saves the enquiry to the website enquiries database, and is configured to send a form-specific notification to sales@zenventora.in. Email delivery depends on the transactional email service credentials being configured and verified.
