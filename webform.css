@@ -1,275 +1,214 @@
-/* Shared enquiry form styles. Reuse the existing ZenVentora website design tokens from styles.css. */
+/* Enquiry forms: follow the supplied clean, compact form reference and the main site palette. */
 .webform-page {
-  background: var(--soft, #f5f9fc);
+  background: #fff;
 }
 
 .webform-hero {
-  padding: 92px 0 40px;
-  background: radial-gradient(circle at top right, rgba(14,165,164,.14), transparent 36%), linear-gradient(180deg, #f8fbff, #fff);
+  padding: 64px 0 28px;
+  background: linear-gradient(180deg, #f8fbff 0, #fff 100%);
 }
-
 .webform-hero h1 {
   max-width: 850px;
+  font-size: clamp(2rem, 4vw, 3.25rem);
 }
-
 .webform-hero .hero-text {
   max-width: 760px;
 }
 
 .webform-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
-  gap: 28px;
-  align-items: start;
-  padding-bottom: 88px;
+  display: block;
+  padding-bottom: 72px;
 }
-
+.webform-aside {
+  display: none;
+}
 .webform-card {
+  width: min(100%, 690px);
   min-width: 0;
-  padding: 28px;
-  border: 1px solid var(--line, #dbe6f3);
-  border-radius: var(--radius, 22px);
+  margin: 0 auto;
+  padding: 30px;
+  border: 1px solid #dedede;
+  border-radius: 20px;
   background: #fff;
-  box-shadow: var(--shadow, 0 22px 60px rgba(15,59,104,.14));
+  box-shadow: 0 8px 28px rgba(16, 32, 51, .10);
 }
-
 .webform-card-head {
-  margin-bottom: 24px;
+  margin: 0 0 26px;
 }
-
 .webform-card-head h2 {
   margin: 0 0 8px;
-  font-size: 1.5rem;
+  font-size: 1.45rem;
+  line-height: 1.3;
+  letter-spacing: -.025em;
 }
-
 .webform-card-head p {
   margin: 0;
-  color: var(--muted, #64748b);
+  color: #64748b;
+  font-size: .98rem;
 }
-
 .webform-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 18px 16px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 22px;
 }
-
 .webform-field {
-  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 6px;
+  min-width: 0;
 }
-
 .webform-field--full {
-  grid-column: 1 / -1;
+  grid-column: auto;
 }
-
-.webform-field label,
+.webform-field > label:not(.webform-consent),
 .webform-label {
-  color: var(--ink, #102033);
-  font-size: .96rem;
-  line-height: 1.45;
-  font-weight: 700;
+  display: block;
+  margin: 0;
+  color: #202020;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
 }
-
 .webform-required {
-  color: #ed4a44;
-  margin-left: 3px;
+  color: #d93025;
+  margin-left: 2px;
+  font-weight: 600;
 }
-
 .webform-field input:not([type="checkbox"]):not([type="hidden"]),
 .webform-field select,
 .webform-field textarea {
   display: block;
   width: 100%;
   min-width: 0;
-  min-height: 48px;
+  min-height: 54px;
   box-sizing: border-box;
   padding: 12px 14px;
-  border: 1px solid var(--line, #dbe6f3);
-  border-radius: 12px;
-  background: #fbfdff;
-  color: var(--ink, #102033);
+  border: 1px solid #d8d8d8;
+  border-radius: 7px;
+  background: #fff;
+  color: #202020;
   font: inherit;
+  font-size: 1rem;
+  line-height: 1.4;
   outline: none;
   box-shadow: none;
-  transition: border-color .18s, box-shadow .18s;
+  transition: border-color .15s, background-color .15s;
 }
-
+.webform-field input::placeholder,
+.webform-field textarea::placeholder {
+  color: #858585;
+  opacity: 1;
+}
 .webform-field textarea {
-  min-height: 120px;
+  min-height: 132px;
   resize: vertical;
 }
-
 .webform-field input:not([type="checkbox"]):not([type="hidden"]):focus,
 .webform-field select:focus,
 .webform-field textarea:focus {
-  border-color: var(--teal, #0ea5a4);
-  box-shadow: 0 0 0 3px rgba(14,165,164,.12);
+  border-color: #8aaed5;
+  box-shadow: 0 0 0 2px rgba(15, 59, 104, .08);
 }
-
 .webform-field.is-invalid input:not([type="checkbox"]),
 .webform-field.is-invalid select,
 .webform-field.is-invalid textarea {
-  border-color: #b83530;
+  border-color: #d93025;
   background: #fffafa;
 }
-
 .webform-error {
   display: none;
-  color: #b83530;
-  font-size: .88rem;
+  color: #d93025;
+  font-size: .9rem;
   line-height: 1.4;
 }
-
 .webform-field.is-invalid .webform-error {
   display: block;
 }
-
 .webform-phone {
   display: grid;
-  grid-template-columns: minmax(116px, .42fr) minmax(0, 1fr);
+  grid-template-columns: 155px minmax(0, 1fr);
   gap: 8px;
 }
-
 .webform-consent {
-  display: flex;
+  display: flex !important;
+  flex-direction: row;
   align-items: flex-start;
   gap: 12px;
   width: 100%;
-  color: var(--muted, #64748b);
-  font-size: .94rem;
-  font-weight: 500;
-  line-height: 1.55;
+  margin: 0;
+  color: #202020;
+  font-size: .92rem;
+  font-weight: 400 !important;
+  line-height: 1.5;
 }
-
 .webform-consent input[type="checkbox"] {
   appearance: auto;
   -webkit-appearance: checkbox;
   display: block;
-  flex: 0 0 18px;
-  width: 18px !important;
-  min-width: 18px;
-  height: 18px;
-  min-height: 18px !important;
+  flex: 0 0 16px;
+  width: 16px !important;
+  min-width: 16px;
+  height: 16px;
+  min-height: 16px !important;
   margin: 4px 0 0;
   padding: 0;
   border: initial;
-  border-radius: 3px;
+  border-radius: 2px;
   background: initial;
   box-shadow: none;
-  accent-color: var(--teal, #0ea5a4);
+  accent-color: var(--blue, #0f3b68);
 }
-
 .webform-consent span {
   min-width: 0;
 }
-
 .webform-consent a {
   color: var(--blue, #0f3b68);
-  font-weight: 800;
+  font-weight: 700;
   text-decoration: underline;
 }
-
 .webform-submit {
   width: 100%;
-  min-height: 52px;
+  min-height: 54px;
   justify-content: center;
-  margin-top: 4px;
-  border-radius: 999px;
+  margin-top: 0;
+  border-radius: 7px;
+  box-shadow: none;
+  text-transform: uppercase;
 }
-
+.webform-submit:focus-visible {
+  outline: 2px solid var(--blue, #0f3b68);
+  outline-offset: 2px;
+}
 .webform-status {
   display: none;
-  margin: 0 0 16px;
-  padding: 13px 15px;
+  margin: 0 0 14px;
+  padding: 12px 14px;
   border: 1px solid transparent;
-  border-radius: 12px;
-  font-size: .96rem;
+  border-radius: 7px;
+  font-size: .94rem;
   line-height: 1.5;
   overflow-wrap: anywhere;
   outline: none;
   box-shadow: none;
   scroll-margin-top: 110px;
 }
-
 .webform-status.is-visible {
   display: block;
 }
-
 .webform-status:focus {
   outline: none;
   box-shadow: none;
 }
-
 .webform-status.is-success {
   color: #14532d;
   background: #ecfdf3;
   border-color: #bbf7d0;
 }
-
 .webform-status.is-error {
   color: #991b1b;
   background: #fef2f2;
   border-color: #fecaca;
 }
-
-.webform-aside {
-  position: sticky;
-  top: 105px;
-  padding: 30px;
-  border: 1px solid var(--line, #dbe6f3);
-  border-radius: var(--radius, 22px);
-  background: linear-gradient(135deg, var(--navy, #0b2440), var(--blue, #0f3b68));
-  color: #fff;
-  box-shadow: var(--shadow, 0 22px 60px rgba(15,59,104,.14));
-}
-
-.webform-aside .eyebrow {
-  color: #bde7ea;
-}
-
-.webform-aside h2 {
-  margin-bottom: 14px;
-  color: #fff;
-  font-size: 1.55rem;
-}
-
-.webform-aside p {
-  color: #d6e5f2;
-}
-
-.webform-aside-list {
-  display: grid;
-  gap: 13px;
-  margin-top: 24px;
-}
-
-.webform-aside-list span {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  color: #f4f8fb;
-}
-
-.webform-aside-list span::before {
-  content: "✓";
-  color: #7ee0cf;
-  font-weight: 900;
-}
-
-.webform-contact-links {
-  display: grid;
-  gap: 10px;
-  margin-top: 24px;
-}
-
-.webform-contact-links a {
-  color: #fff;
-  font-weight: 700;
-  overflow-wrap: anywhere;
-}
-
 .webform-honeypot {
   position: absolute !important;
   width: 1px !important;
@@ -282,55 +221,31 @@
   border: 0 !important;
 }
 
-@media (max-width: 900px) {
-  .webform-layout {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 22px;
-  }
-
-  .webform-aside {
-    position: static;
-    order: 2;
-  }
-
-  .webform-card {
-    padding: 26px;
-  }
-}
-
 @media (max-width: 620px) {
   .webform-hero {
-    padding: 64px 0 26px;
+    padding: 48px 0 20px;
   }
-
   .webform-layout {
-    padding-bottom: 56px;
+    padding-bottom: 48px;
   }
-
   .webform-card {
-    padding: 20px;
-    border-radius: 18px;
+    padding: 22px 18px;
+    border-radius: 14px;
   }
-
   .webform-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 16px;
+    gap: 19px;
   }
-
-  .webform-field--full {
-    grid-column: auto;
-  }
-
   .webform-phone {
     grid-template-columns: 112px minmax(0, 1fr);
+    gap: 7px;
   }
-
+  .webform-field input:not([type="checkbox"]):not([type="hidden"]),
+  .webform-field select,
+  .webform-field textarea {
+    min-height: 50px;
+    padding: 11px 12px;
+  }
   .webform-consent {
-    font-size: .9rem;
-  }
-
-  .webform-aside {
-    padding: 24px;
-    border-radius: 18px;
+    font-size: .88rem;
   }
 }
