@@ -2,7 +2,7 @@
   "use strict";
 
   const FORM_ENDPOINT = "https://zhnbwyjuyjonexqbauuz.supabase.co/functions/v1/submit-website-enquiry";
-  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ymLV5njVvbll5eL9J_HP8g_7AfElGhz";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_s-OqrQBYGxHvbRhgkG3hSw_6wJk9eyO";
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const phoneCharacters = /^[0-9()\s+.-]+$/;
