@@ -52,12 +52,16 @@
       message = "Please select a valid phone country code.";
     } else if (value && field.type === "url") {
       try {
-        const url = new URL(value);
-        if (!["http:", "https:"].includes(url.protocol) || !url.hostname.includes(".") || /\s/.test(value)) {
-          message = "Enter a valid website URL starting with https://.";
+        const candidate = /^[a-z][a-z0-9+.-]*:\/\//i.test(value) ? value : "https://" + value;
+        const url = new URL(candidate);
+        if (!["http:", "https:"].includes(url.protocol) || !url.hostname.includes(".") ||
+            /\s/.test(value) || !/^[a-z0-9.-]+$/i.test(url.hostname) ||
+            url.hostname.startsWith(".") || url.hostname.endsWith(".") ||
+            url.hostname.includes("..")) {
+          message = "Enter a valid domain or website URL, for example sample.com.";
         }
       } catch (_) {
-        message = "Enter a valid website URL starting with https://.";
+        message = "Enter a valid domain or website URL, for example sample.com.";
       }
     } else if (value && ["employee_count", "outlet_count"].includes(field.name)) {
       const max = field.name === "employee_count" ? 100000000 : 1000000;
@@ -110,6 +114,13 @@
       data.form_type = form.dataset.formType;
       data.privacy_consent = form.querySelector('[name="privacy_consent"]')?.checked === true;
       data.source_page = window.location.href;
+      // Accept a bare domain (sample.com) and normalize it for storage and server validation.
+      if (typeof data.website_url === "string" && data.website_url.trim()) {
+        const enteredUrl = data.website_url.trim();
+        data.website_url = /^[a-z][a-z0-9+.-]*:\/\//i.test(enteredUrl)
+          ? enteredUrl
+          : "https://" + enteredUrl;
+      }
 
       form.dataset.submitting = "true";
       if (submit) {
