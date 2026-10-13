@@ -42,3 +42,145 @@
 .webform-honeypot{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 @media(max-width:900px){.webform-layout{grid-template-columns:1fr;gap:22px}.webform-aside{position:static;order:2}.webform-card{padding:26px}}
 @media(max-width:620px){.webform-hero{padding:64px 0 26px}.webform-layout{padding-bottom:56px}.webform-card{padding:20px;border-radius:18px}.webform-grid{grid-template-columns:1fr;gap:17px}.webform-field--full{grid-column:auto}.webform-phone{grid-template-columns:112px minmax(0,1fr)}.webform-field input,.webform-field select,.webform-field textarea{min-height:50px}.webform-aside{padding:24px;border-radius:18px}}
+
+
+/* Form refinement: follow the existing ZenVentora website design system. */
+.webform-page {
+  background: var(--soft, #f5f9fc);
+}
+.webform-hero {
+  background: radial-gradient(circle at top right, rgba(14,165,164,.12), transparent 34%), linear-gradient(180deg, #f8fbff, #fff);
+}
+.webform-layout {
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
+  gap: 28px;
+}
+.webform-card {
+  border-color: var(--line, #dbe6f3);
+  border-radius: var(--radius, 22px);
+  padding: 28px;
+  box-shadow: var(--shadow, 0 22px 60px rgba(15,59,104,.14));
+}
+.webform-grid {
+  gap: 18px 16px;
+}
+.webform-field label,
+.webform-label {
+  font-size: .96rem;
+  line-height: 1.45;
+  color: var(--ink, #102033);
+  font-weight: 700;
+}
+.webform-field input:not([type="checkbox"]):not([type="hidden"]),
+.webform-field select,
+.webform-field textarea {
+  border-color: var(--line, #dbe6f3);
+  border-radius: 12px;
+  background: #fbfdff;
+  color: var(--ink, #102033);
+  min-height: 48px;
+  padding: 12px 14px;
+  box-shadow: none;
+}
+.webform-field textarea {
+  min-height: 120px;
+}
+.webform-field input:not([type="checkbox"]):not([type="hidden"]):focus,
+.webform-field select:focus,
+.webform-field textarea:focus {
+  border-color: var(--teal, #0ea5a4);
+  box-shadow: 0 0 0 3px rgba(14,165,164,.12);
+}
+.webform-phone {
+  grid-template-columns: minmax(116px, .42fr) minmax(0, 1fr);
+  gap: 8px;
+}
+.webform-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  color: var(--muted, #64748b);
+  font-size: .94rem;
+  font-weight: 500;
+  line-height: 1.55;
+}
+.webform-consent input[type="checkbox"] {
+  appearance: auto;
+  -webkit-appearance: checkbox;
+  display: block;
+  flex: 0 0 18px;
+  width: 18px !important;
+  min-width: 18px;
+  height: 18px;
+  min-height: 18px !important;
+  margin: 4px 0 0;
+  padding: 0;
+  border: initial;
+  border-radius: 3px;
+  background: initial;
+  box-shadow: none;
+  accent-color: var(--teal, #0ea5a4);
+}
+.webform-consent span {
+  min-width: 0;
+}
+.webform-consent a {
+  color: var(--blue, #0f3b68);
+}
+.webform-status {
+  padding: 13px 15px;
+  border-radius: 12px;
+  margin: 0 0 16px;
+  font-size: .96rem;
+  overflow-wrap: anywhere;
+  outline: none;
+  box-shadow: none;
+}
+.webform-status:focus {
+  outline: none;
+  box-shadow: none;
+}
+.webform-status.is-error {
+  color: #991b1b;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+.webform-status.is-success {
+  color: #14532d;
+  background: #ecfdf3;
+  border: 1px solid #bbf7d0;
+}
+.webform-submit {
+  min-height: 52px;
+  border-radius: 999px;
+  font-size: 1rem;
+}
+.webform-aside {
+  border-radius: var(--radius, 22px);
+  box-shadow: var(--shadow, 0 22px 60px rgba(15,59,104,.14));
+}
+.webform-honeypot {
+  display: none !important;
+}
+@media (max-width: 900px) {
+  .webform-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+}
+@media (max-width: 620px) {
+  .webform-card {
+    padding: 20px;
+    border-radius: 18px;
+  }
+  .webform-grid {
+    gap: 16px;
+  }
+  .webform-phone {
+    grid-template-columns: 112px minmax(0, 1fr);
+  }
+  .webform-consent {
+    font-size: .9rem;
+  }
+}
