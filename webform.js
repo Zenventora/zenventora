@@ -153,12 +153,18 @@
           throw new Error(result.message || "We could not submit your enquiry. Please try again.");
         }
 
-        const reference = result.reference ? " Reference: " + result.reference : "";
-        // A saved enquiry is a success even if the separate notification email is not configured.
-        showStatus(status, (result.message || "Thank you. Your enquiry has been received.") + reference, "success");
+        // Keep the public confirmation short and neutral. Internal email configuration and
+        // reference details belong in server logs/database, not in the customer-facing message.
+        showStatus(status, "Successfully submitted.", "success");
         form.reset();
         fields.forEach((field) => setError(field, ""));
-        status?.focus();
+        if (status) {
+          status.setAttribute("role", "status");
+          status.setAttribute("aria-live", "polite");
+          status.setAttribute("tabindex", "-1");
+          status.focus();
+          status.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       } catch (error) {
         showStatus(status, error instanceof Error ? error.message : "Something went wrong. Please try again.", "error");
       } finally {
