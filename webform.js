@@ -95,8 +95,8 @@
           throw new Error(result.message || "We could not submit your enquiry. Please try again.");
         }
         if (status) {
-          status.className = "webform-status is-visible is-success";
-          status.textContent = result.message || "Thank you. Your enquiry has been received.";
+          status.className = "webform-status is-visible " + (result.emailSent ? "is-success" : "is-error");
+          status.textContent = (result.message || "Thank you. Your enquiry has been received.") + (result.reference ? " Reference: " + result.reference : "");
           status.focus?.();
         }
         form.reset();
