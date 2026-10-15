@@ -3,26 +3,35 @@ const navMenu=document.querySelector('[data-nav-menu]');
 navToggle?.addEventListener('click',()=>{const open=navMenu.classList.toggle('open');navToggle.setAttribute('aria-expanded',String(open));});
 navMenu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{navMenu.classList.remove('open');navToggle?.setAttribute('aria-expanded','false');}));
 
-/* Services is hover-only on desktop; keep tap/click behavior only on touch layouts. */
+/* Desktop Services dropdown opens on hover only. Touch layouts retain native tap-to-toggle. */
 (() => {
   const desktopHover = window.matchMedia('(hover: hover) and (min-width: 961px)');
-  const dropdowns = document.querySelectorAll('.nav-dropdown');
-  dropdowns.forEach((dropdown) => {
+  document.querySelectorAll('.nav-dropdown').forEach((dropdown) => {
     const summary = dropdown.querySelector(':scope > summary');
     if (!summary) return;
-    if (desktopHover.matches) {
-      summary.addEventListener('click', (event) => event.preventDefault());
-      dropdown.addEventListener('mouseenter', () => dropdown.setAttribute('open', ''));
-      dropdown.addEventListener('mouseleave', () => dropdown.removeAttribute('open'));
-      dropdown.addEventListener('focusin', () => dropdown.setAttribute('open', ''));
-      dropdown.addEventListener('focusout', (event) => {
-        if (!dropdown.contains(event.relatedTarget)) dropdown.removeAttribute('open');
-      });
-    }
-    desktopHover.addEventListener?.('change', () => {
-      // On viewport/device changes, do not leave a desktop hover-open menu stuck on touch layouts.
-      if (!desktopHover.matches) dropdown.removeAttribute('open');
+    const applyMode = () => {
+      if (desktopHover.matches) {
+        summary.addEventListener('click', preventDesktopToggle);
+      } else {
+        summary.removeEventListener('click', preventDesktopToggle);
+        dropdown.removeAttribute('open');
+      }
+    };
+    function preventDesktopToggle(event) { event.preventDefault(); }
+    dropdown.addEventListener('mouseenter', () => {
+      if (desktopHover.matches) dropdown.setAttribute('open', '');
     });
+    dropdown.addEventListener('mouseleave', () => {
+      if (desktopHover.matches) dropdown.removeAttribute('open');
+    });
+    dropdown.addEventListener('focusin', () => {
+      if (desktopHover.matches) dropdown.setAttribute('open', '');
+    });
+    dropdown.addEventListener('focusout', (event) => {
+      if (desktopHover.matches && !dropdown.contains(event.relatedTarget)) dropdown.removeAttribute('open');
+    });
+    applyMode();
+    desktopHover.addEventListener('change', applyMode);
   });
 })();
 /* Shared currency handling for all public pricing pages.
