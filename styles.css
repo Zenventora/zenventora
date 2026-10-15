@@ -1002,10 +1002,10 @@ textarea {
 .nav-dropdown>summary{display:inline-flex;align-items:center;gap:8px;list-style:none;cursor:pointer;white-space:nowrap}
 .nav-dropdown>summary::-webkit-details-marker{display:none}
 .nav-dropdown>summary::marker{content:""}
-.nav-dropdown>summary::after{content:"";display:inline-block;width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .16s ease}
+.nav-dropdown>summary::after{content:"";display:inline-block;width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .16s ease}.nav-dropdown[open]>summary::after{transform:translateY(2px) rotate(225deg)}
 .nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 8px);left:-14px;min-width:210px;gap:4px;padding:8px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);z-index:100}
 .nav-dropdown[open] .nav-dropdown-menu{display:grid}
 .nav-dropdown-menu a{display:block;padding:10px 12px;border-radius:8px;white-space:nowrap}
 .nav-dropdown-menu a:hover{background:var(--soft)}
-@media(hover:hover) and (min-width:961px){.site-header,.site-header .nav{overflow:visible}.nav-dropdown:hover .nav-dropdown-menu,.nav-dropdown:focus-within .nav-dropdown-menu{display:grid!important;visibility:visible;opacity:1;pointer-events:auto}.nav-dropdown-menu{z-index:9999}}
+@media(hover:hover) and (min-width:961px){.site-header,.site-header .nav,.nav-menu{overflow:visible}.nav-dropdown:hover .nav-dropdown-menu,.nav-dropdown:focus-within .nav-dropdown-menu{display:grid!important;visibility:visible;opacity:1;pointer-events:auto}.nav-dropdown:hover>summary::after,.nav-dropdown:focus-within>summary::after{transform:translateY(2px) rotate(225deg)}.nav-dropdown-menu{z-index:9999;top:100%;margin-top:8px}.nav-dropdown-menu::before{content:"";position:absolute;left:0;right:0;top:-10px;height:10px}}
 @media(max-width:960px){.nav-dropdown{display:block;width:100%}.nav-dropdown>summary{display:flex;width:100%;box-sizing:border-box;padding:10px 0}.nav-dropdown-menu{position:static;min-width:0;box-shadow:none;border:0;border-left:2px solid var(--line);border-radius:0;margin:0 0 8px 8px;padding:2px 8px}.nav-dropdown-menu a{white-space:normal}}
