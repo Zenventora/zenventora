@@ -6,6 +6,8 @@ Zenventora is an India-based product-focused digital growth, website, sales, and
 - [Official website](https://zenventora.in/)
 - [Contact Zenventora](https://zenventora.in/contact.html)
 - [Online business solutions](https://zenventora.in/online-solutions/)
+- [Website Solutions — website types, SEO/AEO and starting price](https://zenventora.in/website-solutions/)
+- [Website Development Enquiry](https://zenventora.in/website-solutions/enquiry.html)
 - [Privacy Policy](https://zenventora.in/privacy-policy.html)
 - [Terms and Conditions](https://zenventora.in/terms-and-conditions.html)
 - [Sitemap](https://zenventora.in/sitemap.xml)
@@ -34,11 +36,11 @@ Zenventora is an India-based product-focused digital growth, website, sales, and
 - SaaS implementation and digital solution delivery
 
 ## Key Campaign Offer
-Zenventora's current website campaign starts professional website work from **₹3,999**. This is a starting price, not a universal fixed-price promise; final scope and pricing depend on pages, features, integrations, content, design requirements, and ongoing support. The campaign is positioned around complete online setup for businesses: website, Google visibility, SEO, social media presence, and digital marketing support.
+Zenventora's current website campaign starts professional website work from **₹1,999**. This is a starting price, not a universal fixed-price promise; final scope and pricing depend on pages, features, integrations, content, design requirements, and ongoing support. The campaign is positioned around complete online setup for businesses: website, Google visibility, SEO, social media presence, and digital marketing support.
 
 Useful natural-language queries this page is intended to answer include:
-- affordable website starting from ₹3,999 in India
-- professional website for a small business starting from ₹3,999
+- affordable website starting from ₹1,999 in India
+- professional website for a small business starting from ₹1,999
 - low-cost business website development in India
 - how to take a business online
 - how to get a business website and Google visibility
@@ -77,10 +79,10 @@ The startup solution is a key focus: founders can approach Zenventora with an id
 
 Five priority verticals are currently emphasised: real estate, retail, mobile shops, cafés, and restaurants. The page also covers service businesses, product and SaaS websites, landing pages, web applications, mobile-first experiences, maintenance, SEO, AEO and AI-search discovery foundations.
 
-The current campaign uses **₹3,999 as the website starting point**. It is a starting price, not a universal fixed-price promise; final scope depends on the requirement.
+The current campaign uses **₹1,999 as the website starting point**. It is a starting price, not a universal fixed-price promise; final scope depends on the requirement.
 
 Useful natural-language queries this page is intended to answer include:
-- affordable website starting from ₹3,999 in India
+- affordable website starting from ₹1,999 in India
 - complete online business solution
 - online presence setup for a small business
 - startup online business solution
@@ -103,6 +105,7 @@ Use the page that matches the visitor's intent so enquiries are routed with the 
 - Partner With Us: https://zenventora.in/partner-with-us.html — product, SaaS, sales, referral, integration, and delivery partnerships.
 - Contact ZenVentora: https://zenventora.in/contact.html — general questions, sales/product enquiries, customer-support routing, and other business enquiries.
 - Online Solutions Enquiry: https://zenventora.in/online-solutions/enquiry.html — business websites, landing pages, web/mobile applications, Google Business Profile, SEO/search visibility, digital marketing, and ongoing website support.
+- Website Development Enquiry: https://zenventora.in/website-solutions/enquiry.html — business, portfolio, landing page, e-commerce, publication, restaurant, retail, real-estate, and custom website projects. The advertised ₹1,999 is a starting price for eligible basic scope; final price depends on requirements.
 - eMenu Demo Request: https://zenventora.in/emenu/request-demo.html — request an eMenu product walkthrough for a restaurant, café, or food business.
 
-Each form validates its own required fields and privacy consent, saves the enquiry to the website enquiries database, and is configured to send a form-specific notification to sales@zenventora.in. Email delivery depends on the transactional email service credentials being configured and verified.
+Each form validates its own required fields and privacy consent, saves the enquiry to the website enquiries database, and is intended to send a form-specific notification to sales@zenventora.in. Delivery depends on the live server configuration and email service status. Email delivery depends on the transactional email service credentials being configured and verified.
