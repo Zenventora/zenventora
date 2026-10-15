@@ -233,18 +233,8 @@
 .online-solutions-page .nav-dropdown > summary::-webkit-details-marker {
   display: none;
 }
-.online-solutions-page .nav-dropdown > summary::after {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: translateY(-2px) rotate(45deg);
-  transition: transform .18s ease;
-}
-.online-solutions-page .nav-dropdown[open] > summary::after {
-  transform: translateY(2px) rotate(225deg);
-}
+/* Keep the shared site chevron pointing down on hover and click. */
+
 .online-solutions-page .nav-dropdown-menu {
   position: absolute;
   z-index: 100;
@@ -280,10 +270,7 @@
   .online-solutions-page .nav-dropdown:focus-within .nav-dropdown-menu {
     display: grid;
   }
-  .online-solutions-page .nav-dropdown:hover > summary::after,
-  .online-solutions-page .nav-dropdown:focus-within > summary::after {
-    transform: translateY(2px) rotate(225deg);
-  }
+
 }
 @media (max-width: 960px) {
   .online-solutions-page .nav-dropdown {
