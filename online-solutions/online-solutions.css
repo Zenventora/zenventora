@@ -308,3 +308,28 @@
     white-space: normal;
   }
 }
+
+
+/* FAQ uses the same full-width accordion system as the Website page. */
+.online-solutions-page #faq .container > details {
+  width: 100%;
+  max-width: 1076px;
+}
+.online-solutions-page #faq .section-heading {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto 34px;
+}
+.online-solutions-page #faq .section-heading .eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .13em;
+  font-weight: 800;
+}
+.online-solutions-page #faq .section-heading h2 {
+  font-size: clamp(2.1rem, 4.2vw, 3.35rem);
+  line-height: 1.08;
+  letter-spacing: -.045em;
+}
+.online-solutions-page #faq .container > details {
+  margin: 0 auto 14px;
+}
