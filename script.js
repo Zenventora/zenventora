@@ -59,7 +59,8 @@ navMenu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{
   };
 
   const updateMeta = (replacements) => {
-    document.title = INR_PRICES.reduce((title, price) => title.replaceAll('₹' + price.toLocaleString('en-IN'), replacements[price]), document.title);
+    document.title = INR_PRICES.reduce((title, price) =>
+      title.replaceAll('₹' + price.toLocaleString('en-IN'), replacements[price]), document.title);
     document.querySelectorAll('meta[content]').forEach((meta) => {
       INR_PRICES.forEach((price) => {
         const original = '₹' + price.toLocaleString('en-IN');
@@ -98,7 +99,7 @@ navMenu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{
         window.clearTimeout(timeout);
       }
     } catch (_) {
-      // If country detection fails, use the international USD display consistently on both pages.
+      // If country detection fails, use the same international fallback on both pricing pages.
     }
 
     if (country === 'IN') {
@@ -108,67 +109,21 @@ navMenu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{
 
     let usdRate = USD_FALLBACK_RATE;
     try {
-      const rateResponse = await fetch('https://open.er-api.com/v6/latest/INR', { method: 'GET', cache: 'no-store' });
+      const rateResponse = await fetch('https://open.er-api.com/v6/latest/INR', {
+        method: 'GET', cache: 'no-store'
+      });
       const rateData = await rateResponse.json();
-      if (rateData && Number.isFinite(rateData?.rates?.USD) && rateData.rates.USD > 0) usdRate = rateData.rates.USD;
-    } catch (_) {
-      // Keep the same approximate USD fallback for both price points.
-    }
-    showInternationalPrices(usdRate);
-  };
-
-  const isPricingPage = INR_PRICES.some((price) => document.body.innerText.includes('₹' + price.toLocaleString('en-IN')));
-  if ((window.location.hostname === 'zenventora.in' || window.location.hostname.endsWith('.zenventora.in')) && isPricingPage) {
-    detectPricing();
-  }
-})();
- + Math.max(1, Math.ceil(price * usdRate)).toLocaleString('en-US')
-    ]));
-    replacePriceText(document.body, replacements);
-    updateMeta(replacements);
-    document.documentElement.dataset.pricingCountry = 'international';
-    document.documentElement.dataset.pricingCurrency = 'USD';
-  };
-
-  const showIndiaPrices = () => {
-    document.documentElement.dataset.pricingCountry = 'IN';
-    document.documentElement.dataset.pricingCurrency = 'INR';
-  };
-
-  const detectPricing = async () => {
-    let country = '';
-    try {
-      const controller = new AbortController();
-      const timeout = window.setTimeout(() => controller.abort(), 2500);
-      try {
-        const countryResponse = await fetch('https://ipapi.co/country/', {
-          method: 'GET', cache: 'no-store', signal: controller.signal
-        });
-        if (countryResponse.ok) country = (await countryResponse.text()).trim().toUpperCase();
-      } finally {
-        window.clearTimeout(timeout);
+      if (rateData && Number.isFinite(rateData?.rates?.USD) && rateData.rates.USD > 0) {
+        usdRate = rateData.rates.USD;
       }
     } catch (_) {
-      // If country detection fails, use the international USD display consistently on both pages.
-    }
-
-    if (country === 'IN') {
-      showIndiaPrices();
-      return;
-    }
-
-    let usdRate = USD_FALLBACK_RATE;
-    try {
-      const rateResponse = await fetch('https://open.er-api.com/v6/latest/INR', { method: 'GET', cache: 'no-store' });
-      const rateData = await rateResponse.json();
-      if (rateData && Number.isFinite(rateData?.rates?.USD) && rateData.rates.USD > 0) usdRate = rateData.rates.USD;
-    } catch (_) {
       // Keep the same approximate USD fallback for both price points.
     }
     showInternationalPrices(usdRate);
   };
 
-  const isPricingPage = INR_PRICES.some((price) => document.body.innerText.includes('₹' + price.toLocaleString('en-IN')));
+  const isPricingPage = INR_PRICES.some((price) =>
+    document.body.innerText.includes('₹' + price.toLocaleString('en-IN')));
   if ((window.location.hostname === 'zenventora.in' || window.location.hostname.endsWith('.zenventora.in')) && isPricingPage) {
     detectPricing();
   }
