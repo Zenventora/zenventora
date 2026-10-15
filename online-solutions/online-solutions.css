@@ -233,12 +233,14 @@
 .online-solutions-page .nav-dropdown > summary::-webkit-details-marker {
   display: none;
 }
-/* Keep the shared site chevron pointing down on hover and click. */
+/* Chevron points up while Services is hovered, focused, or click-open. */
+.online-solutions-page .nav-dropdown[open] > summary::after { transform: translateY(2px) rotate(225deg); }
 
 .online-solutions-page .nav-dropdown-menu {
   position: absolute;
   z-index: 100;
-  top: calc(100% + 8px);
+  top: 100%;
+  margin-top: 8px;
   left: -16px;
   display: none;
   min-width: 220px;
@@ -270,6 +272,11 @@
   .online-solutions-page .nav-dropdown:focus-within .nav-dropdown-menu {
     display: grid;
   }
+  .online-solutions-page .nav-dropdown:hover > summary::after,
+  .online-solutions-page .nav-dropdown:focus-within > summary::after {
+    transform: translateY(2px) rotate(225deg);
+  }
+  .online-solutions-page .nav-dropdown-menu::before { content: ""; position: absolute; left: 0; right: 0; top: -10px; height: 10px; }
 
 }
 @media (max-width: 960px) {
