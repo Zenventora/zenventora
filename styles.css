@@ -1183,8 +1183,8 @@ textarea {
 
 
 /* Make the current page clear in shared navigation, including service dropdown items. */
-.nav-menu > a.active,
-.nav-menu > a[aria-current="page"],
+.nav-menu > a.active:not(.btn),
+.nav-menu > a[aria-current="page"]:not(.btn),
 .nav-dropdown-menu a.active,
 .nav-dropdown-menu a[aria-current="page"] {
   color: var(--primary, #0f3b68) !important;
