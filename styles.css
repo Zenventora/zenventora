@@ -1125,3 +1125,35 @@ textarea {
     transform: translateY(2px) rotate(225deg);
   }
 }
+
+
+/* Reliable desktop hover dropdown: no click dependency and no pointer gap. */
+@media (hover: hover) and (min-width: 961px) {
+  .site-header { position: sticky; z-index: 1000; }
+  .site-header .nav, .site-header .nav-menu { overflow: visible !important; }
+  .nav-dropdown { position: relative; align-self: center; }
+  .nav-dropdown > .nav-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: -14px;
+    margin-top: 0;
+    min-width: 220px;
+    z-index: 10001;
+    background: #fff;
+  }
+  .nav-dropdown:hover > .nav-dropdown-menu,
+  .nav-dropdown:focus-within > .nav-dropdown-menu,
+  .nav-dropdown[open] > .nav-dropdown-menu {
+    display: grid !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+  .nav-dropdown > .nav-dropdown-menu::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: -12px;
+    height: 12px;
+  }
+}
