@@ -997,13 +997,15 @@ textarea {
     }
 }
 
-/* Services dropdown shared by the primary navigation */
+/* Services dropdown: hover on desktop, click/tap on mobile */
 .nav-dropdown{position:relative;display:inline-flex;align-items:center;font-weight:600;color:#34445a}
-.nav-dropdown>summary{list-style:none;cursor:pointer;white-space:nowrap}
+.nav-dropdown>summary{display:inline-flex;align-items:center;gap:8px;list-style:none;cursor:pointer;white-space:nowrap}
 .nav-dropdown>summary::-webkit-details-marker{display:none}
-.nav-dropdown>summary::after{content:"⌄";margin-left:6px;font-size:.9em}
+.nav-dropdown>summary::marker{content:""}
+.nav-dropdown>summary::after{content:"";display:inline-block;width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .16s ease}
+.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 8px);left:-14px;min-width:210px;gap:4px;padding:8px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);z-index:100}
 .nav-dropdown[open] .nav-dropdown-menu{display:grid}
-.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 12px);left:-14px;min-width:210px;gap:4px;padding:8px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);z-index:60}
 .nav-dropdown-menu a{display:block;padding:10px 12px;border-radius:8px;white-space:nowrap}
 .nav-dropdown-menu a:hover{background:var(--soft)}
-@media(max-width:960px){.nav-dropdown{display:block;width:100%}.nav-dropdown>summary{padding:10px 0}.nav-dropdown[open] .nav-dropdown-menu{position:static;box-shadow:none;border:0;border-left:2px solid var(--line);border-radius:0;margin:0 0 8px 8px;padding:2px 8px}.nav-dropdown-menu a{white-space:normal}}
+@media(hover:hover) and (min-width:961px){.nav-dropdown:hover .nav-dropdown-menu,.nav-dropdown:focus-within .nav-dropdown-menu{display:grid}}
+@media(max-width:960px){.nav-dropdown{display:block;width:100%}.nav-dropdown>summary{display:flex;width:100%;box-sizing:border-box;padding:10px 0}.nav-dropdown-menu{position:static;min-width:0;box-shadow:none;border:0;border-left:2px solid var(--line);border-radius:0;margin:0 0 8px 8px;padding:2px 8px}.nav-dropdown-menu a{white-space:normal}}
