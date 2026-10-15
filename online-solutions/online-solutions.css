@@ -349,3 +349,15 @@
     border-radius: 14px;
   }
 }
+
+
+/* Desktop Services menu is shown by hover/focus, not click. */
+@media (hover: hover) and (min-width: 961px) {
+  .online-solutions-page .nav-dropdown:hover > .nav-dropdown-menu,
+  .online-solutions-page .nav-dropdown:focus-within > .nav-dropdown-menu {
+    display: grid !important;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
