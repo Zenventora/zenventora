@@ -1157,3 +1157,12 @@ textarea {
     height: 12px;
   }
 }
+
+
+/* Keep the Services caret pointing down on hover; only the menu opens. */
+@media (hover: hover) and (min-width: 961px) {
+  .nav-dropdown:hover > summary::after,
+  .nav-dropdown:focus-within > summary::after {
+    transform: translateY(-2px) rotate(45deg) !important;
+  }
+}
