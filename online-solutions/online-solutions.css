@@ -333,3 +333,19 @@
 .online-solutions-page #faq .container > details {
   margin: 0 auto 14px;
 }
+
+
+/* Keep Online Solutions FAQ cards identical in width and spacing to the shared FAQ design. */
+.online-solutions-page #faq .faq-list details {
+  width: 100%;
+  max-width: 1076px;
+  margin: 0;
+  padding: 24px 28px;
+  border-radius: 21px;
+}
+@media (max-width: 620px) {
+  .online-solutions-page #faq .faq-list details {
+    padding: 16px;
+    border-radius: 14px;
+  }
+}
