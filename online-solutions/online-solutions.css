@@ -76,3 +76,136 @@
 @media(max-width:1050px){.vertical-grid{grid-template-columns:repeat(3,1fr)}.website-process{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:960px){.online-solutions-page .footer-grid{grid-template-columns:1fr 1fr}.platform-grid{grid-template-columns:1fr 1fr}.website-hero-grid,.startup-hero,.search-panel,.pricing-card{grid-template-columns:1fr}.startup-callout{align-self:auto}.startup-grid,.capability-grid{grid-template-columns:1fr 1fr}.vertical-grid{grid-template-columns:1fr 1fr}.website-process{grid-template-columns:1fr 1fr}}
 @media(max-width:620px){.online-solutions-page .footer-grid{grid-template-columns:1fr}.platform-grid{grid-template-columns:1fr}.website-hero{padding:86px 0 58px}.website-hero-lead{font-size:1.12rem!important}.website-hero-panel,.startup-hero,.search-panel,.pricing-card{padding:22px;border-radius:24px}.website-mini-grid,.startup-grid,.capability-grid,.vertical-grid,.website-process,.search-pill-grid{grid-template-columns:1fr}.website-price-card strong{font-size:3.7rem}.vertical-note{display:block}.vertical-note strong{display:block;margin-bottom:6px}.pricing-number strong{font-size:2.8rem}.online-solutions-page .hero-actions .btn{width:100%}}
+
+/* Website Solutions refinement: reduce header crowding without changing shared site navigation behavior. */
+.online-solutions-page .website-brand {
+  flex: 0 1 auto;
+  min-width: 0;
+  gap: 8px;
+}
+.online-solutions-page .website-brand .brand-logo {
+  width: clamp(150px, 16vw, 205px);
+  height: auto;
+  max-width: 100%;
+}
+.online-solutions-page .website-brand strong {
+  font-size: .95rem;
+  line-height: 1.25;
+}
+.online-solutions-page .nav {
+  gap: 18px;
+}
+.online-solutions-page .nav-menu {
+  gap: clamp(12px, 1.35vw, 20px);
+  font-size: .94rem;
+}
+.online-solutions-page .nav-menu .btn {
+  white-space: nowrap;
+}
+.online-solutions-page #faq details {
+  margin: 12px auto;
+  padding: 18px 22px;
+  max-width: 860px;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(15,59,104,.045);
+}
+.online-solutions-page #faq details[open] {
+  border-color: #b7d9e8;
+}
+.online-solutions-page #faq summary {
+  position: relative;
+  padding-right: 28px;
+  color: var(--ink);
+  font-weight: 750;
+  line-height: 1.45;
+  cursor: pointer;
+  list-style: none;
+}
+.online-solutions-page #faq summary::-webkit-details-marker {
+  display: none;
+}
+.online-solutions-page #faq summary::after {
+  content: "+";
+  position: absolute;
+  right: 0;
+  top: -2px;
+  color: var(--teal);
+  font-size: 1.4rem;
+  line-height: 1;
+}
+.online-solutions-page #faq details[open] summary::after {
+  content: "−";
+}
+.online-solutions-page #faq details p {
+  margin: 12px 0 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.online-solutions-page .vertical-card {
+  min-width: 0;
+  height: 100%;
+}
+.online-solutions-page .vertical-card p {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1180px) {
+  .online-solutions-page .nav {
+    gap: 12px;
+  }
+  .online-solutions-page .nav-menu {
+    gap: 10px;
+    font-size: .88rem;
+  }
+  .online-solutions-page .website-brand .brand-logo {
+    width: 145px;
+  }
+  .online-solutions-page .website-brand strong {
+    font-size: .88rem;
+  }
+}
+@media (max-width: 960px) {
+  .online-solutions-page .nav {
+    flex-wrap: wrap;
+    padding-block: 12px;
+  }
+  .online-solutions-page .website-brand .brand-logo {
+    width: min(190px, 48vw);
+  }
+  .online-solutions-page .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .online-solutions-page .nav-menu {
+    display: none;
+    flex: 0 0 100%;
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 0 4px;
+  }
+  .online-solutions-page .nav-menu.open {
+    display: flex;
+  }
+  .online-solutions-page .nav-menu > a,
+  .online-solutions-page .nav-menu > .btn {
+    padding: 12px 14px;
+    border-radius: 12px;
+  }
+}
+@media (max-width: 620px) {
+  .online-solutions-page #faq details {
+    padding: 16px;
+    border-radius: 14px;
+  }
+  .online-solutions-page .website-brand {
+    max-width: calc(100% - 90px);
+  }
+  .online-solutions-page .website-brand strong {
+    font-size: .85rem;
+  }
+}
