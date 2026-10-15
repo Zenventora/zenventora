@@ -72,6 +72,56 @@ navMenu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{
     const replacements = Object.fromEntries(INR_PRICES.map((price) => [
       price,
       '
+    ]));
+    replacePriceText(document.body, replacements);
+    updateMeta(replacements);
+    document.documentElement.dataset.pricingCountry = 'international';
+    document.documentElement.dataset.pricingCurrency = 'USD';
+  };
+
+  const showIndiaPrices = () => {
+    document.documentElement.dataset.pricingCountry = 'IN';
+    document.documentElement.dataset.pricingCurrency = 'INR';
+  };
+
+  const detectPricing = async () => {
+    let country = '';
+    try {
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 2500);
+      try {
+        const countryResponse = await fetch('https://ipapi.co/country/', {
+          method: 'GET', cache: 'no-store', signal: controller.signal
+        });
+        if (countryResponse.ok) country = (await countryResponse.text()).trim().toUpperCase();
+      } finally {
+        window.clearTimeout(timeout);
+      }
+    } catch (_) {
+      // If country detection fails, use the international USD display consistently on both pages.
+    }
+
+    if (country === 'IN') {
+      showIndiaPrices();
+      return;
+    }
+
+    let usdRate = USD_FALLBACK_RATE;
+    try {
+      const rateResponse = await fetch('https://open.er-api.com/v6/latest/INR', { method: 'GET', cache: 'no-store' });
+      const rateData = await rateResponse.json();
+      if (rateData && Number.isFinite(rateData?.rates?.USD) && rateData.rates.USD > 0) usdRate = rateData.rates.USD;
+    } catch (_) {
+      // Keep the same approximate USD fallback for both price points.
+    }
+    showInternationalPrices(usdRate);
+  };
+
+  const isPricingPage = INR_PRICES.some((price) => document.body.innerText.includes('₹' + price.toLocaleString('en-IN')));
+  if ((window.location.hostname === 'zenventora.in' || window.location.hostname.endsWith('.zenventora.in')) && isPricingPage) {
+    detectPricing();
+  }
+})();
  + Math.max(1, Math.ceil(price * usdRate)).toLocaleString('en-US')
     ]));
     replacePriceText(document.body, replacements);
