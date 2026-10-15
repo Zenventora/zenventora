@@ -5,7 +5,7 @@ Single-page responsive website template for **Zenventora**, a product-focused pa
 ## What is included
 
 - Responsive one-page main website (`index.html`)
-- Dedicated online business solutions landing page (`online-solutions/index.html`) with its own responsive styles (`website/website.css`)
+- Dedicated online business solutions landing page (`online-solutions/index.html`) using the shared responsive styles (`styles.css` and `online-solutions/online-solutions.css`)
 - Mobile-first styling (`styles.css`)
 - Mobile menu behavior (`script.js`)
 - SEO metadata, canonical URL, Open Graph, Twitter Card, Organization schema, ContactPoint schema, and FAQ schema
@@ -42,7 +42,7 @@ The page is structured around:
 - No testimonials yet; testimonial content can be added after confirmed customer deliveries and permission
 - India visitors see the ₹3,999 starting amount; international visitors see the rounded USD equivalent through the shared IP-based pricing logic in `script.js`.
 
-The page is designed to extend the current Zenventora theme rather than introduce a separate visual system. The website remains the major foundation, but the offer is presented as a complete online business solution.
+The page is designed to extend the current Zenventora theme rather than introduce a separate visual system. Website and Online Solutions share the same country-based pricing logic in `script.js`. The website remains the major foundation, but the offer is presented as a complete online business solution.
 
 ## Local preview
 
