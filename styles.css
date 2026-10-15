@@ -996,3 +996,14 @@ textarea {
         width: 100%;
     }
 }
+
+/* Services dropdown shared by the primary navigation */
+.nav-dropdown{position:relative;display:inline-flex;align-items:center;font-weight:600;color:#34445a}
+.nav-dropdown>summary{list-style:none;cursor:pointer;white-space:nowrap}
+.nav-dropdown>summary::-webkit-details-marker{display:none}
+.nav-dropdown>summary::after{content:"⌄";margin-left:6px;font-size:.9em}
+.nav-dropdown[open] .nav-dropdown-menu{display:grid}
+.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 12px);left:-14px;min-width:210px;gap:4px;padding:8px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);z-index:60}
+.nav-dropdown-menu a{display:block;padding:10px 12px;border-radius:8px;white-space:nowrap}
+.nav-dropdown-menu a:hover{background:var(--soft)}
+@media(max-width:960px){.nav-dropdown{display:block;width:100%}.nav-dropdown>summary{padding:10px 0}.nav-dropdown[open] .nav-dropdown-menu{position:static;box-shadow:none;border:0;border-left:2px solid var(--line);border-radius:0;margin:0 0 8px 8px;padding:2px 8px}.nav-dropdown-menu a{white-space:normal}}

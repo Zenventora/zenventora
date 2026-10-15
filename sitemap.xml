@@ -40,6 +40,17 @@
     </image:image>
   </url>
   <url>
+    <loc>https://zenventora.in/website-solutions/</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image><image:loc>https://zenventora.in/assets/zenventora.png</image:loc><image:title>ZenVentora website solutions</image:title></image:image>
+  </url>
+  <url>
+    <loc>https://zenventora.in/website-solutions/enquiry.html</loc>
+    <lastmod>2026-10-15</lastmod><changefreq>monthly</changefreq><priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://zenventora.in/emenu/</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
