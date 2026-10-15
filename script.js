@@ -71,7 +71,7 @@ navMenu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{
   const showInternationalPrices = (usdRate) => {
     const replacements = Object.fromEntries(INR_PRICES.map((price) => [
       price,
-      '
+      String.fromCharCode(36) + Math.max(1, Math.ceil(price * usdRate)).toLocaleString('en-US')
     ]));
     replacePriceText(document.body, replacements);
     updateMeta(replacements);
