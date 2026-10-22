@@ -361,3 +361,89 @@
     pointer-events: auto;
   }
 }
+
+
+/* Shared service-page hero banner art — each page uses its own visual theme. */
+.online-solutions-page .website-hero-panel {
+  position: relative;
+  overflow: hidden;
+  padding-top: 188px;
+  isolation: isolate;
+}
+.online-solutions-page .website-hero-panel::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0 0 auto;
+  height: 164px;
+  background-position: center 44%;
+  background-size: cover;
+  border-radius: 30px 30px 0 0;
+}
+.online-solutions-page:not(.website-page) .website-hero-panel::before {
+  background-image:
+    linear-gradient(120deg, rgba(7, 38, 61, .22), rgba(9, 153, 148, .2)),
+    url("https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85");
+}
+.online-solutions-page.website-page .website-hero-panel::before {
+  background-image:
+    linear-gradient(120deg, rgba(7, 38, 61, .18), rgba(9, 153, 148, .14)),
+    url("https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=85");
+}
+.online-solutions-page .website-hero-panel > * { position: relative; z-index: 1; }
+.online-solutions-page .website-price-card {
+  box-shadow: 0 12px 32px rgba(15, 59, 104, .08);
+}
+@media (max-width: 760px) {
+  .online-solutions-page .website-hero-panel {
+    padding-top: 166px;
+    border-radius: 22px;
+  }
+  .online-solutions-page .website-hero-panel::before {
+    height: 144px;
+    border-radius: 22px 22px 0 0;
+  }
+}
+
+
+/* Keep Online Solutions and Website headers on the shared site-wide dimensions */
+.online-solutions-page .site-header .nav.container {
+  width: min(1280px, calc(100% - 48px)) !important;
+  max-width: 1280px !important;
+  min-height: 78px;
+  padding: 0 !important;
+  gap: 24px;
+}
+.online-solutions-page .site-header .brand .brand-logo {
+  width: 164px !important;
+  max-width: 164px !important;
+}
+.online-solutions-page .site-header .nav-menu {
+  gap: clamp(12px, 1.45vw, 22px);
+  font-size: .92rem;
+}
+@media (max-width: 1100px) {
+  .online-solutions-page .site-header .nav.container {
+    width: calc(100% - 36px) !important;
+    min-height: 74px;
+    padding-block: 12px !important;
+    gap: 12px;
+  }
+}
+@media (max-width: 560px) {
+  .online-solutions-page .site-header .nav.container { width: calc(100% - 28px) !important; }
+  .online-solutions-page .site-header .brand .brand-logo {
+    width: min(148px, 39vw) !important;
+    max-width: min(148px, 39vw) !important;
+  }
+}
+
+
+/* Do not force logo width or height in the Website / Online Solutions headers */
+.online-solutions-page .site-header .brand .brand-logo,
+.online-solutions-page .site-header .website-brand .brand-logo {
+  width: auto !important;
+  height: auto !important;
+  max-width: none !important;
+  max-height: none !important;
+}

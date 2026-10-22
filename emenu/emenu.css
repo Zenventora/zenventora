@@ -108,3 +108,88 @@
     max-width: 62vw;
   }
 }
+
+
+/* Keep E-menu header on the same container width and alignment as the main website */
+.emenu-page .site-header .nav.container {
+  width: min(1280px, calc(100% - 48px)) !important;
+  max-width: 1280px !important;
+  min-height: 78px;
+  padding: 0 !important;
+  gap: 24px;
+}
+.emenu-page .site-header .emenu-brand .brand-logo {
+  width: 164px !important;
+  max-width: 164px !important;
+}
+.emenu-page .site-header .nav-menu {
+  gap: clamp(10px, 1.15vw, 18px);
+  font-size: .88rem;
+}
+.emenu-page .site-header .cta-area--header {
+  width: auto;
+  flex-wrap: nowrap;
+  gap: 8px;
+  margin-left: 0;
+}
+@media (max-width: 1100px) {
+  .emenu-page .site-header .nav.container {
+    width: calc(100% - 36px) !important;
+    min-height: 74px;
+    padding-block: 12px !important;
+    gap: 12px;
+  }
+}
+@media (max-width: 560px) {
+  .emenu-page .site-header .nav.container { width: calc(100% - 28px) !important; }
+  .emenu-page .site-header .emenu-brand .brand-logo {
+    width: min(148px, 39vw) !important;
+    max-width: min(148px, 39vw) !important;
+  }
+}
+
+
+/* Final eMenu header width correction: match the shared header container exactly */
+.emenu-page .site-header .nav.container {
+  width: min(1280px, calc(100% - 48px)) !important;
+  max-width: 1280px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box;
+}
+@media (max-width: 1100px) {
+  .emenu-page .site-header .nav.container {
+    width: calc(100% - 36px) !important;
+  }
+}
+@media (max-width: 560px) {
+  .emenu-page .site-header .nav.container {
+    width: calc(100% - 28px) !important;
+  }
+}
+
+
+/* eMenu hero CTA: keep the inline arrow only; remove duplicate decorative pseudo-arrow */
+.emenu-page .hero-actions .btn::after,
+.emenu-page .hero-actions .btn-primary::after,
+.emenu-page .hero-actions .btn-secondary::after {
+  content: none !important;
+  display: none !important;
+}
+.emenu-page .hero-actions .btn {
+  gap: 12px;
+}
+.emenu-page .hero-actions .btn > span[aria-hidden="true"] {
+  display: inline-block;
+  margin-left: 2px;
+}
+
+
+/* Do not force logo width or height in the eMenu header */
+.emenu-page .site-header .emenu-brand .brand-logo,
+.emenu-page .site-header .brand .brand-logo {
+  width: auto !important;
+  height: auto !important;
+  max-width: none !important;
+  max-height: none !important;
+}

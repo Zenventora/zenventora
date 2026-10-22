@@ -5,7 +5,7 @@ navMenu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{
 
 /* Desktop Services dropdown opens on hover only. Touch layouts retain native tap-to-toggle. */
 (() => {
-  const desktopHover = window.matchMedia('(hover: hover) and (min-width: 961px)');
+  const desktopHover = window.matchMedia('(hover: hover) and (min-width: 1121px)');
   document.querySelectorAll('.nav-dropdown').forEach((dropdown) => {
     const summary = dropdown.querySelector(':scope > summary');
     if (!summary) return;
