@@ -24,7 +24,7 @@
   <link rel="icon" href="../assets/zenventora.png" type="image/png" />
   <link rel="apple-touch-icon" href="../assets/zenventora.png" />
   <meta name="theme-color" content="#0f3b68" />
-  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../styles.css?v=navfix-20261022" />
   <link rel="stylesheet" href="online-solutions.css" />
 
   <script type="application/ld+json">
@@ -74,6 +74,56 @@
     ]
   }
   </script>
+
+<style id="zenventora-mobile-nav-fix">
+@media (max-width:1120px) {
+  html body header.site-header .nav-menu[data-nav-menu] { display:none !important; visibility:hidden !important; opacity:0 !important; pointer-events:none !important; }
+  html body header.site-header .nav-menu[data-nav-menu].open { display:flex !important; visibility:visible !important; opacity:1 !important; pointer-events:auto !important; }
+  html body header.site-header .brand > span,
+  html body header.site-header .brand > strong { display:none !important; visibility:hidden !important; }
+  html body header.site-header .brand { min-width:0 !important; max-width:calc(100% - 108px) !important; overflow:hidden; }
+  html body header.site-header .brand .brand-logo { max-width:100% !important; width:auto !important; }
+  html body header.site-header .nav-menu[data-nav-menu] .nav-dropdown-menu { display:none !important; position:static !important; }
+  html body header.site-header .nav-menu[data-nav-menu] .nav-dropdown[open] > .nav-dropdown-menu { display:grid !important; }
+}
+</style>
+
+<style id="zenventora-mobile-brand-suffix-hide">
+@media screen and (max-width: 767px) {
+  header.site-header nav.nav a.brand.website-brand > span,
+  header.site-header nav.nav a.brand.website-brand > strong,
+  header.site-header nav.nav a.brand.emenu-brand > span,
+  header.site-header nav.nav a.brand.emenu-brand > strong {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    max-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+  }
+  header.site-header nav.nav a.brand.website-brand,
+  header.site-header nav.nav a.brand.emenu-brand {
+    gap: 0 !important;
+    min-width: 0 !important;
+    max-width: calc(100% - 112px) !important;
+    overflow: hidden !important;
+  }
+  header.site-header nav.nav {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+  }
+  header.site-header nav.nav .nav-toggle {
+    flex: 0 0 auto !important;
+    margin-left: auto !important;
+  }
+}
+</style>
 </head>
 <body class="online-solutions-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -287,7 +337,7 @@
   </footer>
 
   <a class="floating-cta" href="enquiry.html">Discuss Your Requirement</a>
-  <script src="../script.js" defer></script>
+  <script src="../script.js?v=navfix-20261022" defer></script>
 <script>
 (function(){
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;

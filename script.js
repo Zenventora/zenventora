@@ -1,23 +1,56 @@
-const navToggle=document.querySelector('[data-nav-toggle]');
-const navMenu=document.querySelector('[data-nav-menu]');
-navToggle?.addEventListener('click',()=>{const open=navMenu.classList.toggle('open');navToggle.setAttribute('aria-expanded',String(open));});
-navMenu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{navMenu.classList.remove('open');navToggle?.setAttribute('aria-expanded','false');}));
+/* Accessible shared navigation: closed by default on mobile, toggled by Menu, and dismissible. */
+(() => {
+  const navToggle = document.querySelector('[data-nav-toggle]');
+  const navMenu = document.querySelector('[data-nav-menu]');
+  if (!navToggle || !navMenu) return;
 
-/* Desktop Services dropdown opens on hover only. Touch layouts retain native tap-to-toggle. */
+  const mobileNav = window.matchMedia('(max-width: 1120px)');
+  const setMenu = (open) => {
+    navMenu.classList.toggle('open', open);
+    navToggle.setAttribute('aria-expanded', String(open));
+    navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    navToggle.textContent = open ? 'Close' : 'Menu';
+    if (!open) navMenu.querySelectorAll('.nav-dropdown[open]').forEach((item) => item.removeAttribute('open'));
+  };
+
+  setMenu(false);
+  navToggle.addEventListener('click', () => setMenu(!navMenu.classList.contains('open')));
+
+  navMenu.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (mobileNav.matches) setMenu(false);
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (mobileNav.matches && navMenu.classList.contains('open') &&
+        !navMenu.contains(event.target) && !navToggle.contains(event.target)) setMenu(false);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && navMenu.classList.contains('open')) {
+      setMenu(false);
+      navToggle.focus();
+    }
+  });
+  mobileNav.addEventListener('change', () => setMenu(false));
+})();
+
+/* Services opens only on tap/click on touch/mobile; desktop supports hover and keyboard. */
 (() => {
   const desktopHover = window.matchMedia('(hover: hover) and (min-width: 1121px)');
   document.querySelectorAll('.nav-dropdown').forEach((dropdown) => {
     const summary = dropdown.querySelector(':scope > summary');
     if (!summary) return;
-    const applyMode = () => {
+    const preventDesktopToggle = (event) => event.preventDefault();
+    const syncMode = () => {
       if (desktopHover.matches) {
         summary.addEventListener('click', preventDesktopToggle);
+        dropdown.removeAttribute('open');
       } else {
         summary.removeEventListener('click', preventDesktopToggle);
         dropdown.removeAttribute('open');
       }
     };
-    function preventDesktopToggle(event) { event.preventDefault(); }
     dropdown.addEventListener('mouseenter', () => {
       if (desktopHover.matches) dropdown.setAttribute('open', '');
     });
@@ -30,8 +63,8 @@ navMenu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{
     dropdown.addEventListener('focusout', (event) => {
       if (desktopHover.matches && !dropdown.contains(event.relatedTarget)) dropdown.removeAttribute('open');
     });
-    applyMode();
-    desktopHover.addEventListener('change', applyMode);
+    syncMode();
+    desktopHover.addEventListener('change', syncMode);
   });
 })();
 /* Shared currency handling for all public pricing pages.

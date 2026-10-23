@@ -4031,3 +4031,71 @@ body:not(.website-page):not(.online-solutions-page):not(.emenu-page) .zv-client-
   background: #fff0d9 !important;
   border: 1px solid #f7dfb9 !important;
 }
+
+
+/* Responsive navigation final override: hidden until Menu is tapped on touch layouts. */
+@media (max-width: 1120px) {
+  .site-header .nav-menu[data-nav-menu] {
+    display: none !important;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .site-header .nav-menu[data-nav-menu].open {
+    display: flex !important;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    max-height: calc(100dvh - 100px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .site-header .nav-menu[data-nav-menu] > a,
+  .site-header .nav-menu[data-nav-menu] > .nav-dropdown {
+    width: 100%;
+  }
+  .site-header .nav-menu[data-nav-menu] > a,
+  .site-header .nav-menu[data-nav-menu] > .nav-dropdown > summary {
+    min-height: 44px;
+    padding: 10px 12px;
+  }
+  .site-header .nav-menu[data-nav-menu] > .nav-dropdown {
+    display: block;
+  }
+  .site-header .nav-menu[data-nav-menu] .nav-dropdown-menu {
+    position: static !important;
+    display: none;
+    width: 100%;
+    margin: 4px 0 8px 8px;
+    padding: 4px 8px;
+    border: 0;
+    border-left: 2px solid var(--line);
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .site-header .nav-menu[data-nav-menu] .nav-dropdown[open] > .nav-dropdown-menu {
+    display: grid !important;
+  }
+  .site-header .nav-menu[data-nav-menu] .nav-dropdown-menu a {
+    min-height: 44px;
+    padding: 10px 12px;
+    white-space: normal;
+  }
+}
+@media (min-width: 1121px) {
+  .site-header .nav-menu[data-nav-menu] {
+    display: flex !important;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+
+/* Hide the slash and page-name suffix in mobile headers. */
+@media screen and (max-width: 767px) {
+  .site-header .brand > span,
+  .site-header .brand > strong {
+    display: none !important;
+  }
+}
