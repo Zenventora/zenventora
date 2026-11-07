@@ -1,6 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const ACCOUNT_URL = "https://accounts.zenventora.in/";
+const ACCOUNT_URL = "https://zenventora-accounts-bels.onrender.com/";
 const SUPABASE_URL = "https://zcqncbdfurhlnspzziyd.supabase.co";
 const SUPABASE_KEY = "sb_publishable_ymLV5njVvbll5eL9J_HP8g_7AfElGhz";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
