@@ -35,7 +35,8 @@ function renderSignedOut() {
 function renderSignedIn(user) {
   const metadata = user.user_metadata || {};
   const name = metadata.full_name || metadata.name || metadata.company_name || user.email?.split("@")[0] || "My account";
-  const avatar = metadata.avatar_url || metadata.picture;
+  const avatarCandidate = metadata.avatar_url || metadata.picture;
+  const avatar = typeof avatarCandidate === "string" && /^https:\/\//i.test(avatarCandidate) ? escapeHtml(avatarCandidate) : "";
   authActions.innerHTML = `
     <div class="account-profile-wrap">
       <button class="account-profile-trigger" type="button" aria-expanded="false" aria-haspopup="true">
@@ -63,7 +64,7 @@ function renderSignedIn(user) {
     const button = authActions.querySelector("[data-account-signout]");
     button.disabled = true;
     button.textContent = "Signing out…";
-    const { error } = await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut({ scope: "global" });
     if (error) {
       button.disabled = false;
       button.textContent = "Sign out";
