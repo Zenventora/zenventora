@@ -82,6 +82,12 @@ function escapeHtml(value) {
 }
 
 async function acceptAccountHandoff() {
+  const pageParams = new URLSearchParams(window.location.search);
+  if (pageParams.get("account_signed_out") === "1") {
+    await supabase.auth.signOut({ scope: "local" });
+    window.history.replaceState(null, "", window.location.pathname);
+    return;
+  }
   const params = new URLSearchParams(window.location.hash.slice(1));
   if (params.get("type") !== "account_handoff") return;
   const access_token = params.get("access_token");
