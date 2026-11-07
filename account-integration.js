@@ -1,8 +1,8 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const ACCOUNT_URL = "https://accounts.zenventora.in/";
-const SUPABASE_URL = "https://zcqncbdfurhlnspzziyd.supabase.co";
-const SUPABASE_KEY = "sb_publishable_ymLV5njVvbll5eL9J_HP8g_7AfElGhz";
+const SUPABASE_URL = "https://flwzqlywdlwatycxexmk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_QN1aNd7wxjkb6ktD6L8GOQ_nsfV1_bY";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: false }
 });
