@@ -1,11 +1,6 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
-const ACCOUNT_URL = "https://accounts.zenventora.in/";
-const SUPABASE_URL = "https://flwzqlywdlwatycxexmk.supabase.co";
-const SUPABASE_KEY = "sb_publishable_QN1aNd7wxjkb6ktD6L8GOQ_nsfV1_bY";
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
-  auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: false }
-});
+const ACCOUNT_ORIGIN = "https://accounts.zenventora.in";
+const ACCOUNT_URL = ACCOUNT_ORIGIN + "/";
+const BRIDGE_URL = ACCOUNT_ORIGIN + "/session-bridge.html";
 
 const nav = document.querySelector("[data-nav-menu]");
 if (!nav) throw new Error("ZenVentora navigation was not found.");
@@ -23,7 +18,13 @@ const accountUrl = (view) => {
 };
 
 function initials(value = "") {
-  return value.trim().split(/\s+/).slice(0, 2).map((part) => part[0]?.toUpperCase() || "").join("") || "Z";
+  return value.trim().split(/\\s+/).slice(0, 2).map((part) => part[0]?.toUpperCase() || "").join("") || "Z";
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[char]);
 }
 
 function renderSignedOut() {
@@ -36,7 +37,7 @@ function renderSignedIn(user) {
   const metadata = user.user_metadata || {};
   const name = metadata.full_name || metadata.name || metadata.company_name || user.email?.split("@")[0] || "My account";
   const avatarCandidate = metadata.avatar_url || metadata.picture;
-  const avatar = typeof avatarCandidate === "string" && /^https:\/\//i.test(avatarCandidate) ? escapeHtml(avatarCandidate) : "";
+  const avatar = typeof avatarCandidate === "string" && /^https:\\/\\//i.test(avatarCandidate) ? escapeHtml(avatarCandidate) : "";
   authActions.innerHTML = `
     <div class="account-profile-wrap">
       <button class="account-profile-trigger" type="button" aria-expanded="false" aria-haspopup="true">
@@ -60,49 +61,47 @@ function renderSignedIn(user) {
     card.hidden = !open;
     trigger.setAttribute("aria-expanded", String(open));
   });
-  authActions.querySelector("[data-account-signout]").addEventListener("click", async () => {
+  authActions.querySelector("[data-account-signout]").addEventListener("click", () => {
     const button = authActions.querySelector("[data-account-signout]");
     button.disabled = true;
     button.textContent = "Signing out…";
-    const { error } = await supabase.auth.signOut({ scope: "global" });
-    if (error) {
-      button.disabled = false;
-      button.textContent = "Sign out";
-      console.error("ZenVentora sign-out failed:", error.message);
-      return;
-    }
-    renderSignedOut();
+    bridge.contentWindow?.postMessage({ type: "zenventora:signout" }, ACCOUNT_ORIGIN);
   });
 }
 
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, (char) => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-  })[char]);
-}
+const bridge = document.createElement("iframe");
+bridge.src = BRIDGE_URL;
+bridge.title = "ZenVentora account session";
+bridge.tabIndex = -1;
+bridge.setAttribute("aria-hidden", "true");
+bridge.referrerPolicy = "no-referrer";
+bridge.style.cssText = "position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;border:0;clip-path:inset(50%);";
+document.body.appendChild(bridge);
 
-async function acceptAccountHandoff() {
-  const pageParams = new URLSearchParams(window.location.search);
-  if (pageParams.get("account_signed_out") === "1") {
-    await supabase.auth.signOut({ scope: "local" });
-    window.history.replaceState(null, "", window.location.pathname);
-    return;
+window.addEventListener("message", (event) => {
+  if (event.origin !== ACCOUNT_ORIGIN || event.source !== bridge.contentWindow) return;
+  const message = event.data;
+  if (!message || message.namespace !== "zenventora-account-bridge") return;
+  if (message.type === "session" && message.user) renderSignedIn(message.user);
+  if (message.type === "signed_out") renderSignedOut();
+  if (message.type === "signout_error") {
+    const button = authActions.querySelector("[data-account-signout]");
+    if (button) {
+      button.disabled = false;
+      button.textContent = "Sign out";
+    }
+    console.error("ZenVentora sign-out failed:", message.message || "Please try again.");
   }
-  const params = new URLSearchParams(window.location.hash.slice(1));
-  if (params.get("type") !== "account_handoff") return;
-  const access_token = params.get("access_token");
-  const refresh_token = params.get("refresh_token");
-  window.history.replaceState(null, "", window.location.pathname + window.location.search);
-  if (!access_token || !refresh_token) return;
-  const { error } = await supabase.auth.setSession({ access_token, refresh_token });
-  if (error) console.error("Could not complete ZenVentora account sign-in:", error.message);
-}
+});
 
 renderSignedOut();
-await acceptAccountHandoff();
-const { data: { session } } = await supabase.auth.getSession();
-if (session?.user) renderSignedIn(session.user);
-supabase.auth.onAuthStateChange((_event, nextSession) => {
-  if (nextSession?.user) renderSignedIn(nextSession.user);
-  else renderSignedOut();
-});
+
+// If this page was the Accounts portal's return target, the identity session has
+// already been persisted on accounts.zenventora.in. The hidden same-site bridge
+// reads that canonical session; the fragment contains no data we need to retain.
+if (window.location.hash) {
+  const params = new URLSearchParams(window.location.hash.slice(1));
+  if (params.get("type") === "account_handoff") {
+    window.history.replaceState(null, "", window.location.pathname + window.location.search);
+  }
+}
