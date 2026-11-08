@@ -5,10 +5,12 @@ const BRIDGE_URL = ACCOUNT_ORIGIN + "/session-bridge.html";
 const nav = document.querySelector("[data-nav-menu]");
 if (!nav) throw new Error("ZenVentora navigation was not found.");
 
-const authActions = document.createElement("div");
-authActions.className = "account-nav-actions";
-authActions.setAttribute("data-account-actions", "");
-nav.append(authActions);
+const authActions = nav.querySelector("[data-account-actions]") || document.createElement("div");
+if (!authActions.isConnected) {
+  authActions.className = "account-nav-actions";
+  authActions.setAttribute("data-account-actions", "");
+  nav.append(authActions);
+}
 
 const accountUrl = (view) => {
   const url = new URL(ACCOUNT_URL);
