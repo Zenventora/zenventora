@@ -9,7 +9,7 @@
 .account-avatar{width:31px;height:31px;flex:none;border-radius:50%;object-fit:cover}
 .account-avatar-initials{display:inline-grid;place-items:center;background:linear-gradient(135deg,#0f3b68,#0ea5a4);color:#fff;font-size:11px;font-weight:800}
 .account-profile-name{max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.account-chevron{color:#72849a;font-size:14px}
+.account-chevron{display:inline-block;width:8px;height:8px;flex:none;margin:0 2px 4px 5px;border-right:2px solid #72849a;border-bottom:2px solid #72849a;transform:rotate(45deg);font-size:0;line-height:0}
 .account-profile-card{position:absolute;z-index:1000;right:0;top:calc(100% + 12px);width:min(310px,calc(100vw - 32px));padding:13px;background:#fff;border:1px solid #e0e8ef;border-radius:15px;box-shadow:0 18px 48px rgba(11,36,64,.16)}
 .account-profile-card[hidden]{display:none}
 .account-card-heading{display:flex;align-items:center;gap:11px;padding:8px 7px 14px;border-bottom:1px solid #edf1f5;min-width:0}
