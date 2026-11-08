@@ -74,7 +74,6 @@ bridge.src = BRIDGE_URL;
 bridge.title = "ZenVentora account session";
 bridge.tabIndex = -1;
 bridge.setAttribute("aria-hidden", "true");
-bridge.referrerPolicy = "no-referrer";
 bridge.style.cssText = "position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;border:0;clip-path:inset(50%);";
 document.body.appendChild(bridge);
 
