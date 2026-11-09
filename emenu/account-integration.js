@@ -13,7 +13,7 @@
 
   const signedOutMarkup = () => `
     <a class="btn btn-primary btn-small" href="https://zenventora.in/emenu/signup.html">Get Started Free</a>
-    <a class="btn btn-secondary btn-small" href="https://emenu.zenventora.in/">Sign In</a>`;
+    <a class="btn btn-secondary btn-small" href="https://accounts.zenventora.in/?view=signin&amp;returnTo=https%3A%2F%2Femenu.zenventora.in%2F&amp;product=emenu">Sign In</a>`;
 
   function renderSignedOut() {
     host.className = "cta-area cta-area--header";
