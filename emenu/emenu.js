@@ -1,10 +1,10 @@
 const EMENU_AUTH_URL = 'https://emenu.zenventora.in/api/auth/me';
 const EMENU_PRODUCT_URL = 'https://emenu.zenventora.in/';
-const EMENU_SIGNUP_URL = `${EMENU_PRODUCT_URL}?signup=true`;
+const EMENU_SIGNUP_URL = `signup.html`;
 
 const ctaMarkup = (authenticated) => authenticated
   ? `<a class="btn btn-primary" href="${EMENU_PRODUCT_URL}">Access Now <span aria-hidden="true">→</span></a>`
-  : `<a class="btn btn-primary" href="${EMENU_SIGNUP_URL}">Get Started Free <span aria-hidden="true">→</span></a><a class="btn btn-secondary" href="${EMENU_PRODUCT_URL}">Sign In</a>`;
+  : `<a class="btn btn-primary" href="${EMENU_SIGNUP_URL}">Get Started Free</a><a class="btn btn-secondary" href="${EMENU_PRODUCT_URL}">Sign In</a>`;
 
 function renderCtas(authenticated) {
   document.querySelectorAll('[data-emenu-cta]').forEach((area) => {
