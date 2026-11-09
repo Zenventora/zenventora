@@ -4200,3 +4200,19 @@ body:not(.website-page):not(.online-solutions-page):not(.emenu-page) .zv-client-
   border: 0 !important;
   box-shadow: none !important;
 }
+
+
+/* One shared footer grid structure across homepage, service pages and individual pages. */
+.site-footer .footer-grid {
+  grid-template-columns: 1.5fr 1fr 1fr 1fr !important;
+}
+@media (max-width: 900px) {
+  .site-footer .footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+@media (max-width: 560px) {
+  .site-footer .footer-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
