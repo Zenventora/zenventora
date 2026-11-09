@@ -52,7 +52,65 @@
       const form=document.getElementById('signupForm');
       const button=document.getElementById('submitBtn');
       const message=document.getElementById('message');
-      document.getElementById('googleSignup').addEventListener('click',function(){const url=new URL('https://accounts.zenventora.in/');url.searchParams.set('view','signup');url.searchParams.set('returnTo','https://emenu.zenventora.in');url.searchParams.set('product','emenu');url.searchParams.set('productFlow','signup');url.searchParams.set('oauth','google');window.location.assign(url.toString());});
+      const googleButton=document.getElementById('googleSignup');
+      const apiBase='https://emenu.zenventora.in/api/auth';
+      let googleClientPromise;
+      async function getGoogleClient(){
+        if(!googleClientPromise){
+          googleClientPromise=(async()=>{
+            const response=await fetch(apiBase+'/public-config',{cache:'no-store'});
+            const config=await response.json();
+            if(!response.ok||!config.url||!config.key) throw new Error(config.message||'Google sign up is not configured.');
+            if(!window.supabase) await new Promise((resolve,reject)=>{
+              const script=document.createElement('script');
+              script.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+              script.onload=resolve;script.onerror=()=>reject(new Error('Unable to load Google sign-in.'));
+              document.head.appendChild(script);
+            });
+            return window.supabase.createClient(config.url,config.key,{auth:{flowType:'pkce',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+          })();
+        }
+        return googleClientPromise;
+      }
+      async function completeGoogleSignup(){
+        const params=new URLSearchParams(window.location.search);
+        if(params.get('oauth')!=='callback') return;
+        googleButton.disabled=true;googleButton.textContent='Finishing Google sign up…';
+        try{
+          const client=await getGoogleClient();
+          const {data,error}=await client.auth.getSession();
+          if(error) throw error;
+          if(!data.session) throw new Error('Google sign up could not be completed. Please try again.');
+          const response=await fetch(apiBase+'/common/session',{
+            method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({accessToken:data.session.access_token,refreshToken:data.session.refresh_token,productFlow:'signup'})
+          });
+          const result=await response.json().catch(()=>({}));
+          if(!response.ok) throw new Error(result.message||'Could not connect your Google account to eMenu.');
+          showMessage('Google account connected. Opening eMenu…','success');
+          await client.auth.signOut({scope:'local'});
+          window.location.replace('https://emenu.zenventora.in/');
+        }catch(error){
+          showMessage(error.message||'Google sign up failed. Please try again.','error');
+          googleButton.disabled=false;googleButton.textContent='Continue with Google';
+        }
+      }
+      googleButton.addEventListener('click',async function(){
+        googleButton.disabled=true;googleButton.textContent='Connecting to Google…';
+        try{
+          const client=await getGoogleClient();
+          const callback=new URL(window.location.href);
+          callback.hash='';
+          callback.search='';
+          callback.searchParams.set('oauth','callback');
+          const {error}=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:callback.toString(),queryParams:{prompt:'select_account'}}});
+          if(error) throw error;
+        }catch(error){
+          showMessage(error.message||'Unable to start Google sign up. Please try again.','error');
+          googleButton.disabled=false;googleButton.textContent='Continue with Google';
+        }
+      });
+      void completeGoogleSignup();
       function showMessage(text,type){message.textContent=text;message.className='message '+type;}
       form.addEventListener('submit',async function(event){
         event.preventDefault();
