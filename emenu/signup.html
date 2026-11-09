@@ -52,7 +52,7 @@
       const form=document.getElementById('signupForm');
       const button=document.getElementById('submitBtn');
       const message=document.getElementById('message');
-      document.getElementById('googleSignup').addEventListener('click',function(){const url=new URL('https://accounts.zenventora.in/');url.searchParams.set('view','signup');url.searchParams.set('returnTo','https://emenu.zenventora.in');url.searchParams.set('product','emenu');url.searchParams.set('productFlow','signup');window.location.assign(url.toString());});
+      document.getElementById('googleSignup').addEventListener('click',function(){const url=new URL('https://accounts.zenventora.in/');url.searchParams.set('view','signup');url.searchParams.set('returnTo','https://emenu.zenventora.in');url.searchParams.set('product','emenu');url.searchParams.set('productFlow','signup');url.searchParams.set('oauth','google');window.location.assign(url.toString());});
       function showMessage(text,type){message.textContent=text;message.className='message '+type;}
       form.addEventListener('submit',async function(event){
         event.preventDefault();
