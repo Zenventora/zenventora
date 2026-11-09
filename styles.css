@@ -4169,3 +4169,34 @@ body:not(.website-page):not(.online-solutions-page):not(.emenu-page) .zv-client-
     padding-inline: 18px;
   }
 }
+
+
+/* Footer brand is logo-only on every page: no product caption, description, or white logo tile. */
+.site-footer .footer-grid > div:first-child > p {
+  display: none !important;
+}
+.site-footer .footer-brand > strong,
+.site-footer .footer-brand > span {
+  display: none !important;
+}
+.site-footer .footer-brand .brand-logo {
+  display: block !important;
+  width: 190px;
+  max-width: 100%;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  object-fit: contain;
+}
+.site-footer .footer-brand {
+  display: inline-flex;
+  align-items: center;
+  background: transparent !important;
+  padding: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
