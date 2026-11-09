@@ -12,7 +12,7 @@
     .map((part) => part[0]?.toUpperCase() || "").join("") || "Z";
 
   const signedOutMarkup = () => `
-    <a class="btn btn-primary btn-small" href="https://emenu.zenventora.in/?signup=true">Get Started Free</a>
+    <a class="btn btn-primary btn-small" href="https://zenventora.in/emenu/signup.html">Get Started Free</a>
     <a class="btn btn-secondary btn-small" href="https://emenu.zenventora.in/">Sign In</a>`;
 
   function renderSignedOut() {
