@@ -17,7 +17,7 @@
     label{display:block;font-size:13px;font-weight:700;color:#34445b;margin:0 0 7px}.field{margin-bottom:17px}input{width:100%;height:48px;border:1px solid #dce4ed;border-radius:10px;padding:0 14px;font:inherit;font-size:14px;outline:none;background:#fff}input:focus{border-color:#0ea5a4;box-shadow:0 0 0 3px #0ea5a41c}
     button{width:100%;height:49px;border:0;border-radius:10px;background:#0e9996;color:white;font-size:15px;font-weight:800;cursor:pointer;margin-top:5px}button:hover{background:#087f80}button:disabled{opacity:.6;cursor:wait}
     .message{display:none;margin:16px 0 0;padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.55}.message.error{display:block;background:#fff1f1;color:#b42318;border:1px solid #ffd5d2}.message.success{display:block;background:#ecfdf7;color:#067647;border:1px solid #b7ebd4}
-    .foot{margin-top:24px;text-align:center;color:#718096;font-size:13px}.foot a{color:#0a8c8b;text-decoration:none;font-weight:750}.foot a:hover{text-decoration:underline}.legal{font-size:11px;color:#9aa5b4;line-height:1.6;text-align:center;margin-top:22px}
+    .foot{margin-top:24px;text-align:center;color:#718096;font-size:13px}.foot a{color:#0a8c8b;text-decoration:none;font-weight:750}.foot a:hover{text-decoration:underline}.google-btn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;height:48px;margin:0 0 18px;background:#fff;color:#26364a;border:1px solid #dce4ed;border-radius:10px;font-size:14px;font-weight:750}.google-btn:hover{background:#f8fafc;border-color:#b8c7d8}.divider{display:flex;align-items:center;gap:12px;color:#94a3b8;font-size:11px;margin:0 0 18px}.divider:before,.divider:after{content:"";height:1px;background:#e6ebf1;flex:1}.legal{font-size:11px;color:#9aa5b4;line-height:1.6;text-align:center;margin-top:22px}
     @media(max-width:720px){body{padding:14px}.layout{grid-template-columns:1fr;min-height:0}.intro{padding:28px 26px}.eyebrow{margin-top:25px}.intro h1{font-size:28px}.intro p{margin-bottom:0}.points{display:none}.formside{padding:34px 25px 38px}}
   </style>
 </head>
@@ -34,7 +34,7 @@
       <div class="formbox">
         <h2>Create your account</h2>
         <p class="sub">Sign up here to get started with ZenVentora eMenu.</p>
-        <form id="signupForm" novalidate>
+        <button class="google-btn" id="googleSignup" type="button"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.73 7.18l7.65 5.94c4.47-4.13 7.12-10.2 7.12-17.59z"/><path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.88.93 7.55 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.9-5.81l-7.65-5.94c-2.13 1.43-4.86 2.27-8.25 2.27-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</button><div class="divider">or sign up with email</div><form id="signupForm" novalidate>
           <div class="field"><label for="name">Full name</label><input id="name" name="name" autocomplete="name" maxlength="120" placeholder="Enter your full name" required></div>
           <div class="field"><label for="phone">Phone number</label><input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="20" placeholder="Enter your phone number" required></div>
           <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></div>
@@ -52,6 +52,7 @@
       const form=document.getElementById('signupForm');
       const button=document.getElementById('submitBtn');
       const message=document.getElementById('message');
+      document.getElementById('googleSignup').addEventListener('click',function(){const url=new URL('https://accounts.zenventora.in/');url.searchParams.set('view','signup');url.searchParams.set('returnTo','https://emenu.zenventora.in');url.searchParams.set('product','emenu');url.searchParams.set('productFlow','signup');window.location.assign(url.toString());});
       function showMessage(text,type){message.textContent=text;message.className='message '+type;}
       form.addEventListener('submit',async function(event){
         event.preventDefault();
