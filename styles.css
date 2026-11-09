@@ -3693,16 +3693,16 @@ body.online-solutions-page:not(.website-page) .website-hero-panel > * {
 }
 
 
-/* Footer logo link only: give the brand mark a neat, contained backing. */
+/* Footer logo: keep the original transparent brand mark without a white container. */
 .site-footer a.brand.footer-brand {
-  background: #fff;
-  padding: 10px 15px;
-  border-radius: 12px;
-  height: unset;
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  height: auto;
   width: fit-content;
   margin-bottom: 20px;
 }
-
 
 /* Final testimonial alignment pass: keep every client card centered across all pages. */
 .zv-client-section .zv-client-heading,
