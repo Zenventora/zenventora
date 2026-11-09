@@ -4,17 +4,86 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,follow">
+  <meta name="theme-color" content="#0f3b68">
   <title>Create your eMenu account | ZenVentora</title>
-  <link rel="canonical" href="https://emenu.zenventora.in/signup.html">
-  <link rel="stylesheet" href="../styles.css?v=footer-logo-20261109">
+  <style>
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f4f7fb;color:#172033;display:grid;place-items:center;padding:28px}
+    .layout{width:min(100%,980px);min-height:620px;background:#fff;border:1px solid #e5eaf1;border-radius:24px;overflow:hidden;display:grid;grid-template-columns: .9fr 1.1fr;box-shadow:0 24px 70px rgba(15,45,80,.12)}
+    .intro{background:linear-gradient(145deg,#0b3158,#0e7779 115%);color:#fff;padding:54px 42px;display:flex;flex-direction:column;justify-content:center}
+    .brand{font-weight:850;font-size:23px;letter-spacing:-.7px}.brand span{color:#69e0d1}.eyebrow{margin-top:58px;color:#a9e9e1;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+    .intro h1{font-size:36px;line-height:1.13;letter-spacing:-1.3px;margin:14px 0}.intro p{color:#d1e3ed;line-height:1.75;font-size:15px;max-width:340px}
+    .points{display:grid;gap:15px;margin-top:32px;color:#e5f2f5;font-size:14px}.points div:before{content:"✓";display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#ffffff20;color:#80f0dc;margin-right:10px;font-weight:800}
+    .formside{padding:54px 58px;display:flex;align-items:center;justify-content:center}.formbox{width:100%;max-width:390px}.formbox h2{font-size:27px;letter-spacing:-.7px;margin:0 0 8px;color:#102f50}.sub{color:#718096;font-size:14px;line-height:1.6;margin:0 0 28px}
+    label{display:block;font-size:13px;font-weight:700;color:#34445b;margin:0 0 7px}.field{margin-bottom:17px}input{width:100%;height:48px;border:1px solid #dce4ed;border-radius:10px;padding:0 14px;font:inherit;font-size:14px;outline:none;background:#fff}input:focus{border-color:#0ea5a4;box-shadow:0 0 0 3px #0ea5a41c}
+    button{width:100%;height:49px;border:0;border-radius:10px;background:#0e9996;color:white;font-size:15px;font-weight:800;cursor:pointer;margin-top:5px}button:hover{background:#087f80}button:disabled{opacity:.6;cursor:wait}
+    .message{display:none;margin:16px 0 0;padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.55}.message.error{display:block;background:#fff1f1;color:#b42318;border:1px solid #ffd5d2}.message.success{display:block;background:#ecfdf7;color:#067647;border:1px solid #b7ebd4}
+    .foot{margin-top:24px;text-align:center;color:#718096;font-size:13px}.foot a{color:#0a8c8b;text-decoration:none;font-weight:750}.foot a:hover{text-decoration:underline}.legal{font-size:11px;color:#9aa5b4;line-height:1.6;text-align:center;margin-top:22px}
+    @media(max-width:720px){body{padding:14px}.layout{grid-template-columns:1fr;min-height:0}.intro{padding:28px 26px}.eyebrow{margin-top:25px}.intro h1{font-size:28px}.intro p{margin-bottom:0}.points{display:none}.formside{padding:34px 25px 38px}}
+  </style>
 </head>
 <body>
-  <main class="section" style="min-height:70vh;display:grid;place-items:center;text-align:center">
-    <div class="container">
-      <h1>Create your eMenu account</h1>
-      <p>Your signup form is hosted securely on the eMenu product.</p>
-      <p><a class="btn btn-primary" href="https://emenu.zenventora.in/signup.html">Continue to eMenu signup</a></p>
-    </div>
+  <main class="layout">
+    <section class="intro">
+      <div class="brand">ZenVentora <span>eMenu</span></div>
+      <div class="eyebrow">Get started</div>
+      <h1>Bring your menu online. Grow your business.</h1>
+      <p>Create your eMenu account and start building a beautiful digital menu for your business.</p>
+      <div class="points"><div>Manage your digital menu</div><div>Share menus with a QR code</div><div>Update items and prices anytime</div></div>
+    </section>
+    <section class="formside">
+      <div class="formbox">
+        <h2>Create your account</h2>
+        <p class="sub">Sign up here to get started with ZenVentora eMenu.</p>
+        <form id="signupForm" novalidate>
+          <div class="field"><label for="name">Full name</label><input id="name" name="name" autocomplete="name" maxlength="120" placeholder="Enter your full name" required></div>
+          <div class="field"><label for="phone">Phone number</label><input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="20" placeholder="Enter your phone number" required></div>
+          <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></div>
+          <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="new-password" minlength="8" maxlength="72" placeholder="At least 8 characters" required></div>
+          <button id="submitBtn" type="submit">Create eMenu account</button>
+          <div id="message" class="message" role="status" aria-live="polite"></div>
+        </form>
+        <div class="foot">Already have an account? <a href="https://accounts.zenventora.in/">Log in</a></div>
+        <div class="legal">By creating an account, you agree to use ZenVentora eMenu in accordance with its terms and privacy policy.</div>
+      </div>
+    </section>
   </main>
+  <script>
+    (function(){
+      const form=document.getElementById('signupForm');
+      const button=document.getElementById('submitBtn');
+      const message=document.getElementById('message');
+      function showMessage(text,type){message.textContent=text;message.className='message '+type;}
+      form.addEventListener('submit',async function(event){
+        event.preventDefault();
+        if(!form.reportValidity()) return;
+        const name=document.getElementById('name').value.trim();
+        const phone=document.getElementById('phone').value.trim();
+        const email=document.getElementById('email').value.trim().toLowerCase();
+        const password=document.getElementById('password').value;
+        if(!name||!phone||!email){showMessage('Please complete all the fields.','error');return;}
+        if(password.length<8){showMessage('Password must contain at least 8 characters.','error');return;}
+        button.disabled=true;button.textContent='Creating your account…';message.className='message';
+        try{
+          const response=await fetch('https://emenu.zenventora.in/api/auth/signup',{
+            method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({name,phone,email,password})
+          });
+          const result=await response.json().catch(()=>({}));
+          if(!response.ok) throw new Error(result.message||'Unable to create your account. Please try again.');
+          if(result.requiresVerification){
+            showMessage('Your account has been created. Please verify your email using the link we sent you. After verification, you will be returned to eMenu.','success');
+            form.reset();
+            button.textContent='Verification email sent';
+            return;
+          }
+          showMessage('Account created successfully. Opening eMenu…','success');
+          window.location.assign('https://emenu.zenventora.in/');
+        }catch(error){
+          showMessage(error.message||'Something went wrong. Please try again.','error');
+          button.disabled=false;button.textContent='Create eMenu account';
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
