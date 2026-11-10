@@ -17,7 +17,9 @@ if (!nav || !authActions) {
   console.error("ZenVentora account navigation mount point is missing.");
 } else {
   const PRODUCT_ORIGINS = {
-    emenu: "https://emenu.zenventora.in/"
+    emenu: "https://emenu.zenventora.in/",
+    siteradar: "https://siteradar.zenventora.in/",
+    vadix: "https://vadix.zenventora.in/"
   };
   const productContext = authActions.dataset.accountProduct || "";
   const productOrigin = PRODUCT_ORIGINS[productContext] || window.location.origin;
