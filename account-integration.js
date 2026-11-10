@@ -24,6 +24,14 @@ if (!nav || !authActions) {
   const productContext = authActions.dataset.accountProduct || "";
   const productOrigin = PRODUCT_ORIGINS[productContext] || window.location.origin;
   const accountUrl = (view) => {
+    // Product-branded signup pages are the canonical signup entry point.
+    // Authentication itself remains centralized in ZenVentora Accounts.
+    if (view === "signup" && productContext === "emenu") {
+      const signup = new URL("https://zenventora.in/emenu/signup.html");
+      signup.searchParams.set("product", "emenu");
+      signup.searchParams.set("returnTo", productOrigin);
+      return signup.toString();
+    }
     const url = new URL(ACCOUNT_ORIGIN + (view === "signup" ? "/signup" : view === "forgot" ? "/forgot" : "/login"));
     if (view !== "dashboard") url.searchParams.set("view", view);
     url.searchParams.set("returnTo", productOrigin);
