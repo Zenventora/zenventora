@@ -6,6 +6,8 @@
 const ACCOUNT_ORIGIN = "https://accounts.zenventora.in";
 const BRIDGE_URL = ACCOUNT_ORIGIN + "/session-bridge.html";
 
+let sessionBridge = null;
+
 const PRODUCT_ORIGINS = {
   emenu: "https://emenu.zenventora.in/",
   siteradar: "https://siteradar.zenventora.in/",
@@ -87,7 +89,7 @@ function renderSignedIn(root, user) {
     event.currentTarget.textContent = "Signing out…";
 
     try {
-      bridge.contentWindow?.postMessage({ type: "zenventora:signout" }, ACCOUNT_ORIGIN);
+      sessionBridge?.contentWindow?.postMessage({ type: "zenventora:signout" }, ACCOUNT_ORIGIN);
     } catch {
       event.currentTarget.disabled = false;
       event.currentTarget.textContent = "Sign out";
@@ -130,14 +132,14 @@ const roots = [...document.querySelectorAll("[data-account-actions]")];
 if (roots.length) {
   // Cross-origin localStorage is intentionally not used.
   // Accounts owns the session; this page reads it through the read-only session bridge.
-  const bridge = document.createElement("iframe");
-  bridge.src = BRIDGE_URL;
-  bridge.title = "ZenVentora account session";
-  bridge.tabIndex = -1;
-  bridge.setAttribute("aria-hidden", "true");
-  bridge.style.cssText =
+  sessionBridge = document.createElement("iframe");
+  sessionBridge.src = BRIDGE_URL;
+  sessionBridge.title = "ZenVentora account session";
+  sessionBridge.tabIndex = -1;
+  sessionBridge.setAttribute("aria-hidden", "true");
+  sessionBridge.style.cssText =
     "position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;border:0;clip-path:inset(50%);";
-  document.body.appendChild(bridge);
+  document.body.appendChild(sessionBridge);
 
   let resolved = false;
   const fallbackTimer = window.setTimeout(() => {
@@ -148,7 +150,7 @@ if (roots.length) {
   }, 5000);
 
   window.addEventListener("message", event => {
-    if (event.origin !== ACCOUNT_ORIGIN || event.source !== bridge.contentWindow) return;
+    if (event.origin !== ACCOUNT_ORIGIN || event.source !== sessionBridge.contentWindow) return;
 
     const message = event.data;
     if (!message || message.namespace !== "zenventora-account-bridge") return;
