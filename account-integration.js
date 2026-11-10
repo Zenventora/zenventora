@@ -63,7 +63,7 @@ if (!nav || !authActions) {
               : `<span class="account-avatar account-card-avatar account-avatar-initials">${initials(name)}</span>`}
             <span><strong>${escapeHtml(name)}</strong><small>${escapeHtml(user.email || "")}</small></span>
           </div>
-          <a href="${ACCOUNT_ORIGIN}/">Manage account <span aria-hidden="true">↗</span></a>
+          <a href="${ACCOUNT_ORIGIN}/?returnTo=${encodeURIComponent(window.location.origin)}">My Accounts <span aria-hidden="true">↗</span></a>
           <button type="button" data-account-signout>Sign out</button>
         </div>
       </div>`;
