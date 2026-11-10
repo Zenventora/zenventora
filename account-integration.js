@@ -24,8 +24,8 @@ if (!nav || !authActions) {
   const productContext = authActions.dataset.accountProduct || "";
   const productOrigin = PRODUCT_ORIGINS[productContext] || window.location.origin;
   const accountUrl = (view) => {
-    const url = new URL(ACCOUNT_ORIGIN + "/");
-    url.searchParams.set("view", view);
+    const url = new URL(ACCOUNT_ORIGIN + (view === "signup" ? "/signup" : view === "forgot" ? "/forgot" : "/login"));
+    if (view !== "dashboard") url.searchParams.set("view", view);
     url.searchParams.set("returnTo", productOrigin);
     if (productContext) {
       url.searchParams.set("product", productContext);
@@ -74,7 +74,7 @@ if (!nav || !authActions) {
               : `<span class="account-avatar account-card-avatar account-avatar-initials">${initials(name)}</span>`}
             <span><strong>${escapeHtml(name)}</strong><small>${escapeHtml(user.email || "")}</small></span>
           </div>
-          <a href="${accountUrl("signin")}">My Accounts <span aria-hidden="true">↗</span></a>
+          <a href="${accountUrl("dashboard")}">My Accounts <span aria-hidden="true">↗</span></a>
           <button type="button" data-account-signout>Sign out</button>
         </div>
       </div>`;
@@ -124,10 +124,23 @@ if (!nav || !authActions) {
     return true;
   }
 
+  function updateAccountCtas(session) {
+    document.querySelectorAll('a.account-get-started, a[data-account-cta]').forEach((link) => {
+      if (session?.user) {
+        link.textContent = 'Access Now';
+        link.href = productContext ? productOrigin : accountUrl('dashboard');
+      } else {
+        link.textContent = 'Get Started';
+        link.href = accountUrl('signup');
+      }
+    });
+  }
+
   renderSignedOut();
+  updateAccountCtas(null);
   supabase.auth.onAuthStateChange((_event, session) => {
-    if (session?.user) renderSignedIn(session.user);
-    else renderSignedOut();
+    if (session?.user) { renderSignedIn(session.user); updateAccountCtas(session); }
+    else { renderSignedOut(); updateAccountCtas(null); }
   });
 
   (async () => {
@@ -136,7 +149,7 @@ if (!nav || !authActions) {
       if (!hadHandoff) {
         const { data, error } = await supabase.auth.getSession();
         if (error) throw error;
-        if (data.session?.user) renderSignedIn(data.session.user);
+        if (data.session?.user) { renderSignedIn(data.session.user); updateAccountCtas(data.session); }
       }
     } catch (error) {
       console.error("ZenVentora account session initialization failed:", error);
