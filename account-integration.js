@@ -125,7 +125,7 @@ if (!nav || !authActions) {
   }
 
   function updateAccountCtas(session) {
-    document.querySelectorAll('a.account-get-started, a[data-account-cta]').forEach((link) => {
+    document.querySelectorAll('a.account-get-started, a[data-account-cta], a[href*="accounts.zenventora.in"][href*="view=signup"]').forEach((link) => {
       if (session?.user) {
         link.textContent = 'Access Now';
         link.href = productContext ? productOrigin : accountUrl('dashboard');
