@@ -16,10 +16,19 @@ const authActions = nav?.querySelector("[data-account-actions]");
 if (!nav || !authActions) {
   console.error("ZenVentora account navigation mount point is missing.");
 } else {
+  const PRODUCT_ORIGINS = {
+    emenu: "https://emenu.zenventora.in/"
+  };
+  const productContext = authActions.dataset.accountProduct || "";
+  const productOrigin = PRODUCT_ORIGINS[productContext] || window.location.origin;
   const accountUrl = (view) => {
     const url = new URL(ACCOUNT_ORIGIN + "/");
     url.searchParams.set("view", view);
-    url.searchParams.set("returnTo", window.location.origin);
+    url.searchParams.set("returnTo", productOrigin);
+    if (productContext) {
+      url.searchParams.set("product", productContext);
+      if (view === "signup") url.searchParams.set("productFlow", "signup");
+    }
     return url.toString();
   };
 
@@ -63,7 +72,7 @@ if (!nav || !authActions) {
               : `<span class="account-avatar account-card-avatar account-avatar-initials">${initials(name)}</span>`}
             <span><strong>${escapeHtml(name)}</strong><small>${escapeHtml(user.email || "")}</small></span>
           </div>
-          <a href="${ACCOUNT_ORIGIN}/?returnTo=${encodeURIComponent(window.location.origin)}">My Accounts <span aria-hidden="true">↗</span></a>
+          <a href="${accountUrl("signin")}">My Accounts <span aria-hidden="true">↗</span></a>
           <button type="button" data-account-signout>Sign out</button>
         </div>
       </div>`;
