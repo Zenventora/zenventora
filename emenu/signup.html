@@ -1,174 +1,121 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex,follow">
-  <meta name="theme-color" content="#0f3b68">
-  <title>Create your eMenu account | ZenVentora</title>
-  <style>
-    *{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f4f7fb;color:#172033;display:grid;place-items:center;padding:28px}
-    .layout{width:min(100%,980px);min-height:620px;background:#fff;border:1px solid #e5eaf1;border-radius:24px;overflow:hidden;display:grid;grid-template-columns: .9fr 1.1fr;box-shadow:0 24px 70px rgba(15,45,80,.12)}
-    .intro{background:linear-gradient(145deg,#0b3158,#0e7779 115%);color:#fff;padding:54px 42px;display:flex;flex-direction:column;justify-content:center}
-    .brand{font-weight:850;font-size:23px;letter-spacing:-.7px}.brand span{color:#69e0d1}.eyebrow{margin-top:58px;color:#a9e9e1;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
-    .intro h1{font-size:36px;line-height:1.13;letter-spacing:-1.3px;margin:14px 0}.intro p{color:#d1e3ed;line-height:1.75;font-size:15px;max-width:340px}
-    .points{display:grid;gap:15px;margin-top:32px;color:#e5f2f5;font-size:14px}.points div:before{content:"✓";display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#ffffff20;color:#80f0dc;margin-right:10px;font-weight:800}
-    .formside{padding:54px 58px;display:flex;align-items:center;justify-content:center}.formbox{width:100%;max-width:390px}.formbox h2{font-size:27px;letter-spacing:-.7px;margin:0 0 8px;color:#102f50}.sub{color:#718096;font-size:14px;line-height:1.6;margin:0 0 28px}
-    label{display:block;font-size:13px;font-weight:700;color:#34445b;margin:0 0 7px}.field{margin-bottom:17px}input{width:100%;height:48px;border:1px solid #dce4ed;border-radius:10px;padding:0 14px;font:inherit;font-size:14px;outline:none;background:#fff}input:focus{border-color:#0ea5a4;box-shadow:0 0 0 3px #0ea5a41c}
-    button{width:100%;height:49px;border:0;border-radius:10px;background:#0e9996;color:white;font-size:15px;font-weight:800;cursor:pointer;margin-top:5px}button:hover{background:#087f80}button:disabled{opacity:.6;cursor:wait}
-    .message{display:none;margin:16px 0 0;padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.55}.message.error{display:block;background:#fff1f1;color:#b42318;border:1px solid #ffd5d2}.message.success{display:block;background:#ecfdf7;color:#067647;border:1px solid #b7ebd4}
-    .foot{margin-top:24px;text-align:center;color:#718096;font-size:13px}.foot a{color:#0a8c8b;text-decoration:none;font-weight:750}.foot a:hover{text-decoration:underline}.google-btn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;height:48px;margin:0 0 18px;background:#fff;color:#26364a;border:1px solid #dce4ed;border-radius:10px;font-size:14px;font-weight:750}.google-btn:hover{background:#f8fafc;border-color:#b8c7d8}.divider{display:flex;align-items:center;gap:12px;color:#94a3b8;font-size:11px;margin:0 0 18px}.divider:before,.divider:after{content:"";height:1px;background:#e6ebf1;flex:1}.otp-panel{display:none}.otp-panel.active{display:block}.otp-panel p{color:#718096;font-size:13px;line-height:1.6;margin:0 0 18px}.otp-panel input{letter-spacing:8px;text-align:center;font-size:22px;font-weight:800}.secondary-btn{background:#fff;color:#0e7779;border:1px solid #cbdde3;margin-top:10px}.secondary-btn:hover{background:#f3fbfa}.legal{font-size:11px;color:#9aa5b4;line-height:1.6;text-align:center;margin-top:22px}
-    @media(max-width:720px){body{padding:14px}.layout{grid-template-columns:1fr;min-height:0}.intro{padding:28px 26px}.eyebrow{margin-top:25px}.intro h1{font-size:28px}.intro p{margin-bottom:0}.points{display:none}.formside{padding:34px 25px 38px}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create your eMenu account | ZenVentora</title>
+<meta name="description" content="Create your ZenVentora eMenu account. Build, manage and publish a digital menu with one secure ZenVentora identity.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://zenventora.in/emenu/signup.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Create your eMenu account | ZenVentora">
+<meta property="og:description" content="Create your ZenVentora eMenu account and continue to eMenu with one common account.">
+<meta property="og:url" content="https://zenventora.in/emenu/signup.html">
+<meta property="og:image" content="https://zenventora.in/assets/zenventora.png">
+<link rel="icon" href="/assets/zenventora.png" type="image/png">
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f4f7fb;color:#172033;display:grid;place-items:center;padding:24px}
+.layout{width:min(100%,1020px);min-height:650px;background:#fff;border:1px solid #e5eaf1;border-radius:26px;overflow:hidden;display:grid;grid-template-columns:.9fr 1.1fr;box-shadow:0 24px 70px rgba(15,45,80,.12)}
+.intro{background:linear-gradient(145deg,#0b3158,#0e7779 115%);color:#fff;padding:54px 44px;display:flex;flex-direction:column;justify-content:center}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:22px}.brand img{height:34px;width:auto;filter:brightness(0) invert(1)}.product{color:#74e4d6}
+.eyebrow{margin-top:58px;color:#a9e9e1;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}.intro h1{font-size:38px;line-height:1.1;letter-spacing:-1.4px;margin:14px 0}.intro p{color:#d1e3ed;line-height:1.75;font-size:15px;max-width:360px}.points{display:grid;gap:14px;margin-top:30px;color:#e5f2f5;font-size:14px}.points div:before{content:"✓";display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#ffffff20;color:#80f0dc;margin-right:10px;font-weight:800}
+.formside{padding:52px 58px;display:flex;align-items:center;justify-content:center}.formbox{width:100%;max-width:410px}.formbox h2{font-size:28px;letter-spacing:-.7px;margin:0 0 8px;color:#102f50}.sub{color:#718096;font-size:14px;line-height:1.6;margin:0 0 26px}
+.google{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;height:48px;background:#fff;color:#26364a;border:1px solid #dce4ed;border-radius:10px;font-size:14px;font-weight:750;cursor:pointer}.google:hover{background:#f8fafc;border-color:#b8c7d8}.divider{display:flex;align-items:center;gap:12px;color:#94a3b8;font-size:11px;margin:18px 0}.divider:before,.divider:after{content:"";height:1px;background:#e6ebf1;flex:1}
+.field{margin-bottom:15px}.field label{display:block;font-size:13px;font-weight:700;color:#34445b;margin:0 0 7px}.field input{width:100%;height:48px;border:1px solid #dce4ed;border-radius:10px;padding:0 14px;font:inherit;font-size:14px;outline:none}.field input:focus{border-color:#0ea5a4;box-shadow:0 0 0 3px #0ea5a41c}
+button.primary{width:100%;height:49px;border:0;border-radius:10px;background:#0e9996;color:#fff;font-size:15px;font-weight:800;cursor:pointer;margin-top:4px}button.primary:hover{background:#087f80}button:disabled{opacity:.6;cursor:wait}
+.message{display:none;margin:15px 0 0;padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.55}.message.error{display:block;background:#fff1f1;color:#b42318;border:1px solid #ffd5d2}.message.success{display:block;background:#ecfdf7;color:#067647;border:1px solid #b7ebd4}
+.otp{display:none}.otp.active{display:block}.otp p{color:#718096;font-size:13px;line-height:1.6;margin:0 0 16px}.otp input{letter-spacing:8px;text-align:center;font-size:22px;font-weight:800}.secondary{width:100%;height:46px;border:1px solid #cbdde3;border-radius:10px;background:#fff;color:#0e7779;font-weight:750;cursor:pointer;margin-top:10px}
+.foot{margin-top:22px;text-align:center;color:#718096;font-size:13px}.foot a{color:#0a8c8b;text-decoration:none;font-weight:750}.foot a:hover{text-decoration:underline}.legal{font-size:11px;color:#9aa5b4;line-height:1.6;text-align:center;margin-top:18px}
+@media(max-width:760px){body{padding:14px}.layout{grid-template-columns:1fr;min-height:0}.intro{padding:30px 26px}.eyebrow{margin-top:28px}.intro h1{font-size:30px}.points{display:none}.formside{padding:34px 25px 38px}}
+</style>
 </head>
 <body>
-  <main class="layout">
-    <section class="intro">
-      <div class="brand">ZenVentora <span>eMenu</span></div>
-      <div class="eyebrow">Get started</div>
-      <h1>Bring your menu online. Grow your business.</h1>
-      <p>Create your eMenu account and start building a beautiful digital menu for your business.</p>
-      <div class="points"><div>Manage your digital menu</div><div>Share menus with a QR code</div><div>Update items and prices anytime</div></div>
-    </section>
-    <section class="formside">
-      <div class="formbox">
-        <h2>Create your account</h2>
-        <p class="sub">Sign up here to get started with ZenVentora eMenu.</p>
-        <button class="google-btn" id="googleSignup" type="button"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.73 7.18l7.65 5.94c4.47-4.13 7.12-10.2 7.12-17.59z"/><path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.88.93 7.55 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.9-5.81l-7.65-5.94c-2.13 1.43-4.86 2.27-8.25 2.27-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continue with Google</button><div class="divider">or sign up with email</div><form id="signupForm" novalidate>
-          <div class="field"><label for="name">Full name</label><input id="name" name="name" autocomplete="name" maxlength="120" placeholder="Enter your full name" required></div>
-          <div class="field"><label for="phone">Phone number</label><input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="20" placeholder="Enter your phone number" required></div>
-          <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></div>
-          <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="new-password" minlength="8" maxlength="72" placeholder="At least 8 characters" required></div>
-          <button id="submitBtn" type="submit">Create eMenu account</button>
-          <div id="message" class="message" role="status" aria-live="polite"></div>
-        </form>
-        <section id="otpPanel" class="otp-panel" aria-live="polite">
-          <p>We sent an 8-digit verification code to <strong id="otpEmail"></strong>. Enter it below to activate your eMenu account.</p>
-          <div class="field"><label for="otpCode">Email verification code</label><input id="otpCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" minlength="6" pattern="[0-9]{6,8}" placeholder="Enter OTP" aria-label="Enter your email verification code"></div>
-          <button id="verifyOtpBtn" type="button">Verify email and continue</button>
-          <button id="backToSignup" class="secondary-btn" type="button">Back to sign up</button>
-        </section>
-        <div class="foot">Already have an account? <a href="https://accounts.zenventora.in/?view=signin&amp;returnTo=https%3A%2F%2Femenu.zenventora.in%2F&amp;product=emenu">Log in</a></div>
-        <div class="legal">By creating an account, you agree to use ZenVentora eMenu in accordance with its terms and privacy policy.</div>
-      </div>
-    </section>
-  </main>
-  <script>
-    (function(){
-      const form=document.getElementById('signupForm');
-      const button=document.getElementById('submitBtn');
-      const message=document.getElementById('message');
-      const googleButton=document.getElementById('googleSignup');
-      const apiBase='https://emenu.zenventora.in/api/auth';
-      let googleClientPromise;
-      async function getGoogleClient(){
-        if(!googleClientPromise){
-          googleClientPromise=(async()=>{
-            const response=await fetch(apiBase+'/public-config',{cache:'no-store'});
-            const config=await response.json();
-            if(!response.ok||!config.url||!config.key) throw new Error(config.message||'Google sign up is not configured.');
-            if(!window.supabase) await new Promise((resolve,reject)=>{
-              const script=document.createElement('script');
-              script.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-              script.onload=resolve;script.onerror=()=>reject(new Error('Unable to load Google sign-in.'));
-              document.head.appendChild(script);
-            });
-            return window.supabase.createClient(config.url,config.key,{auth:{flowType:'pkce',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-          })();
-        }
-        return googleClientPromise;
-      }
-      async function completeGoogleSignup(){
-        const params=new URLSearchParams(window.location.search);
-        if(params.get('oauth')!=='callback') return;
-        googleButton.disabled=true;googleButton.textContent='Finishing Google sign up…';
-        try{
-          const client=await getGoogleClient();
-          const {data,error}=await client.auth.getSession();
-          if(error) throw error;
-          if(!data.session) throw new Error('Google sign up could not be completed. Please try again.');
-          const response=await fetch(apiBase+'/common/session',{
-            method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({accessToken:data.session.access_token,refreshToken:data.session.refresh_token,productFlow:'signup'})
-          });
-          const result=await response.json().catch(()=>({}));
-          if(!response.ok) throw new Error(result.message||'Could not connect your Google account to eMenu.');
-          showMessage('Google account connected. Opening eMenu…','success');
-          await client.auth.signOut({scope:'local'});
-          window.location.replace('https://emenu.zenventora.in/');
-        }catch(error){
-          showMessage(error.message||'Google sign up failed. Please try again.','error');
-          googleButton.disabled=false;googleButton.textContent='Continue with Google';
-        }
-      }
-      googleButton.addEventListener('click',async function(){
-        googleButton.disabled=true;googleButton.textContent='Connecting to Google…';
-        try{
-          const client=await getGoogleClient();
-          const callback=new URL(window.location.href);
-          callback.hash='';
-          callback.search='';
-          callback.searchParams.set('oauth','callback');
-          const {error}=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:callback.toString(),queryParams:{prompt:'select_account'}}});
-          if(error) throw error;
-        }catch(error){
-          showMessage(error.message||'Unable to start Google sign up. Please try again.','error');
-          googleButton.disabled=false;googleButton.textContent='Continue with Google';
-        }
-      });
-      void completeGoogleSignup();
-      document.getElementById('verifyOtpBtn').addEventListener('click',async function(){
-        const token=document.getElementById('otpCode').value.trim();
-        const email=document.getElementById('otpEmail').textContent.trim();
-        if(!/^\\d{6,8}$/.test(token)){showMessage('Enter the 6 to 8 digit code from your verification email.','error');return;}
-        const verifyButton=document.getElementById('verifyOtpBtn');
-        verifyButton.disabled=true;verifyButton.textContent='Verifying…';
-        try{
-          const response=await fetch(apiBase+'/verify-signup',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,token})});
-          const result=await response.json().catch(()=>({}));
-          if(!response.ok) throw new Error(result.message||'Could not verify your email. Check the code and try again.');
-          showMessage('Email verified successfully. Opening eMenu…','success');
-          window.location.replace('https://emenu.zenventora.in/');
-        }catch(error){showMessage(error.message||'Email verification failed.','error');verifyButton.disabled=false;verifyButton.textContent='Verify email and continue';}
-      });
-      document.getElementById('otpCode').addEventListener('input',function(){this.value=this.value.replace(/\\D/g,'').slice(0,8);});
-      document.getElementById('backToSignup').addEventListener('click',function(){document.getElementById('otpPanel').classList.remove('active');form.style.display='block';googleButton.style.display='flex';document.querySelector('.divider').style.display='flex';message.className='message';});
-      function showMessage(text,type){message.textContent=text;message.className='message '+type;}
-      form.addEventListener('submit',async function(event){
-        event.preventDefault();
-        if(!form.reportValidity()) return;
-        const name=document.getElementById('name').value.trim();
-        const phone=document.getElementById('phone').value.trim();
-        const email=document.getElementById('email').value.trim().toLowerCase();
-        const password=document.getElementById('password').value;
-        if(!name||!phone||!email){showMessage('Please complete all the fields.','error');return;}
-        if(password.length<8){showMessage('Password must contain at least 8 characters.','error');return;}
-        button.disabled=true;button.textContent='Creating your account…';message.className='message';
-        try{
-          const response=await fetch('https://emenu.zenventora.in/api/auth/signup',{
-            method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({name,phone,email,password})
-          });
-          const result=await response.json().catch(()=>({}));
-          if(!response.ok) throw new Error(result.message||'Unable to create your account. Please try again.');
-          if(result.requiresVerification){
-            document.getElementById('otpEmail').textContent=email;
-            form.style.display='none';
-            googleButton.style.display='none';
-            document.querySelector('.divider').style.display='none';
-            document.getElementById('otpPanel').classList.add('active');
-            document.getElementById('otpCode').focus();
-            showMessage('Verification code sent. Check your email and enter the code below.','success');
-            return;
-          }
-          showMessage('Account created successfully. Opening eMenu…','success');
-          window.location.assign('https://emenu.zenventora.in/');
-        }catch(error){
-          showMessage(error.message||'Something went wrong. Please try again.','error');
-          button.disabled=false;button.textContent='Create eMenu account';
-        }
-      });
-    })();
-  </script>
+<main class="layout">
+<section class="intro">
+<div class="brand"><img src="https://zenventora.in/assets/zenventora-logo.svg" alt="ZenVentora"><span>ZENVENTORA <span class="product">eMenu</span></span></div>
+<div class="eyebrow">Product signup</div>
+<h1>Bring your menu online. Grow your business.</h1>
+<p>Create your eMenu account here. Your identity is created in the common ZenVentora Accounts system, so the same account works across ZenVentora products.</p>
+<div class="points"><div>One common ZenVentora identity</div><div>Google or email signup</div><div>Email verification before access</div><div>Continue directly into eMenu</div></div>
+</section>
+<section class="formside">
+<div class="formbox">
+<h2>Create your eMenu account</h2>
+<p class="sub">This is the official ZenVentora eMenu signup page.</p>
+<button id="googleBtn" class="google" type="button">
+<svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.73 7.18l7.65 5.94c4.47-4.13 7.12-10.2 7.12-17.59z"/><path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.88.93 7.55 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.9-5.81l-7.65 5.94c-2.13 1.43-4.86 2.27-8.25 2.27-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+Continue with Google
+</button>
+<div class="divider">or sign up with email</div>
+<form id="form">
+<div class="field"><label for="name">Full name</label><input id="name" autocomplete="name" maxlength="120" required placeholder="Your full name"></div>
+<div class="field"><label for="phone">Phone number</label><input id="phone" type="tel" autocomplete="tel" maxlength="20" required placeholder="+91 98765 43210"></div>
+<div class="field"><label for="email">Email address</label><input id="email" type="email" autocomplete="email" maxlength="254" required placeholder="name@company.com"></div>
+<div class="field"><label for="password">Create password</label><input id="password" type="password" autocomplete="new-password" minlength="8" required placeholder="At least 8 characters"></div>
+<button id="submit" class="primary" type="submit">Create eMenu account</button>
+</form>
+<section id="otp" class="otp">
+<p>We created your ZenVentora identity. Enter the verification code sent to <strong id="otpEmail"></strong> to activate it.</p>
+<div class="field"><label for="code">Email verification code</label><input id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" minlength="6" pattern="[0-9]{6,8}" placeholder="00000000"></div>
+<button id="verify" class="primary" type="button">Verify email and continue</button>
+<button id="back" class="secondary" type="button">Back to signup</button>
+</section>
+<div id="message" class="message" role="status" aria-live="polite"></div>
+<div class="foot">Already have an account? <a id="loginLink" href="https://accounts.zenventora.in/login?view=signin&amp;product=emenu&amp;returnTo=https%3A%2F%2Femenu.zenventora.in">Sign in</a></div>
+<div class="legal">Your account is managed by ZenVentora Accounts. No third-party promotions or unrelated offers are displayed on this signup page.</div>
+</div>
+</section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  const SUPABASE_URL='https://flwzqlywdlwatycxexmk.supabase.co';
+  const SUPABASE_KEY='sb_publishable_QN1aNd7wxjkb6ktD6L8GOQ_nsfV1_bY';
+  const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true}});
+  const ACCOUNT_SIGNUP='https://accounts.zenventora.in/signup?view=signup&product=emenu&productFlow=signup&returnTo='+encodeURIComponent('https://emenu.zenventora.in');
+  const PRODUCT='https://emenu.zenventora.in/';
+  const form=document.getElementById('form'), google=document.getElementById('googleBtn'), submit=document.getElementById('submit'), otp=document.getElementById('otp'), msg=document.getElementById('message');
+  let pendingEmail='';
+  function message(text,type){msg.textContent=text;msg.className='message '+type;}
+  function redirectWithSession(session){
+    if(!session) throw new Error('No active ZenVentora session was returned.');
+    const p=new URLSearchParams({access_token:session.access_token,refresh_token:session.refresh_token,type:'account_handoff',product:'emenu',productFlow:'signup'});
+    window.location.replace(PRODUCT+'#'+p.toString());
+  }
+  google.addEventListener('click',async function(){
+    google.disabled=true;google.textContent='Connecting to Google…';
+    try{
+      const {error}=await supabase.auth.signInWithOAuth({provider:'google',options:{redirectTo:ACCOUNT_SIGNUP}});
+      if(error) throw error;
+    }catch(e){message(e.message||'Google sign up could not be started.','error');google.disabled=false;google.textContent='Continue with Google';}
+  });
+  form.addEventListener('submit',async function(e){
+    e.preventDefault(); if(!form.reportValidity()) return;
+    const name=document.getElementById('name').value.trim(),phone=document.getElementById('phone').value.trim(),email=document.getElementById('email').value.trim().toLowerCase(),password=document.getElementById('password').value;
+    submit.disabled=true;submit.textContent='Creating account…';msg.className='message';
+    try{
+      const {data,error}=await supabase.auth.signUp({email,password,options:{data:{full_name:name,phone_number:phone,product:'emenu'},emailRedirectTo:ACCOUNT_SIGNUP}});
+      if(error) throw error;
+      pendingEmail=email;
+      if(data.session){redirectWithSession(data.session);return;}
+      document.getElementById('otpEmail').textContent=email;
+      form.style.display='none';google.style.display='none';document.querySelector('.divider').style.display='none';otp.classList.add('active');
+      message('Verification code sent. Check your email and enter it below.','success');
+    }catch(e){message(e.message||'Could not create your ZenVentora account.','error');submit.disabled=false;submit.textContent='Create eMenu account';}
+  });
+  document.getElementById('verify').addEventListener('click',async function(){
+    const token=document.getElementById('code').value.replace(/\D/g,'').slice(0,8);
+    if(!pendingEmail||token.length<6){message('Enter the verification code from your email.','error');return;}
+    const btn=document.getElementById('verify');btn.disabled=true;btn.textContent='Verifying…';
+    try{
+      const {data,error}=await supabase.auth.verifyOtp({email:pendingEmail,token,type:'signup'});
+      if(error) throw error;
+      redirectWithSession(data.session);
+    }catch(e){message(e.message||'Email verification failed.','error');btn.disabled=false;btn.textContent='Verify email and continue';}
+  });
+  document.getElementById('back').addEventListener('click',function(){otp.classList.remove('active');form.style.display='block';google.style.display='flex';document.querySelector('.divider').style.display='flex';msg.className='message';});
+  document.getElementById('code').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,8);});
+})();
+</script>
 </body>
 </html>
