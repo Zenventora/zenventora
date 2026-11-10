@@ -34,8 +34,10 @@ if (!nav || !authActions) {
     }
     const url = new URL(ACCOUNT_ORIGIN + (view === "signup" ? "/signup" : view === "forgot" ? "/forgot" : "/login"));
     if (view !== "dashboard") url.searchParams.set("view", view);
-    url.searchParams.set("returnTo", productOrigin);
+    // Standalone ZenVentora authentication must stay inside Accounts.
+    // Only product-origin authentication receives a returnTo handoff.
     if (productContext) {
+      url.searchParams.set("returnTo", productOrigin);
       url.searchParams.set("product", productContext);
       if (view === "signup") url.searchParams.set("productFlow", "signup");
     }
