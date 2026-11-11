@@ -10,6 +10,7 @@ const ACCOUNT_ORIGIN = "https://accounts.zenventora.in";
 const BRIDGE_URL = ACCOUNT_ORIGIN + "/session-bridge.html";
 
 let sessionBridge = null;
+let sessionAccessToken = null;
 
 const PRODUCT_ORIGINS = {
   emenu: "https://emenu.zenventora.in/",
@@ -203,6 +204,9 @@ if (roots.length || document.querySelector("footer")) {
     "position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;border:0;clip-path:inset(50%);";
   document.body.appendChild(sessionBridge);
   renderFooterAccount();
+  sessionBridge.addEventListener("load", () => {
+    sessionBridge.contentWindow?.postMessage({ type: "zenventora:request_session" }, ACCOUNT_ORIGIN);
+  });
 
   let resolved = false;
   const fallbackTimer = window.setTimeout(() => {
@@ -220,12 +224,38 @@ if (roots.length || document.querySelector("footer")) {
 
     if (message.type === "session") {
       resolved = true;
+      sessionAccessToken = message.access_token || null;
       window.clearTimeout(fallbackTimer);
       applySession(message.user || null);
     }
 
     if (message.type === "signed_out") {
+      sessionAccessToken = null;
       applySession(null);
+    }
+
+    if (message.type === "signout_error") {
+      console.error("ZenVentora sign out failed:", message.message || "Unknown error");
     }
   });
 }
+
+
+// Read-only session API for pages that need to gate an action without owning auth state.
+window.ZenVentoraAccount = window.ZenVentoraAccount || {
+  ACCOUNT_ORIGIN,
+  ACCOUNT_CANONICAL_ORIGIN,
+  getSession: () => sessionBridge ? new Promise(resolve => {
+    if (resolved) return resolve(sessionAccessToken ? { user: true, accessToken: sessionAccessToken } : null);
+    const handler = event => {
+      if (event.origin !== ACCOUNT_ORIGIN || event.source !== sessionBridge?.contentWindow) return;
+      if (event.data?.namespace !== "zenventora-account-bridge" || event.data?.type !== "session") return;
+      window.removeEventListener("message", handler);
+      resolve(event.data.user ? { user: event.data.user, accessToken: event.data.access_token || null } : null);
+    };
+    window.addEventListener("message", handler);
+    sessionBridge.contentWindow?.postMessage({ type: "zenventora:request_session" }, ACCOUNT_ORIGIN);
+  }) : Promise.resolve(null),
+  getAccessToken: () => sessionAccessToken,
+  isSignedIn: () => Boolean(sessionAccessToken)
+};
