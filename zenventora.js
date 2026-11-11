@@ -138,6 +138,46 @@ function updateAccountCtas(session) {
   });
 }
 
+function renderFooterAccount() {
+  const footer = document.querySelector("footer");
+  if (!footer || footer.querySelector("[data-account-footer]")) return;
+  const grid = footer.querySelector(".footer-grid") || footer.firstElementChild || footer;
+  const section = document.createElement("div");
+  section.dataset.accountFooter = "true";
+  section.className = "zv-footer-account";
+  section.innerHTML =
+    '<h3>Account</h3>' +
+    '<div class="zv-footer-account-actions">' +
+      '<a class="zv-footer-account-link" data-footer-account-action="signin" href="' + accountUrl("signin") + '">Sign in</a>' +
+      '<a class="zv-footer-account-link zv-footer-account-primary" data-footer-account-action="signup" href="' + accountUrl("signup") + '">Get Started</a>' +
+    '</div>';
+  if (grid.classList && grid.classList.contains("footer-grid")) grid.appendChild(section);
+  else footer.appendChild(section);
+}
+
+function updateFooterAccount(session) {
+  const root = document.querySelector("[data-account-footer]");
+  if (!root) return;
+  if (session?.user) {
+    root.innerHTML =
+      '<h3>Account</h3>' +
+      '<div class="zv-footer-account-actions">' +
+        '<a class="zv-footer-account-link zv-footer-account-primary" href="' + ACCOUNT_ORIGIN + '/account/settings">My Accounts</a>' +
+        '<button class="zv-footer-account-link" type="button" data-footer-signout>Sign out</button>' +
+      '</div>';
+    root.querySelector("[data-footer-signout]")?.addEventListener("click", () => {
+      sessionBridge?.contentWindow?.postMessage({ type: "zenventora:signout" }, ACCOUNT_ORIGIN);
+    });
+  } else {
+    root.innerHTML =
+      '<h3>Account</h3>' +
+      '<div class="zv-footer-account-actions">' +
+        '<a class="zv-footer-account-link" data-footer-account-action="signin" href="' + accountUrl("signin") + '">Sign in</a>' +
+        '<a class="zv-footer-account-link zv-footer-account-primary" data-footer-account-action="signup" href="' + accountUrl("signup") + '">Get Started</a>' +
+      '</div>';
+  }
+}
+
 function applySession(user) {
   const session = user ? { user } : null;
   roots.forEach(root => {
@@ -145,6 +185,8 @@ function applySession(user) {
     else renderSignedOut(root);
   });
   updateAccountCtas(session);
+  renderFooterAccount();
+  updateFooterAccount(session);
 }
 
 const roots = [...document.querySelectorAll("[data-account-actions]")];
@@ -160,6 +202,7 @@ if (roots.length) {
   sessionBridge.style.cssText =
     "position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;border:0;clip-path:inset(50%);";
   document.body.appendChild(sessionBridge);
+  renderFooterAccount();
 
   let resolved = false;
   const fallbackTimer = window.setTimeout(() => {
