@@ -1,0 +1,20 @@
+/* ZenVentora Common Account UI
+ * Shared visual primitives for product account/session controls.
+ */
+.zv-account-header{display:flex;align-items:center;justify-content:flex-end;gap:12px}
+.zv-account-profile{position:relative}
+.zv-account-trigger{display:inline-flex;align-items:center;gap:10px;border:0;background:transparent;cursor:pointer}
+.zv-account-avatar{width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;overflow:hidden;font-weight:800}
+.zv-account-avatar img{width:100%;height:100%;object-fit:cover}
+.zv-account-menu{position:absolute;right:0;top:calc(100% + 10px);min-width:260px;padding:14px;border-radius:14px;background:#fff;box-shadow:0 18px 50px rgba(15,23,42,.16);border:1px solid rgba(15,23,42,.08);z-index:1000}
+.zv-account-menu[hidden]{display:none}
+.zv-account-menu-head{display:flex;align-items:center;gap:12px;padding-bottom:12px;margin-bottom:10px;border-bottom:1px solid #e5e7eb}
+.zv-account-menu-head strong,.zv-account-menu-head small{display:block}
+.zv-account-menu-head small{margin-top:3px;color:#64748b}
+.zv-account-menu a,.zv-account-menu button{display:flex;width:100%;align-items:center;justify-content:space-between;padding:10px 8px;border:0;background:transparent;text-decoration:none;color:#0f172a;border-radius:8px;cursor:pointer}
+.zv-account-menu a:hover,.zv-account-menu button:hover{background:#f8fafc}
+.zv-account-gate{min-height:100vh;display:grid;place-items:center;padding:32px;background:#f8fafc}
+.zv-account-gate-card{max-width:460px;width:100%;background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:32px;box-shadow:0 20px 60px rgba(15,23,42,.08);text-align:center}
+.zv-account-gate-card h1{margin:0 0 10px}
+.zv-account-gate-card p{color:#64748b;line-height:1.6}
+.zv-account-gate-card .zv-account-primary{display:inline-flex;align-items:center;justify-content:center;margin-top:12px;padding:12px 18px;border-radius:10px;background:#0f172a;color:#fff;text-decoration:none;font-weight:700}
