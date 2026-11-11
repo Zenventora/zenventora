@@ -129,7 +129,7 @@ const ACCOUNT_ORIGIN = "https://zenventora-accounts-bels.onrender.com";
   }
 
   function openAccount() {
-    window.location.assign(ACCOUNT_ORIGIN + "/");
+    window.location.assign(ACCOUNT_ORIGIN + "/account/settings");
   }
 
   function signOut() {
