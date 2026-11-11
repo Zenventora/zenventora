@@ -62,8 +62,7 @@
       session = message.user ? {
         user: message.user,
         accessToken: message.access_token || null,
-        refreshToken: message.refresh_token || null
-      } : null;
+       } : null;
       ready = true;
       notify();
     }
