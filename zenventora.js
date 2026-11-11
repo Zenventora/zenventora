@@ -29,11 +29,15 @@ function accountUrl(view, product = "") {
   const url = new URL(ACCOUNT_ORIGIN + path);
   url.searchParams.set("view", view);
 
-  // Standalone ZenVentora auth stays inside Accounts.
-  // Product-context auth gets an explicit product handoff.
+  // Every sign-in/sign-up started from the website must return to the
+  // exact page that initiated the flow. Accounts remains the identity owner.
+  const returnTarget = product
+    ? (PRODUCT_ORIGINS[product] || window.location.origin)
+    : window.location.href;
+  url.searchParams.set("returnTo", returnTarget);
+
   if (product) {
     url.searchParams.set("product", product);
-    url.searchParams.set("returnTo", PRODUCT_ORIGINS[product] || window.location.origin);
     if (view === "signup") url.searchParams.set("productFlow", "signup");
   }
 
