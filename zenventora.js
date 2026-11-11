@@ -4,9 +4,12 @@
 // inventory, billing, or application records.
 
 const ACCOUNT_ORIGIN = "https://accounts.zenventora.in";
-const BRIDGE_URL = ACCOUNT_ORIGIN + "/session-bridge.html";
-
-let sessionBridge = null;
+const SUPABASE_URL = "https://flwzqlywdlwatycxexmk.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_QN1aNd7wxjkb6ktD6L8GOQ_nsfV1_bY";
+const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
+const siteSupabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: false }
+});
 
 const PRODUCT_ORIGINS = {
   emenu: "https://emenu.zenventora.in/",
@@ -89,7 +92,9 @@ function renderSignedIn(root, user) {
     event.currentTarget.textContent = "Signing out…";
 
     try {
-      sessionBridge?.contentWindow?.postMessage({ type: "zenventora:signout" }, ACCOUNT_ORIGIN);
+      const { error } = await siteSupabase.auth.signOut({ scope: "global" });
+      if (error) throw error;
+      applySession(null);
     } catch {
       event.currentTarget.disabled = false;
       event.currentTarget.textContent = "Sign out";
@@ -134,40 +139,42 @@ function applySession(user) {
 
 const roots = [...document.querySelectorAll("[data-account-actions]")];
 
-if (roots.length) {
-  // Cross-origin localStorage is intentionally not used.
-  // Accounts owns the session; this page reads it through the read-only session bridge.
-  sessionBridge = document.createElement("iframe");
-  sessionBridge.src = BRIDGE_URL;
-  sessionBridge.title = "ZenVentora account session";
-  sessionBridge.tabIndex = -1;
-  sessionBridge.setAttribute("aria-hidden", "true");
-  sessionBridge.style.cssText =
-    "position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;border:0;clip-path:inset(50%);";
-  document.body.appendChild(sessionBridge);
+async function bootstrapAccountSession() {
+  // Accounts redirects back with a one-time handoff in the URL fragment.
+  // Exchange it into this site's own Supabase session storage, then remove
+  // the tokens from the visible URL.
+  const params = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+  if (params.get("type") === "account_handoff" && params.get("access_token") && params.get("refresh_token")) {
+    const { error } = await siteSupabase.auth.setSession({
+      access_token: params.get("access_token"),
+      refresh_token: params.get("refresh_token")
+    });
+    const clean = new URL(window.location.href);
+    clean.hash = "";
+    window.history.replaceState({}, document.title, clean.toString());
+    if (error) return null;
+  }
 
+  const { data } = await siteSupabase.auth.getSession();
+  return data.session?.user || null;
+}
+
+if (roots.length) {
   let resolved = false;
-  const fallbackTimer = window.setTimeout(() => {
-    if (!resolved) {
-      resolved = true;
-      applySession(null);
-    }
+
+  bootstrapAccountSession().then(user => {
+    resolved = true;
+    applySession(user);
+  }).catch(() => {
+    resolved = true;
+    applySession(null);
+  });
+
+  window.setTimeout(() => {
+    if (!resolved) applySession(null);
   }, 5000);
 
-  window.addEventListener("message", event => {
-    if (event.origin !== ACCOUNT_ORIGIN || event.source !== sessionBridge.contentWindow) return;
-
-    const message = event.data;
-    if (!message || message.namespace !== "zenventora-account-bridge") return;
-
-    if (message.type === "session") {
-      resolved = true;
-      window.clearTimeout(fallbackTimer);
-      applySession(message.user || null);
-    }
-
-    if (message.type === "signed_out") {
-      applySession(null);
-    }
+  siteSupabase.auth.onAuthStateChange((_event, session) => {
+    applySession(session?.user || null);
   });
 }
