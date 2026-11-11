@@ -14,6 +14,22 @@ const PRODUCT_ORIGINS = {
   vadix: "https://vadix.zenventora.in/"
 };
 
+function isZenVentoraOrigin(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" &&
+      (url.hostname === "zenventora.in" || url.hostname.endsWith(".zenventora.in"));
+  } catch {
+    return false;
+  }
+}
+
+function resolveProductOrigin(product, explicitUrl) {
+  const explicit = String(explicitUrl || "").trim();
+  if (explicit && isZenVentoraOrigin(explicit)) return new URL(explicit).origin + "/";
+  return PRODUCT_ORIGINS[String(product || "").toLowerCase()] || null;
+}
+
 const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, char => ({
   "&":"&amp;","<":"&lt;",">":"&gt;","":"&quot;","'":"&#39;"
 }[char]));
@@ -30,7 +46,7 @@ function accountUrl(view, product = "") {
   // Product-context auth gets an explicit product handoff.
   if (product) {
     url.searchParams.set("product", product);
-    url.searchParams.set("returnTo", PRODUCT_ORIGINS[product] || window.location.origin);
+    url.searchParams.set("returnTo", resolveProductOrigin(product) || window.location.origin);
     if (view === "signup") url.searchParams.set("productFlow", "signup");
   }
 
@@ -103,11 +119,12 @@ function updateAccountCtas(session) {
 
     const root = element.closest("[data-account-actions]");
     const product = element.dataset.accountProduct || root?.dataset.accountProduct || "";
+    const productUrl = element.dataset.accountProductUrl || root?.dataset.accountProductUrl || "";
 
     if (session?.user) {
       element.textContent = "Access Now";
       element.href = product
-        ? (PRODUCT_ORIGINS[product] || window.location.origin)
+        ? (resolveProductOrigin(product, productUrl) || window.location.origin)
         : ACCOUNT_ORIGIN + "/";
       element.dataset.accountAction = "access";
     } else {
