@@ -4226,7 +4226,7 @@ body:not(.website-page):not(.online-solutions-page):not(.emenu-page) .zv-client-
   width: fit-content;
   max-width: 100%;
   height: auto !important;
-  padding: 15px !important;
+  padding: 0 15px !important;
   margin: 0 0 20px !important;
   border: 0 !important;
   border-radius: 12px !important;
@@ -4248,3 +4248,13 @@ body:not(.website-page):not(.online-solutions-page):not(.emenu-page) .zv-client-
 .site-footer .footer-grid > div:first-child > p {
   display: block !important;
 }
+
+
+/* Footer social icons */
+.site-footer .footer-social-section h3{margin-bottom:12px}
+.site-footer .footer-social{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.site-footer .footer-social-link{display:inline-flex!important;align-items:center;justify-content:center;width:38px;height:38px;margin:0!important;padding:0!important;border:1px solid rgba(255,255,255,.18);border-radius:50%;color:#dce9f6!important;text-decoration:none;background:rgba(255,255,255,.04);transition:transform .18s ease,background .18s ease,color .18s ease}
+.site-footer .footer-social-link:hover{transform:translateY(-2px);background:rgba(255,255,255,.1);color:#fff!important}
+.site-footer .footer-social-link svg{width:19px;height:19px;fill:currentColor;stroke:currentColor;stroke-width:0;display:block}
+.site-footer .footer-social-link:first-child svg{fill:none;stroke:currentColor;stroke-width:2}
+@media(max-width:560px){.site-footer .footer-social{gap:10px}.site-footer .footer-social-link{width:36px;height:36px}}
