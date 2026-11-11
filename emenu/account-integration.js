@@ -1,5 +1,5 @@
 (() => {
-  const ACCOUNT_ORIGIN = "https://accounts.zenventora.in";
+  const ACCOUNT_ORIGIN = "https://zenventora-accounts-bels.onrender.com";
   const BRIDGE_URL = ACCOUNT_ORIGIN + "/session-bridge.html";
   const host = document.querySelector("[data-emenu-cta]");
   if (!host) return;
@@ -13,7 +13,7 @@
 
   const signedOutMarkup = () => `
     <a class="btn btn-primary btn-small" href="https://zenventora.in/emenu/signup.html">Get Started Free</a>
-    <a class="btn btn-secondary btn-small" href="https://accounts.zenventora.in/?view=signin&amp;returnTo=https%3A%2F%2Femenu.zenventora.in%2F&amp;product=emenu">Sign In</a>`;
+    <a class="btn btn-secondary btn-small" href="https://zenventora-accounts-bels.onrender.com/?view=signin&amp;returnTo=https%3A%2F%2Femenu.zenventora.in%2F&amp;product=emenu">Sign In</a>`;
 
   function renderSignedOut() {
     host.className = "cta-area cta-area--header";
@@ -46,7 +46,7 @@
               : `<span class="account-avatar account-card-avatar account-avatar-initials">${initials(name)}</span>`}
             <span><strong>${escapeHtml(name)}</strong><small>${escapeHtml(user.email || "")}</small></span>
           </div>
-          <a href="${ACCOUNT_ORIGIN}/">Manage account <span aria-hidden="true">↗</span></a>
+          <a href="${ACCOUNT_ORIGIN}/account/settings">Manage account <span aria-hidden="true">↗</span></a>
           <button type="button" data-emenu-account-signout>Sign out</button>
         </div>
       </div>`;
