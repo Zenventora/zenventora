@@ -40,9 +40,9 @@ function accountUrl(view, product = "") {
 function renderSignedOut(root) {
   const product = root.dataset.accountProduct || "";
   root.innerHTML =
-    '<a class="account-nav-link account-signin-link" data-account-action="signin" href="' +
+    '<a class="account-nav-link account-signin-link account-session-signin" data-account-action="signin" href="' +
     accountUrl("signin", product) + '">Sign in</a>' +
-    '<a class="btn btn-primary btn-small account-get-started account-cta" data-account-cta="signup" data-account-action="signup" href="' +
+    '<a class="btn btn-primary btn-small account-get-started account-cta account-session-cta" data-account-cta="signup" data-account-action="signup" href="' +
     accountUrl("signup", product) + '">Get Started</a>';
 }
 
@@ -98,7 +98,7 @@ function renderSignedIn(root, user) {
 }
 
 function updateAccountCtas(session) {
-  document.querySelectorAll(".account-cta, [data-account-cta]").forEach(element => {
+  document.querySelectorAll(".account-cta, [data-account-cta], .account-session-cta").forEach(element => {
     if (!(element instanceof HTMLAnchorElement)) return;
 
     const root = element.closest("[data-account-actions]");
@@ -115,6 +115,11 @@ function updateAccountCtas(session) {
       element.href = accountUrl("signup", product);
       element.dataset.accountAction = "signup";
     }
+  });
+
+  document.querySelectorAll(".account-session-signin, .account-signin-link[data-account-action=\"signin\"]").forEach(element => {
+    element.hidden = Boolean(session?.user);
+    element.setAttribute("aria-hidden", String(Boolean(session?.user)));
   });
 }
 
