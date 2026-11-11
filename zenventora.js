@@ -6,7 +6,7 @@
 // Temporary production fallback: the Render Accounts service is live, but the custom
 // accounts.zenventora.in DNS/custom-domain mapping is currently not resolving.
 // Keep this single constant so restoring the canonical domain later is one-line.
-const ACCOUNT_ORIGIN = "https://zenventora-accounts-bels.onrender.com";
+const ACCOUNT_ORIGIN = "https://accounts.zenventora.in";
 const BRIDGE_URL = ACCOUNT_ORIGIN + "/session-bridge.html";
 
 let sessionBridge = null;
