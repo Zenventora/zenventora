@@ -7,7 +7,7 @@
   "use strict";
 
   // Temporary production fallback while accounts.zenventora.in DNS/custom-domain mapping is unavailable.
-const ACCOUNT_ORIGIN = "https://zenventora-accounts-bels.onrender.com";
+const ACCOUNT_ORIGIN = "https://accounts.zenventora.in";
   const BRIDGE_URL = ACCOUNT_ORIGIN + "/session-bridge.html";
   const PRODUCT_ORIGINS = {
     emenu: "https://emenu.zenventora.in/",
