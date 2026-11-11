@@ -143,10 +143,35 @@ function applySession(user) {
 
 const roots = [...document.querySelectorAll("[data-account-actions]")];
 
+let accountSessionBridge = null;
+let accountSessionBridgeReady = false;
+
+function requestAccountsSession() {
+  if (!accountSessionBridge) return;
+  try {
+    accountSessionBridge.contentWindow?.postMessage(
+      { type: "zenventora:request-session" },
+      ACCOUNT_ORIGIN
+    );
+  } catch {}
+}
+
+function mountAccountsSessionBridge() {
+  if (accountSessionBridge) return;
+  accountSessionBridge = document.createElement("iframe");
+  accountSessionBridge.src = ACCOUNT_ORIGIN + "/session-bridge.html";
+  accountSessionBridge.title = "ZenVentora account session";
+  accountSessionBridge.setAttribute("aria-hidden", "true");
+  accountSessionBridge.tabIndex = -1;
+  accountSessionBridge.style.cssText = "position:absolute;width:1px;height:1px;border:0;opacity:0;pointer-events:none;";
+  accountSessionBridge.addEventListener("load", () => {
+    accountSessionBridgeReady = true;
+    requestAccountsSession();
+  });
+  document.body.appendChild(accountSessionBridge);
+}
+
 async function bootstrapAccountSession() {
-  // Accounts redirects back with a one-time handoff in the URL fragment.
-  // Exchange it into this site's own Supabase session storage, then remove
-  // the tokens from the visible URL.
   const params = new URLSearchParams(window.location.hash.replace(/^#/, ""));
   if (params.get("type") === "account_handoff" && params.get("access_token") && params.get("refresh_token")) {
     const { error } = await siteSupabase.auth.setSession({
@@ -161,6 +186,30 @@ async function bootstrapAccountSession() {
 
   const { data } = await siteSupabase.auth.getSession();
   return data.session?.user || null;
+}
+
+window.addEventListener("message", async event => {
+  if (event.origin !== ACCOUNT_ORIGIN || event.source !== accountSessionBridge?.contentWindow) return;
+  if (event.data?.type !== "zenventora:account-session") return;
+
+  const incoming = event.data.session;
+  if (!incoming?.access_token || !incoming?.refresh_token) {
+    await siteSupabase.auth.signOut({ scope: "local" }).catch(() => {});
+    applySession(null);
+    return;
+  }
+
+  const { data, error } = await siteSupabase.auth.setSession({
+    access_token: incoming.access_token,
+    refresh_token: incoming.refresh_token
+  });
+  if (!error) applySession(data.session?.user || null);
+});
+
+if (roots.length) {
+  mountAccountsSessionBridge();
+  window.setTimeout(() => requestAccountsSession(), 1000);
+  window.setTimeout(() => requestAccountsSession(), 3000);
 }
 
 if (roots.length) {
