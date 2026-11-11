@@ -191,7 +191,7 @@ function applySession(user) {
 
 const roots = [...document.querySelectorAll("[data-account-actions]")];
 
-if (roots.length) {
+if (roots.length || document.querySelector("footer")) {
   // Cross-origin localStorage is intentionally not used.
   // Accounts owns the session; this page reads it through the read-only session bridge.
   sessionBridge = document.createElement("iframe");
