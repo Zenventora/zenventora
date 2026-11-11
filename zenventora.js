@@ -3,38 +3,16 @@
 // It does not access or modify any product database, order data, customer data,
 // inventory, billing, or application records.
 
-// Temporary production fallback: the Render Accounts service is live, but the custom
-// accounts.zenventora.in DNS/custom-domain mapping is currently not resolving.
-// Keep this single constant so restoring the canonical domain later is one-line.
-const ACCOUNT_ORIGIN = "https://zenventora-accounts-bels.onrender.com";
-const ACCOUNT_CANONICAL_ORIGIN = "https://accounts.zenventora.in";
+const ACCOUNT_ORIGIN = "https://accounts.zenventora.in";
 const BRIDGE_URL = ACCOUNT_ORIGIN + "/session-bridge.html";
 
 let sessionBridge = null;
-let sessionAccessToken = null;
-let sessionResolved = false;
 
 const PRODUCT_ORIGINS = {
   emenu: "https://emenu.zenventora.in/",
   siteradar: "https://siteradar.zenventora.in/",
   vadix: "https://vadix.zenventora.in/"
 };
-
-function isZenVentoraOrigin(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" &&
-      (url.hostname === "zenventora.in" || url.hostname.endsWith(".zenventora.in"));
-  } catch {
-    return false;
-  }
-}
-
-function resolveProductOrigin(product, explicitUrl) {
-  const explicit = String(explicitUrl || "").trim();
-  if (explicit && isZenVentoraOrigin(explicit)) return new URL(explicit).origin + "/";
-  return PRODUCT_ORIGINS[String(product || "").toLowerCase()] || null;
-}
 
 const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, char => ({
   "&":"&amp;","<":"&lt;",">":"&gt;","":"&quot;","'":"&#39;"
@@ -52,7 +30,7 @@ function accountUrl(view, product = "") {
   // Product-context auth gets an explicit product handoff.
   if (product) {
     url.searchParams.set("product", product);
-    url.searchParams.set("returnTo", resolveProductOrigin(product) || window.location.origin);
+    url.searchParams.set("returnTo", PRODUCT_ORIGINS[product] || window.location.origin);
     if (view === "signup") url.searchParams.set("productFlow", "signup");
   }
 
@@ -125,12 +103,11 @@ function updateAccountCtas(session) {
 
     const root = element.closest("[data-account-actions]");
     const product = element.dataset.accountProduct || root?.dataset.accountProduct || "";
-    const productUrl = element.dataset.accountProductUrl || root?.dataset.accountProductUrl || "";
 
     if (session?.user) {
       element.textContent = "Access Now";
       element.href = product
-        ? (resolveProductOrigin(product, productUrl) || window.location.origin)
+        ? (PRODUCT_ORIGINS[product] || window.location.origin)
         : ACCOUNT_ORIGIN + "/";
       element.dataset.accountAction = "access";
     } else {
@@ -141,46 +118,6 @@ function updateAccountCtas(session) {
   });
 }
 
-function renderFooterAccount() {
-  const footer = document.querySelector("footer");
-  if (!footer || footer.querySelector("[data-account-footer]")) return;
-  const grid = footer.querySelector(".footer-grid") || footer.firstElementChild || footer;
-  const section = document.createElement("div");
-  section.dataset.accountFooter = "true";
-  section.className = "zv-footer-account";
-  section.innerHTML =
-    '<h3>Account</h3>' +
-    '<div class="zv-footer-account-actions">' +
-      '<a class="zv-footer-account-link" data-footer-account-action="signin" href="' + accountUrl("signin") + '">Sign in</a>' +
-      '<a class="zv-footer-account-link zv-footer-account-primary" data-footer-account-action="signup" href="' + accountUrl("signup") + '">Get Started</a>' +
-    '</div>';
-  if (grid.classList && grid.classList.contains("footer-grid")) grid.appendChild(section);
-  else footer.appendChild(section);
-}
-
-function updateFooterAccount(session) {
-  const root = document.querySelector("[data-account-footer]");
-  if (!root) return;
-  if (session?.user) {
-    root.innerHTML =
-      '<h3>Account</h3>' +
-      '<div class="zv-footer-account-actions">' +
-        '<a class="zv-footer-account-link zv-footer-account-primary" href="' + ACCOUNT_ORIGIN + '/account/settings">My Accounts</a>' +
-        '<button class="zv-footer-account-link" type="button" data-footer-signout>Sign out</button>' +
-      '</div>';
-    root.querySelector("[data-footer-signout]")?.addEventListener("click", () => {
-      sessionBridge?.contentWindow?.postMessage({ type: "zenventora:signout" }, ACCOUNT_ORIGIN);
-    });
-  } else {
-    root.innerHTML =
-      '<h3>Account</h3>' +
-      '<div class="zv-footer-account-actions">' +
-        '<a class="zv-footer-account-link" data-footer-account-action="signin" href="' + accountUrl("signin") + '">Sign in</a>' +
-        '<a class="zv-footer-account-link zv-footer-account-primary" data-footer-account-action="signup" href="' + accountUrl("signup") + '">Get Started</a>' +
-      '</div>';
-  }
-}
-
 function applySession(user) {
   const session = user ? { user } : null;
   roots.forEach(root => {
@@ -188,13 +125,11 @@ function applySession(user) {
     else renderSignedOut(root);
   });
   updateAccountCtas(session);
-  renderFooterAccount();
-  updateFooterAccount(session);
 }
 
 const roots = [...document.querySelectorAll("[data-account-actions]")];
 
-if (roots.length || document.querySelector("footer")) {
+if (roots.length) {
   // Cross-origin localStorage is intentionally not used.
   // Accounts owns the session; this page reads it through the read-only session bridge.
   sessionBridge = document.createElement("iframe");
@@ -205,10 +140,6 @@ if (roots.length || document.querySelector("footer")) {
   sessionBridge.style.cssText =
     "position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;border:0;clip-path:inset(50%);";
   document.body.appendChild(sessionBridge);
-  renderFooterAccount();
-  sessionBridge.addEventListener("load", () => {
-    sessionBridge.contentWindow?.postMessage({ type: "zenventora:request_session" }, ACCOUNT_ORIGIN);
-  });
 
   let resolved = false;
   const fallbackTimer = window.setTimeout(() => {
@@ -226,40 +157,12 @@ if (roots.length || document.querySelector("footer")) {
 
     if (message.type === "session") {
       resolved = true;
-      sessionResolved = true;
-      sessionAccessToken = message.access_token || null;
       window.clearTimeout(fallbackTimer);
       applySession(message.user || null);
     }
 
     if (message.type === "signed_out") {
-      sessionResolved = true;
-      sessionAccessToken = null;
       applySession(null);
-    }
-
-    if (message.type === "signout_error") {
-      console.error("ZenVentora sign out failed:", message.message || "Unknown error");
     }
   });
 }
-
-
-// Read-only session API for pages that need to gate an action without owning auth state.
-window.ZenVentoraAccount = window.ZenVentoraAccount || {
-  ACCOUNT_ORIGIN,
-  ACCOUNT_CANONICAL_ORIGIN,
-  getSession: () => sessionBridge ? new Promise(resolve => {
-    if (sessionResolved) return resolve(sessionAccessToken ? { user: true, accessToken: sessionAccessToken } : null);
-    const handler = event => {
-      if (event.origin !== ACCOUNT_ORIGIN || event.source !== sessionBridge?.contentWindow) return;
-      if (event.data?.namespace !== "zenventora-account-bridge" || event.data?.type !== "session") return;
-      window.removeEventListener("message", handler);
-      resolve(event.data.user ? { user: event.data.user, accessToken: event.data.access_token || null } : null);
-    };
-    window.addEventListener("message", handler);
-    sessionBridge.contentWindow?.postMessage({ type: "zenventora:request_session" }, ACCOUNT_ORIGIN);
-  }) : Promise.resolve(null),
-  getAccessToken: () => sessionAccessToken,
-  isSignedIn: () => Boolean(sessionAccessToken)
-};
