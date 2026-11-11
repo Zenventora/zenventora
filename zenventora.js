@@ -11,6 +11,7 @@ const BRIDGE_URL = ACCOUNT_ORIGIN + "/session-bridge.html";
 
 let sessionBridge = null;
 let sessionAccessToken = null;
+let sessionResolved = false;
 
 const PRODUCT_ORIGINS = {
   emenu: "https://emenu.zenventora.in/",
@@ -224,12 +225,14 @@ if (roots.length || document.querySelector("footer")) {
 
     if (message.type === "session") {
       resolved = true;
+      sessionResolved = true;
       sessionAccessToken = message.access_token || null;
       window.clearTimeout(fallbackTimer);
       applySession(message.user || null);
     }
 
     if (message.type === "signed_out") {
+      sessionResolved = true;
       sessionAccessToken = null;
       applySession(null);
     }
@@ -246,7 +249,7 @@ window.ZenVentoraAccount = window.ZenVentoraAccount || {
   ACCOUNT_ORIGIN,
   ACCOUNT_CANONICAL_ORIGIN,
   getSession: () => sessionBridge ? new Promise(resolve => {
-    if (resolved) return resolve(sessionAccessToken ? { user: true, accessToken: sessionAccessToken } : null);
+    if (sessionResolved) return resolve(sessionAccessToken ? { user: true, accessToken: sessionAccessToken } : null);
     const handler = event => {
       if (event.origin !== ACCOUNT_ORIGIN || event.source !== sessionBridge?.contentWindow) return;
       if (event.data?.namespace !== "zenventora-account-bridge" || event.data?.type !== "session") return;
