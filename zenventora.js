@@ -57,20 +57,31 @@ function accountUrl(view, product = "") {
   return url.toString();
 }
 
-function productHandoffUrl(product, session) {
+async function activateProductSession(product, session) {
   if (!session?.access_token || !session?.refresh_token) {
-    return accountUrl("signin", product);
+    throw new Error("No active ZenVentora session.");
   }
 
-  const target = new URL(PRODUCT_ORIGINS[product] || window.location.origin);
-  target.hash = new URLSearchParams({
-    access_token: session.access_token,
-    refresh_token: session.refresh_token,
-    type: "account_handoff",
-    product
-  }).toString();
+  const origin = PRODUCT_ORIGINS[product] || window.location.origin;
+  const response = await fetch(origin + "/api/auth/common/session", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    cache: "no-store",
+    body: JSON.stringify({
+      accessToken: session.access_token,
+      refreshToken: session.refresh_token,
+      productFlow: "signin",
+      provisionOnly: false
+    })
+  });
 
-  return target.toString();
+  if (!response.ok) {
+    const payload = await response.json().catch(() => ({}));
+    throw new Error(payload.message || "Could not connect this product.");
+  }
+
+  window.location.assign(new URL("/dashboard", origin).toString());
 }
 
 function renderSignedIn(root, user) {
@@ -214,7 +225,12 @@ function installAccessNowHandler() {
       window.setTimeout(async () => {
         const retry = (await siteSupabase.auth.getSession()).data.session || currentSiteSession;
         if (retry?.user) {
-          window.location.assign(productHandoffUrl(product, retry));
+          try {
+            await activateProductSession(product, retry);
+          } catch (error) {
+            console.error("Product session activation failed:", error);
+            window.location.assign(accountUrl("signin", product));
+          }
         } else {
           window.location.assign(accountUrl("signin", product));
         }
@@ -222,7 +238,12 @@ function installAccessNowHandler() {
       return;
     }
 
-    window.location.assign(productHandoffUrl(product, session));
+    try {
+      await activateProductSession(product, session);
+    } catch (error) {
+      console.error("Product session activation failed:", error);
+      window.location.assign(accountUrl("signin", product));
+    }
   }, true);
 }
 
