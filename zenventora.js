@@ -1,14 +1,18 @@
-// ZenVentora Master Account UI
-// IMPORTANT: This file only handles identity/session UI.
-// It does not access or modify any product database, order data, customer data,
-// inventory, billing, or application records.
+// ZenVentora shared account/session UI.
+// Signup is owned by the website/product pages.
+// Sign-in and password recovery are owned by accounts.zenventora.in.
 
 const ACCOUNT_ORIGIN = "https://accounts.zenventora.in";
 const SUPABASE_URL = "https://flwzqlywdlwatycxexmk.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_QN1aNd7wxjkb6ktD6L8GOQ_nsfV1_bY";
+
 const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
 const siteSupabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-  auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: false }
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: false
+  }
 });
 
 const PRODUCT_ORIGINS = {
@@ -17,17 +21,23 @@ const PRODUCT_ORIGINS = {
   vadix: "https://vadix.zenventora.in/"
 };
 
-const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, char => ({
-  "&":"&amp;","<":"&lt;",">":"&gt;","":"&quot;","'":"&#39;"
+const escapeHtml = (value = "") => String(value).replace(/[&<>"]/g, char => ({
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;"
 }[char]));
 
 const initials = (value = "") =>
-  value.trim().split(/\s+/).slice(0, 2).map(part => part[0]?.toUpperCase() || "").join("") || "Z";
+  value.trim().split(/\s+/).slice(0, 2)
+    .map(part => part[0]?.toUpperCase() || "")
+    .join("") || "Z";
 
 let currentSiteSession = null;
+let sessionBridgeFrame = null;
+let sessionBridgeReady = false;
 
 function accountUrl(view, product = "") {
-  // Signup is product/website-owned. Accounts owns sign-in and password recovery only.
   if (view === "signup") {
     return product === "emenu"
       ? "https://zenventora.in/emenu/signup.html"
@@ -41,27 +51,40 @@ function accountUrl(view, product = "") {
   const returnTarget = product
     ? (PRODUCT_ORIGINS[product] || window.location.origin)
     : window.location.href;
-  url.searchParams.set("returnTo", returnTarget);
 
+  url.searchParams.set("returnTo", returnTarget);
   if (product) url.searchParams.set("product", product);
   return url.toString();
 }
 
-function renderSignedOut(root) {
-  const product = root.dataset.accountProduct || "";
-  root.innerHTML =
-    '<a class="account-nav-link account-signin-link account-session-signin" data-account-action="signin" href="' +
-    accountUrl("signin", product) + '">Sign in</a>' +
-    '<a class="btn btn-primary btn-small account-get-started account-cta account-session-cta" data-account-cta="signup" data-account-action="signup" href="' +
-    accountUrl("signup", product) + '">Get Started</a>';
+function productHandoffUrl(product, session) {
+  if (!session?.access_token || !session?.refresh_token) {
+    return accountUrl("signin", product);
+  }
+
+  const target = new URL(PRODUCT_ORIGINS[product] || window.location.origin);
+  target.hash = new URLSearchParams({
+    access_token: session.access_token,
+    refresh_token: session.refresh_token,
+    type: "account_handoff",
+    product
+  }).toString();
+
+  return target.toString();
 }
 
 function renderSignedIn(root, user) {
   const meta = user.user_metadata || {};
-  const name = meta.full_name || meta.name || meta.company_name || user.email?.split("@")[0] || "My account";
-  const candidate = meta.avatar_url || meta.picture;
-  const avatar = typeof candidate === "string" && /^https:\/\//i.test(candidate)
-    ? escapeHtml(candidate)
+  const name =
+    meta.full_name ||
+    meta.name ||
+    meta.company_name ||
+    user.email?.split("@")[0] ||
+    "My account";
+
+  const avatarCandidate = meta.avatar_url || meta.picture;
+  const avatar = typeof avatarCandidate === "string" && /^https:\/\//i.test(avatarCandidate)
+    ? escapeHtml(avatarCandidate)
     : "";
 
   root.innerHTML =
@@ -89,138 +112,195 @@ function renderSignedIn(root, user) {
   const card = root.querySelector(".account-profile-card");
 
   trigger?.addEventListener("click", () => {
-    const open = card.hidden;
-    card.hidden = !open;
-    trigger.setAttribute("aria-expanded", String(open));
+    const open = card?.hidden;
+    if (card) card.hidden = !open;
+    trigger.setAttribute("aria-expanded", String(Boolean(open)));
   });
 
   root.querySelector("[data-account-signout]")?.addEventListener("click", async event => {
-    event.currentTarget.disabled = true;
-    event.currentTarget.textContent = "Signing out…";
+    const button = event.currentTarget;
+    button.disabled = true;
+    button.textContent = "Signing out…";
 
     try {
       const { error } = await siteSupabase.auth.signOut({ scope: "global" });
       if (error) throw error;
+      currentSiteSession = null;
       applySession(null);
     } catch {
-      event.currentTarget.disabled = false;
-      event.currentTarget.textContent = "Sign out";
+      button.disabled = false;
+      button.textContent = "Sign out";
     }
   });
 }
 
-function productHandoffUrl(product, session) {
-  if (!session?.access_token || !session?.refresh_token) return accountUrl("signin", product);
-  const target = new URL(PRODUCT_ORIGINS[product] || window.location.origin);
-  target.hash = new URLSearchParams({
-    access_token: session.access_token,
-    refresh_token: session.refresh_token,
-    type: "account_handoff",
-    product
-  }).toString();
-  return target.toString();
+function renderSignedOut(root) {
+  const product = root.dataset.accountProduct || "";
+  root.innerHTML =
+    '<a class="account-nav-link account-signin-link account-session-signin" data-account-action="signin" href="' +
+      accountUrl("signin", product) + '">Sign in</a>' +
+    '<a class="btn btn-primary btn-small account-get-started account-cta account-session-cta" data-account-cta="signup" data-account-action="signup" href="' +
+      accountUrl("signup", product) + '">Get Started</a>';
 }
 
-function updateAccountCtas(session) {
+function updateCtas(session) {
   const signedIn = Boolean(session?.user);
   document.documentElement.dataset.accountSignedIn = signedIn ? "true" : "false";
 
   document.querySelectorAll(".account-cta, [data-account-cta], .account-session-cta").forEach(element => {
     if (!(element instanceof HTMLAnchorElement)) return;
 
-    const root = element.closest("[data-account-actions]");
-    const product = element.dataset.accountProduct
-      || root?.dataset.accountProduct
-      || (window.location.pathname.startsWith("/emenu") ? "emenu" : "")
-      || "";
+    const actionsRoot = element.closest("[data-account-actions]");
+    const product =
+      element.dataset.accountProduct ||
+      actionsRoot?.dataset.accountProduct ||
+      (window.location.pathname.startsWith("/emenu") ? "emenu" : "");
 
     if (signedIn) {
       element.textContent = "Access Now";
       element.href = product
-        ? productHandoffUrl(product, currentSiteSession)
+        ? productHandoffUrl(product, session)
         : ACCOUNT_ORIGIN + "/";
       element.dataset.accountAction = "access";
-      element.dataset.accountProduct = product;
+      if (product) element.dataset.accountProduct = product;
     } else {
-      element.textContent = "Get Started";
+      element.textContent = element.dataset.accountCta === "signup"
+        ? (element.closest(".cta-area") ? "Get Started Free →" : "Get Started")
+        : "Get Started";
       element.href = accountUrl("signup", product);
       element.dataset.accountAction = "signup";
     }
   });
 
-  document.querySelectorAll(".account-session-signin, .account-signin-link[data-account-action="signin"]").forEach(element => {
-    const hidden = signedIn;
-    if (element instanceof HTMLElement) {
-      element.hidden = hidden;
-      element.setAttribute("aria-hidden", String(hidden));
-      element.style.display = hidden ? "none" : "";
-    }
+  document.querySelectorAll(".account-session-signin, .account-signin-link").forEach(element => {
+    if (!(element instanceof HTMLElement)) return;
+    const hide = signedIn;
+    element.hidden = hide;
+    element.setAttribute("aria-hidden", String(hide));
+    element.style.display = hide ? "none" : "";
   });
 }
 
-let accountCtaClickHandlerInstalled = false;
-function installAccountCtaClickHandler() {
-  if (accountCtaClickHandlerInstalled) return;
-  accountCtaClickHandlerInstalled = true;
+function applySession(session) {
+  currentSiteSession = session || null;
 
+  document.querySelectorAll("[data-account-actions]").forEach(root => {
+    if (session?.user) renderSignedIn(root, session.user);
+    else renderSignedOut(root);
+  });
+
+  updateCtas(session);
+}
+
+function installAccessNowHandler() {
   document.addEventListener("click", async event => {
     const target = event.target instanceof Element
       ? event.target.closest('a.account-cta[data-account-action="access"], a.account-session-cta[data-account-action="access"]')
       : null;
-    if (!(target instanceof HTMLAnchorElement)) return;
 
+    if (!(target instanceof HTMLAnchorElement)) return;
     event.preventDefault();
 
-    // The session may have just arrived through the Accounts iframe bridge.
-    // Give that bridge a short chance to deliver the current tokens before
-    // deciding that the user needs to sign in.
-    let session = currentSiteSession;
-    if (!session?.user) {
-      requestAccountsSession();
-      await new Promise(resolve => window.setTimeout(resolve, 250));
-      const { data } = await siteSupabase.auth.getSession();
-      session = data.session || currentSiteSession;
-    }
+    const product =
+      target.dataset.accountProduct ||
+      target.closest("[data-account-actions]")?.dataset.accountProduct ||
+      (window.location.pathname.startsWith("/emenu") ? "emenu" : "");
+
+    const { data } = await siteSupabase.auth.getSession();
+    const session = data.session || currentSiteSession;
 
     if (!session?.user) {
-      // No verified session really exists, so the normal signed-out flow is valid.
-      window.location.assign(accountUrl("signin", target.dataset.accountProduct || "emenu"));
+      requestAccountsSession();
+      window.setTimeout(async () => {
+        const retry = (await siteSupabase.auth.getSession()).data.session || currentSiteSession;
+        if (retry?.user) {
+          window.location.assign(productHandoffUrl(product, retry));
+        } else {
+          window.location.assign(accountUrl("signin", product));
+        }
+      }, 400);
       return;
     }
 
-    const product = target.dataset.accountProduct
-      || target.closest("[data-account-actions]")?.dataset.accountProduct
-      || (window.location.pathname.startsWith("/emenu") ? "emenu" : "");
-
-    if (!product) return;
-    currentSiteSession = session;
     window.location.assign(productHandoffUrl(product, session));
   }, true);
 }
 
-if (roots.length) {
-  mountAccountsSessionBridge();
-  window.setTimeout(() => requestAccountsSession(), 1000);
-  window.setTimeout(() => requestAccountsSession(), 3000);
+function ensureSessionBridge() {
+  if (sessionBridgeFrame) return;
+
+  sessionBridgeFrame = document.createElement("iframe");
+  sessionBridgeFrame.src = ACCOUNT_ORIGIN + "/session-bridge.html";
+  sessionBridgeFrame.title = "ZenVentora account session bridge";
+  sessionBridgeFrame.setAttribute("aria-hidden", "true");
+  sessionBridgeFrame.style.cssText =
+    "position:fixed;width:1px;height:1px;left:-9999px;top:-9999px;border:0;opacity:0;pointer-events:none;";
+  document.body.appendChild(sessionBridgeFrame);
 }
 
-if (roots.length) {
-  let resolved = false;
+function requestAccountsSession() {
+  if (!sessionBridgeFrame?.contentWindow) {
+    ensureSessionBridge();
+  }
 
-  bootstrapAccountSession().then(user => {
-    resolved = true;
-    applySession(user);
-  }).catch(() => {
-    resolved = true;
+  sessionBridgeFrame?.contentWindow?.postMessage(
+    { type: "zenventora:request-session" },
+    ACCOUNT_ORIGIN
+  );
+}
+
+window.addEventListener("message", async event => {
+  if (event.origin !== ACCOUNT_ORIGIN) return;
+  if (event.source !== sessionBridgeFrame?.contentWindow) return;
+  if (event.data?.type !== "zenventora:account-session") return;
+
+  const session = event.data.session;
+
+  if (!session?.access_token || !session?.refresh_token) {
+    currentSiteSession = null;
     applySession(null);
+    return;
+  }
+
+  const { data, error } = await siteSupabase.auth.setSession({
+    access_token: session.access_token,
+    refresh_token: session.refresh_token
   });
 
-  window.setTimeout(() => {
-    if (!resolved) applySession(null);
-  }, 5000);
+  if (error || !data.session) {
+    currentSiteSession = null;
+    applySession(null);
+    return;
+  }
 
-  siteSupabase.auth.onAuthStateChange((_event, session) => {
-    currentSiteSession = session || null;
-    applySession(session?.user || null);
+  currentSiteSession = data.session;
+  applySession(data.session);
+});
+
+siteSupabase.auth.onAuthStateChange((_event, session) => {
+  currentSiteSession = session || null;
+  applySession(session || null);
+});
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init, { once: true });
+} else {
+  init();
+}
+
+function init() {
+  ensureSessionBridge();
+  installAccessNowHandler();
+
+  // First request immediately, then retry after the bridge has loaded.
+  requestAccountsSession();
+  window.setTimeout(requestAccountsSession, 500);
+  window.setTimeout(requestAccountsSession, 1500);
+  window.setTimeout(requestAccountsSession, 3000);
+
+  // Render the existing state immediately; the bridge will upgrade it to signed-in.
+  siteSupabase.auth.getSession().then(({ data }) => {
+    if (data.session) applySession(data.session);
+    else updateCtas(null);
   });
 }
