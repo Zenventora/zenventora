@@ -147,11 +147,21 @@ function renderSignedIn(root, user) {
 
 function renderSignedOut(root) {
   const product = root.dataset.accountProduct || "";
+  const signupLink =
+    '<a class="btn btn-primary btn-small account-get-started account-cta account-session-cta" data-account-cta="signup" data-account-action="signup" href="' +
+      accountUrl("signup", product) + '">Get Started</a>';
+
+  // E-menu no longer owns sign-in UI. Sign-in is handled exclusively by
+  // accounts.zenventora.in; E-menu exposes only its website-owned signup CTA.
+  if (product === "emenu") {
+    root.innerHTML = signupLink;
+    return;
+  }
+
   root.innerHTML =
     '<a class="account-nav-link account-signin-link account-session-signin" data-account-action="signin" href="' +
       accountUrl("signin", product) + '">Sign in</a>' +
-    '<a class="btn btn-primary btn-small account-get-started account-cta account-session-cta" data-account-cta="signup" data-account-action="signup" href="' +
-      accountUrl("signup", product) + '">Get Started</a>';
+    signupLink;
 }
 
 function updateCtas(session) {
