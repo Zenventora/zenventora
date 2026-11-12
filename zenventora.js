@@ -169,104 +169,34 @@ function installAccountCtaClickHandler() {
       : null;
     if (!(target instanceof HTMLAnchorElement)) return;
 
-    // Re-read the live Supabase session at click time. This prevents a race
-    // where the page already shows the signed-in profile but the CTA href was
-    // generated before the cross-origin session bridge finished.
-    const { data } = await siteSupabase.auth.getSession();
-    const session = data.session || currentSiteSession;
-    if (!session?.user) return;
-
     event.preventDefault();
+
+    // The session may have just arrived through the Accounts iframe bridge.
+    // Give that bridge a short chance to deliver the current tokens before
+    // deciding that the user needs to sign in.
+    let session = currentSiteSession;
+    if (!session?.user) {
+      requestAccountsSession();
+      await new Promise(resolve => window.setTimeout(resolve, 250));
+      const { data } = await siteSupabase.auth.getSession();
+      session = data.session || currentSiteSession;
+    }
+
+    if (!session?.user) {
+      // No verified session really exists, so the normal signed-out flow is valid.
+      window.location.assign(accountUrl("signin", target.dataset.accountProduct || "emenu"));
+      return;
+    }
+
     const product = target.dataset.accountProduct
       || target.closest("[data-account-actions]")?.dataset.accountProduct
       || (window.location.pathname.startsWith("/emenu") ? "emenu" : "");
 
     if (!product) return;
     currentSiteSession = session;
-    target.href = productHandoffUrl(product, session);
-    window.location.assign(target.href);
+    window.location.assign(productHandoffUrl(product, session));
   }, true);
 }
-
-function applySession(user) {
-  const session = user ? { user } : null;
-  roots.forEach(root => {
-    if (user) renderSignedIn(root, user);
-    else renderSignedOut(root);
-  });
-  updateAccountCtas(session);
-}
-
-const roots = [...document.querySelectorAll("[data-account-actions]")];
-
-let accountSessionBridge = null;
-let accountSessionBridgeReady = false;
-
-function requestAccountsSession() {
-  if (!accountSessionBridge) return;
-  try {
-    accountSessionBridge.contentWindow?.postMessage(
-      { type: "zenventora:request-session" },
-      ACCOUNT_ORIGIN
-    );
-  } catch {}
-}
-
-function mountAccountsSessionBridge() {
-  if (accountSessionBridge) return;
-  accountSessionBridge = document.createElement("iframe");
-  accountSessionBridge.src = ACCOUNT_ORIGIN + "/session-bridge.html";
-  accountSessionBridge.title = "ZenVentora account session";
-  accountSessionBridge.setAttribute("aria-hidden", "true");
-  accountSessionBridge.tabIndex = -1;
-  accountSessionBridge.style.cssText = "position:absolute;width:1px;height:1px;border:0;opacity:0;pointer-events:none;";
-  accountSessionBridge.addEventListener("load", () => {
-    accountSessionBridgeReady = true;
-    requestAccountsSession();
-  });
-  document.body.appendChild(accountSessionBridge);
-}
-
-async function bootstrapAccountSession() {
-  const params = new URLSearchParams(window.location.hash.replace(/^#/, ""));
-  if (params.get("type") === "account_handoff" && params.get("access_token") && params.get("refresh_token")) {
-    const { error } = await siteSupabase.auth.setSession({
-      access_token: params.get("access_token"),
-      refresh_token: params.get("refresh_token")
-    });
-    const clean = new URL(window.location.href);
-    clean.hash = "";
-    window.history.replaceState({}, document.title, clean.toString());
-    if (error) return null;
-  }
-
-  const { data } = await siteSupabase.auth.getSession();
-  currentSiteSession = data.session || null;
-  return data.session?.user || null;
-}
-
-window.addEventListener("message", async event => {
-  if (event.origin !== ACCOUNT_ORIGIN || event.source !== accountSessionBridge?.contentWindow) return;
-  if (event.data?.type !== "zenventora:account-session") return;
-
-  const incoming = event.data.session;
-  if (!incoming?.access_token || !incoming?.refresh_token) {
-    await siteSupabase.auth.signOut({ scope: "local" }).catch(() => {});
-    applySession(null);
-    return;
-  }
-
-  const { data, error } = await siteSupabase.auth.setSession({
-    access_token: incoming.access_token,
-    refresh_token: incoming.refresh_token
-  });
-  if (!error) {
-    currentSiteSession = data.session || null;
-    applySession(data.session?.user || null);
-  }
-});
-
-installAccountCtaClickHandler();
 
 if (roots.length) {
   mountAccountsSessionBridge();
