@@ -93,7 +93,7 @@ button.primary{width:100%;height:49px;border:0;border-radius:10px;background:#0e
       if(error)throw error;
       if(data.user&&Array.isArray(data.user.identities)&&data.user.identities.length===0)throw new Error('An account with this email already exists. Please use Sign in.');
       if(data.session){await finish(data.session);return;}
-      document.getElementById('otpEmail').textContent=email;form.style.display='none';document.querySelector('.divider').style.display='none';otp.classList.add('active');
+      document.getElementById('otpEmail').textContent=email;form.style.display='none';otp.classList.add('active');
       message('Verification code sent. Check your inbox and spam folder.','success');
     }catch(err){message(err.message||'Could not create your eMenu account.','error');submit.disabled=false;submit.textContent='Create eMenu account';}
   });
