@@ -43,11 +43,7 @@ button.primary{width:100%;height:49px;border:0;border-radius:10px;background:#0e
 <div class="formbox">
 <h2>Create your eMenu account</h2>
 <p class="sub">This is the official ZenVentora eMenu signup page.</p>
-<!-- Google signup is intentionally not offered here. Sign in with Google is owned by ZenVentora Accounts. --><div id="googleBtn" style="display:none">
-<svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.73 7.18l7.65 5.94c4.47-4.13 7.12-10.2 7.12-17.59z"/><path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.88.93 7.55 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.9-5.81l-7.65 5.94c-2.13 1.43-4.86 2.27-8.25 2.27-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-Continue with Google
-</button>
-<div class="divider">or sign up with email</div>
+
 <form id="form">
 <div class="field"><label for="name">Full name</label><input id="name" autocomplete="name" maxlength="120" required placeholder="Your full name"></div>
 <div class="field"><label for="phone">Phone number</label><input id="phone" type="tel" autocomplete="tel" maxlength="20" required placeholder="+91 98765 43210"></div>
@@ -72,53 +68,46 @@ Continue with Google
 (function(){
   const SUPABASE_URL='https://flwzqlywdlwatycxexmk.supabase.co';
   const SUPABASE_KEY='sb_publishable_QN1aNd7wxjkb6ktD6L8GOQ_nsfV1_bY';
-  const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true}});
   const ACCOUNT_SIGNIN='https://accounts.zenventora.in/login?view=signin&product=emenu&returnTo='+encodeURIComponent('https://emenu.zenventora.in');
-  const PRODUCT='https://emenu.zenventora.in/';
-  const form=document.getElementById('form'), google=document.getElementById('googleBtn'), submit=document.getElementById('submit'), otp=document.getElementById('otp'), msg=document.getElementById('message');
+  const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true}});
+  const form=document.getElementById('form'),submit=document.getElementById('submit'),otp=document.getElementById('otp'),msg=document.getElementById('message');
   let pendingEmail='';
   function message(text,type){msg.textContent=text;msg.className='message '+type;}
-  async function provisionEmenuProfile(session){\n    if(!session?.access_token||!session?.refresh_token) return;\n    const response=await fetch('https://emenu.zenventora.in/api/auth/common/session',{method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store',body:JSON.stringify({accessToken:session.access_token,refreshToken:session.refresh_token,productFlow:'signup',provisionOnly:true})});\n    if(!response.ok) throw new Error('Your identity was verified, but the eMenu profile could not be created. Please try again.');\n  }\n  function redirectWithSession(session){
-    if(!session) throw new Error('No active ZenVentora session was returned.');
-    const p=new URLSearchParams({access_token:session.access_token,refresh_token:session.refresh_token,type:'account_handoff',product:'emenu',productFlow:'signup'});
+  async function provisionEmenuProfile(session){
+    if(!session?.access_token||!session?.refresh_token) return;
+    const response=await fetch('https://emenu.zenventora.in/api/auth/common/session',{method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store',body:JSON.stringify({accessToken:session.access_token,refreshToken:session.refresh_token,productFlow:'signup',provisionOnly:true})});
+    if(!response.ok) throw new Error('Your identity was verified, but the eMenu profile could not be created. Please try again.');
+  }
+  async function finish(session){
+    if(!session) throw new Error('Email verified, but no session was returned. Please sign in.');
+    await provisionEmenuProfile(session);
+    await supabase.auth.signOut({scope:'local'}).catch(()=>{});
     window.location.replace(ACCOUNT_SIGNIN);
   }
-  /* legacy Google signup handler disabled: Accounts owns sign-in */\n  /* google.addEventListener('click',async function(){
-    google.disabled=true;google.textContent='Connecting to Google…';
-    try{
-      const {error}=await supabase.auth.signInWithOAuth({provider:'google',options:{redirectTo:ACCOUNT_SIGNUP}});
-      if(error) throw error;
-    }catch(e){message(e.message||'Google sign up could not be started.','error');google.disabled=false;google.textContent='Continue with Google';}
-  });
   form.addEventListener('submit',async function(e){
-    e.preventDefault(); if(!form.reportValidity()) return;
+    e.preventDefault();if(!form.reportValidity())return;
     const name=document.getElementById('name').value.trim(),phone=document.getElementById('phone').value.trim(),email=document.getElementById('email').value.trim().toLowerCase(),password=document.getElementById('password').value;
-    submit.disabled=true;submit.textContent='Creating account…';msg.className='message';
+    pendingEmail=email;submit.disabled=true;submit.textContent='Creating account…';msg.className='message';
     try{
-      const {data,error}=await supabase.auth.signUp({email,password,options:{data:{full_name:name,phone_number:phone,product:'emenu'},emailRedirectTo:window.location.origin+window.location.pathname+'?verified=1'}});
-      if(error) throw error;
-      pendingEmail=email;
-      if(data.session){await provisionEmenuProfile(data.session);await supabase.auth.signOut({scope:'local'});window.location.replace(ACCOUNT_SIGNIN);return;}
-      document.getElementById('otpEmail').textContent=email;
-      form.style.display='none';google.style.display='none';document.querySelector('.divider').style.display='none';otp.classList.add('active');
-      message('Verification code sent. Check your email and enter it below.','success');
-    }catch(e){message(e.message||'Could not create your ZenVentora account.','error');submit.disabled=false;submit.textContent='Create eMenu account';}
+      const {data,error}=await supabase.auth.signUp({email,password,options:{data:{full_name:name,phone_number:phone,product:'emenu'},emailRedirectTo:location.origin+location.pathname+'?verified=1'}});
+      if(error)throw error;
+      if(data.user&&Array.isArray(data.user.identities)&&data.user.identities.length===0)throw new Error('An account with this email already exists. Please use Sign in.');
+      if(data.session){await finish(data.session);return;}
+      document.getElementById('otpEmail').textContent=email;form.style.display='none';document.querySelector('.divider').style.display='none';otp.classList.add('active');
+      message('Verification code sent. Check your inbox and spam folder.','success');
+    }catch(err){message(err.message||'Could not create your eMenu account.','error');submit.disabled=false;submit.textContent='Create eMenu account';}
   });
   document.getElementById('verify').addEventListener('click',async function(){
-    const token=document.getElementById('code').value.replace(/\D/g,'').slice(0,8);
-    if(!pendingEmail||token.length<6){message('Enter the verification code from your email.','error');return;}
-    const btn=document.getElementById('verify');btn.disabled=true;btn.textContent='Verifying…';
-    try{
-      const {data,error}=await supabase.auth.verifyOtp({email:pendingEmail,token,type:'email'});
-      if(error) throw error;
-      redirectWithSession(data.session);
-    }catch(e){message(e.message||'Email verification failed.','error');btn.disabled=false;btn.textContent='Verify email and continue';}
+    const token=document.getElementById('code').value.replace(/\D/g,'').slice(0,8);if(token.length<6)return message('Enter the verification code.','error');
+    const b=document.getElementById('verify');b.disabled=true;b.textContent='Verifying…';
+    try{const {data,error}=await supabase.auth.verifyOtp({email:pendingEmail,token,type:'email'});if(error)throw error;await finish(data.session);}
+    catch(err){message(err.message||'Email verification failed.','error');b.disabled=false;b.textContent='Verify email and continue';}
   });
-  document.getElementById('back').addEventListener('click',function(){otp.classList.remove('active');form.style.display='block';google.style.display='flex';document.querySelector('.divider').style.display='flex';msg.className='message';});
+  document.getElementById('back').addEventListener('click',function(){otp.classList.remove('active');form.style.display='block';document.querySelector('.divider').style.display='flex';msg.className='message';submit.disabled=false;submit.textContent='Create eMenu account';});
   document.getElementById('code').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,8);});
+  if(new URLSearchParams(location.search).get('verified')==='1')supabase.auth.getSession().then(({data})=>{if(data.session)void finish(data.session);});
 })();
 </script>
-  <script type="module" src="../zenventora.js?v=1"></script>
-<script type="module" src="../zenventora.js?v=master-20261111"></script>
+  <script type="module" src="../zenventora.js?v=master-20261111"></script>
 </body>
 </html>
