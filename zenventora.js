@@ -25,22 +25,23 @@ const initials = (value = "") =>
   value.trim().split(/\s+/).slice(0, 2).map(part => part[0]?.toUpperCase() || "").join("") || "Z";
 
 function accountUrl(view, product = "") {
-  const path = view === "signup" ? "/signup" : view === "forgot" ? "/forgot" : "/login";
+  // Signup is product/website-owned. Accounts owns sign-in and password recovery only.
+  if (view === "signup") {
+    return product === "emenu"
+      ? "https://zenventora.in/emenu/signup.html"
+      : "https://zenventora.in/signup.html";
+  }
+
+  const path = view === "forgot" ? "/forgot" : "/login";
   const url = new URL(ACCOUNT_ORIGIN + path);
   url.searchParams.set("view", view);
 
-  // Every sign-in/sign-up started from the website must return to the
-  // exact page that initiated the flow. Accounts remains the identity owner.
   const returnTarget = product
     ? (PRODUCT_ORIGINS[product] || window.location.origin)
     : window.location.href;
   url.searchParams.set("returnTo", returnTarget);
 
-  if (product) {
-    url.searchParams.set("product", product);
-    if (view === "signup") url.searchParams.set("productFlow", "signup");
-  }
-
+  if (product) url.searchParams.set("product", product);
   return url.toString();
 }
 
