@@ -122,6 +122,9 @@ function productHandoffUrl(product, session) {
 }
 
 function updateAccountCtas(session) {
+  const signedIn = Boolean(session?.user);
+  document.documentElement.dataset.accountSignedIn = signedIn ? "true" : "false";
+
   document.querySelectorAll(".account-cta, [data-account-cta], .account-session-cta").forEach(element => {
     if (!(element instanceof HTMLAnchorElement)) return;
 
@@ -131,15 +134,13 @@ function updateAccountCtas(session) {
       || (window.location.pathname.startsWith("/emenu") ? "emenu" : "")
       || "";
 
-    if (session?.user) {
+    if (signedIn) {
       element.textContent = "Access Now";
-      // A session already exists on the ZenVentora site. Do not send the user
-      // back through Accounts again. Hand the current session directly to the
-      // product and let the product exchange it for its own server session.
       element.href = product
         ? productHandoffUrl(product, currentSiteSession)
         : ACCOUNT_ORIGIN + "/";
       element.dataset.accountAction = "access";
+      element.dataset.accountProduct = product;
     } else {
       element.textContent = "Get Started";
       element.href = accountUrl("signup", product);
@@ -147,10 +148,44 @@ function updateAccountCtas(session) {
     }
   });
 
-  document.querySelectorAll(".account-session-signin, .account-signin-link[data-account-action=\"signin\"]").forEach(element => {
-    element.hidden = Boolean(session?.user);
-    element.setAttribute("aria-hidden", String(Boolean(session?.user)));
+  document.querySelectorAll(".account-session-signin, .account-signin-link[data-account-action="signin"]").forEach(element => {
+    const hidden = signedIn;
+    if (element instanceof HTMLElement) {
+      element.hidden = hidden;
+      element.setAttribute("aria-hidden", String(hidden));
+      element.style.display = hidden ? "none" : "";
+    }
   });
+}
+
+let accountCtaClickHandlerInstalled = false;
+function installAccountCtaClickHandler() {
+  if (accountCtaClickHandlerInstalled) return;
+  accountCtaClickHandlerInstalled = true;
+
+  document.addEventListener("click", async event => {
+    const target = event.target instanceof Element
+      ? event.target.closest('a.account-cta[data-account-action="access"], a.account-session-cta[data-account-action="access"]')
+      : null;
+    if (!(target instanceof HTMLAnchorElement)) return;
+
+    // Re-read the live Supabase session at click time. This prevents a race
+    // where the page already shows the signed-in profile but the CTA href was
+    // generated before the cross-origin session bridge finished.
+    const { data } = await siteSupabase.auth.getSession();
+    const session = data.session || currentSiteSession;
+    if (!session?.user) return;
+
+    event.preventDefault();
+    const product = target.dataset.accountProduct
+      || target.closest("[data-account-actions]")?.dataset.accountProduct
+      || (window.location.pathname.startsWith("/emenu") ? "emenu" : "");
+
+    if (!product) return;
+    currentSiteSession = session;
+    target.href = productHandoffUrl(product, session);
+    window.location.assign(target.href);
+  }, true);
 }
 
 function applySession(user) {
@@ -230,6 +265,8 @@ window.addEventListener("message", async event => {
     applySession(data.session?.user || null);
   }
 });
+
+installAccountCtaClickHandler();
 
 if (roots.length) {
   mountAccountsSessionBridge();
