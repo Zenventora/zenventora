@@ -112,7 +112,10 @@ function updateAccountCtas(session) {
     if (!(element instanceof HTMLAnchorElement)) return;
 
     const root = element.closest("[data-account-actions]");
-    const product = element.dataset.accountProduct || root?.dataset.accountProduct || "";
+    const product = element.dataset.accountProduct
+      || root?.dataset.accountProduct
+      || (window.location.pathname.startsWith("/emenu") ? "emenu" : "")
+      || "";
 
     if (session?.user) {
       element.textContent = "Access Now";
