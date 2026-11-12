@@ -117,7 +117,7 @@ function updateAccountCtas(session) {
     if (session?.user) {
       element.textContent = "Access Now";
       element.href = product
-        ? (PRODUCT_ORIGINS[product] || window.location.origin)
+        ? accountUrl("signin", product)
         : ACCOUNT_ORIGIN + "/";
       element.dataset.accountAction = "access";
     } else {
