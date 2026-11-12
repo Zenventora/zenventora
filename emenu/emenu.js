@@ -1,10 +1,9 @@
-const EMENU_AUTH_URL = 'https://emenu.zenventora.in/api/auth/me';
 const EMENU_PRODUCT_URL = 'https://emenu.zenventora.in/';
-const EMENU_SIGNUP_URL = `https://emenu.zenventora.in/signup.html`;
+const EMENU_SIGNUP_URL = 'https://zenventora.in/emenu/signup.html';
 
 const ctaMarkup = (authenticated) => authenticated
   ? `<a class="btn btn-primary" href="${EMENU_PRODUCT_URL}">Access Now <span aria-hidden="true">→</span></a>`
-  : `<a class="btn btn-primary" href="${EMENU_SIGNUP_URL}">Get Started Free</a><a class="btn btn-secondary" href="${EMENU_PRODUCT_URL}">Sign In</a>`;
+  : `<a class="btn btn-primary" href="${EMENU_SIGNUP_URL}">Get Started Free</a>`;
 
 function renderCtas(authenticated) {
   document.querySelectorAll('[data-emenu-cta]').forEach((area) => {
@@ -13,9 +12,11 @@ function renderCtas(authenticated) {
   });
 }
 
+// Legacy E-menu CTA helper. Authentication itself is owned by the
+// ZenVentora Accounts service; this helper never renders a product sign-in UI.
 async function checkEMenuLogin() {
   try {
-    const response = await fetch(EMENU_AUTH_URL, { credentials: 'include' });
+    const response = await fetch(EMENU_PRODUCT_URL + 'api/auth/me', { credentials: 'include' });
     renderCtas(response.ok);
     return response.ok;
   } catch (error) {
