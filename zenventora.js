@@ -170,7 +170,7 @@ function updateCtas(session) {
     if (signedIn) {
       element.textContent = "Access Now";
       element.href = product
-        ? productHandoffUrl(product, session)
+        ? (PRODUCT_ORIGINS[product] || window.location.origin)
         : ACCOUNT_ORIGIN + "/";
       element.dataset.accountAction = "access";
       if (product) element.dataset.accountProduct = product;
