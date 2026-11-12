@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create your ZenVentora account</title>
+<meta name="description" content="Create your common ZenVentora account.">
+<link rel="canonical" href="https://zenventora.in/signup.html">
+<link rel="icon" href="/assets/zenventora.png" type="image/png">
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,system-ui,sans-serif;background:#f4f7fb;color:#172033;display:grid;place-items:center;padding:20px}.card{width:min(960px,100%);background:#fff;border:1px solid #e5eaf1;border-radius:24px;overflow:hidden;display:grid;grid-template-columns:.9fr 1.1fr;box-shadow:0 24px 70px #0f2d501f}.intro{background:linear-gradient(145deg,#0b3158,#0e7779);color:#fff;padding:48px;display:flex;flex-direction:column;justify-content:center}.brand{font-weight:900;font-size:22px}.eyebrow{margin-top:55px;color:#9fe5dc;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}.intro h1{font-size:38px;line-height:1.08;margin:12px 0}.intro p{color:#d8e8ef;line-height:1.7}.points{margin-top:22px;display:grid;gap:10px;font-size:14px;color:#e7f4f6}.points span:before{content:"✓";margin-right:9px;color:#7df0dc}.form{padding:48px;display:flex;align-items:center}.box{width:100%;max-width:410px}.box h2{margin:0 0 7px;font-size:28px;color:#102f50}.sub{margin:0 0 22px;color:#718096;font-size:14px;line-height:1.6}.field{margin:0 0 14px}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:#34445b}.field input{width:100%;height:47px;border:1px solid #dce4ed;border-radius:10px;padding:0 13px;font:inherit;outline:none}.field input:focus{border-color:#0e9996;box-shadow:0 0 0 3px #0e99961c}.btn{width:100%;height:48px;border:0;border-radius:10px;background:#0e9996;color:#fff;font-weight:800;cursor:pointer}.btn:disabled{opacity:.6}.msg{display:none;margin-top:14px;padding:11px 13px;border-radius:9px;font-size:13px;line-height:1.5}.msg.error{display:block;background:#fff1f1;color:#b42318}.msg.success{display:block;background:#ecfdf7;color:#067647}.otp{display:none}.otp.show{display:block}.otp p{font-size:13px;color:#718096;line-height:1.6}.otp input{text-align:center;letter-spacing:7px;font-weight:800;font-size:20px}.link{display:block;text-align:center;margin-top:20px;color:#0a8c8b;font-size:13px;font-weight:700;text-decoration:none}.note{margin-top:16px;text-align:center;color:#9aa5b4;font-size:11px}@media(max-width:720px){.card{grid-template-columns:1fr}.intro{padding:30px}.eyebrow{margin-top:28px}.intro h1{font-size:30px}.points{display:none}.form{padding:32px 25px}}
+</style>
+</head>
+<body>
+<main class="card">
+<section class="intro"><div class="brand">ZENVENTORA</div><div class="eyebrow">Common account signup</div><h1>One identity. Multiple products.</h1><p>Create your ZenVentora identity here. Product pages may collect product-specific information, but authentication stays common.</p><div class="points"><span>Common ZenVentora identity</span><span>Email verification before access</span><span>Secure password authentication</span><span>Sign in through ZenVentora Accounts</span></div></section>
+<section class="form"><div class="box">
+<h2>Create your account</h2><p class="sub">Signup is handled here. Sign in and forgot password are handled by ZenVentora Accounts.</p>
+<form id="signupForm">
+<div class="field"><label>Full name</label><input id="name" autocomplete="name" maxlength="120" required></div>
+<div class="field"><label>Phone number</label><input id="phone" type="tel" autocomplete="tel" maxlength="40" required></div>
+<div class="field"><label>Email address</label><input id="email" type="email" autocomplete="email" maxlength="254" required></div>
+<div class="field"><label>Create password</label><input id="password" type="password" autocomplete="new-password" minlength="8" maxlength="128" required></div>
+<button class="btn" id="submit" type="submit">Create ZenVentora account</button>
+</form>
+<div id="otp" class="otp"><p>Enter the verification code sent to <strong id="otpEmail"></strong>.</p><div class="field"><label>Verification code</label><input id="code" inputmode="numeric" maxlength="8" placeholder="000000"></div><button class="btn" id="verify" type="button">Verify email</button><button class="btn" id="resend" type="button" style="margin-top:10px;background:#fff;color:#0e7779;border:1px solid #cbdde3">Resend code</button></div>
+<div id="msg" class="msg" role="status"></div>
+<a class="link" href="https://accounts.zenventora.in/login?view=signin&returnTo=https%3A%2F%2Fzenventora.in%2F">Already have an account? Sign in</a>
+<div class="note">Your identity is stored in the common ZenVentora Auth system.</div>
+</div></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(()=>{const U='https://flwzqlywdlwatycxexmk.supabase.co',K='sb_publishable_QN1aNd7wxjkb6ktD6L8GOQ_nsfV1_bY',A='https://accounts.zenventora.in/login?view=signin&returnTo=https%3A%2F%2Fzenventora.in%2F';const s=window.supabase.createClient(U,K,{auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true}}),f=document.getElementById('signupForm'),o=document.getElementById('otp'),m=document.getElementById('msg'),b=document.getElementById('submit');let e='';const say=(t,c)=>{m.textContent=t;m.className='msg '+c};const go=()=>location.replace(A);const finish=async()=>{const{data}=await s.auth.getSession();if(data.session){await s.auth.signOut({scope:'local'}).catch(()=>{});go()}};if(new URLSearchParams(location.search).get('verified')==='1')void finish();
+f.onsubmit=async x=>{x.preventDefault();if(!f.reportValidity())return;e=document.getElementById('email').value.trim().toLowerCase();b.disabled=true;b.textContent='Creating account…';try{const{data,error}=await s.auth.signUp({email:e,password:document.getElementById('password').value,options:{data:{full_name:document.getElementById('name').value.trim(),phone_number:document.getElementById('phone').value.trim()},emailRedirectTo:location.origin+location.pathname+'?verified=1'}});if(error)throw error;if(data.user&&Array.isArray(data.user.identities)&&data.user.identities.length===0)throw new Error('An account with this email already exists. Please use Sign in.');if(data.session){await s.auth.signOut({scope:'local'});go();return}document.getElementById('otpEmail').textContent=e;f.style.display='none';o.classList.add('show');say('Verification code sent. Check your inbox and spam folder.','success')}catch(err){say(err.message||'Could not create your account.','error');b.disabled=false;b.textContent='Create ZenVentora account'}};
+document.getElementById('verify').onclick=async()=>{const t=document.getElementById('code').value.replace(/\D/g,'');if(t.length<6)return say('Enter the verification code.','error');const q=document.getElementById('verify');q.disabled=true;q.textContent='Verifying…';try{const{data,error}=await s.auth.verifyOtp({email:e,token:t,type:'email'});if(error)throw error;if(!data.session)throw new Error('Email verified. Please sign in to continue.');await s.auth.signOut({scope:'local'});go()}catch(err){say(err.message||'Verification failed.','error');q.disabled=false;q.textContent='Verify email'}};
+document.getElementById('resend').onclick=async()=>{const{error}=await s.auth.resend({type:'signup',email:e,options:{emailRedirectTo:location.origin+location.pathname+'?verified=1'}});say(error?.message||'A new verification code has been sent.','success')};
+})();
+</script>
+</body></html>
