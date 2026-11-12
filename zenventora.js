@@ -24,6 +24,8 @@ const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, char => ({
 const initials = (value = "") =>
   value.trim().split(/\s+/).slice(0, 2).map(part => part[0]?.toUpperCase() || "").join("") || "Z";
 
+let currentSiteSession = null;
+
 function accountUrl(view, product = "") {
   // Signup is product/website-owned. Accounts owns sign-in and password recovery only.
   if (view === "signup") {
@@ -107,6 +109,18 @@ function renderSignedIn(root, user) {
   });
 }
 
+function productHandoffUrl(product, session) {
+  if (!session?.access_token || !session?.refresh_token) return accountUrl("signin", product);
+  const target = new URL(PRODUCT_ORIGINS[product] || window.location.origin);
+  target.hash = new URLSearchParams({
+    access_token: session.access_token,
+    refresh_token: session.refresh_token,
+    type: "account_handoff",
+    product
+  }).toString();
+  return target.toString();
+}
+
 function updateAccountCtas(session) {
   document.querySelectorAll(".account-cta, [data-account-cta], .account-session-cta").forEach(element => {
     if (!(element instanceof HTMLAnchorElement)) return;
@@ -119,8 +133,11 @@ function updateAccountCtas(session) {
 
     if (session?.user) {
       element.textContent = "Access Now";
+      // A session already exists on the ZenVentora site. Do not send the user
+      // back through Accounts again. Hand the current session directly to the
+      // product and let the product exchange it for its own server session.
       element.href = product
-        ? accountUrl("signin", product)
+        ? productHandoffUrl(product, currentSiteSession)
         : ACCOUNT_ORIGIN + "/";
       element.dataset.accountAction = "access";
     } else {
@@ -189,6 +206,7 @@ async function bootstrapAccountSession() {
   }
 
   const { data } = await siteSupabase.auth.getSession();
+  currentSiteSession = data.session || null;
   return data.session?.user || null;
 }
 
@@ -207,7 +225,10 @@ window.addEventListener("message", async event => {
     access_token: incoming.access_token,
     refresh_token: incoming.refresh_token
   });
-  if (!error) applySession(data.session?.user || null);
+  if (!error) {
+    currentSiteSession = data.session || null;
+    applySession(data.session?.user || null);
+  }
 });
 
 if (roots.length) {
@@ -232,6 +253,7 @@ if (roots.length) {
   }, 5000);
 
   siteSupabase.auth.onAuthStateChange((_event, session) => {
+    currentSiteSession = session || null;
     applySession(session?.user || null);
   });
 }
